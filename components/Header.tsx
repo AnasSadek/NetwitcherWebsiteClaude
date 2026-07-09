@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { StarMark } from "./arrows";
+import { BrandStar, BrandWordmark } from "./brand/Logo";
 import { leistungenServices } from "@/lib/services";
 
 const navItems = [
@@ -50,13 +50,11 @@ export function Header() {
           className="group flex items-center gap-2.5"
           aria-label="Netwitcher – Startseite"
         >
-          <StarMark
+          <BrandStar
             size={38}
             className="transition-transform duration-500 group-hover:rotate-[36deg]"
           />
-          <span className="font-heading text-lg font-extrabold tracking-wider text-snow">
-            NETWITCHER
-          </span>
+          <BrandWordmark height={14} className="text-snow" />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">

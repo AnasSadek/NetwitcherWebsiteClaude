@@ -126,13 +126,14 @@ function cornerAnchor(i: number): Transform {
   };
 }
 
-/** Conversion: exakter Netwitcher-Stern, frontal, leuchtend. */
+/** Conversion: exakter Netwitcher-Stern, frontal, leuchtend.
+ *  +36° Gesamtrotation = Original-Logo-Ausrichtung (gelber Arm unten). */
 function finalStarAnchor(i: number): Transform {
-  const a = (90 - i * 72) * D2R;
+  const a = (126 - i * 72) * D2R;
   const r = 1.12;
   return {
     pos: [Math.cos(a) * r, Math.sin(a) * r + 0.55, -0.8],
-    rot: [0, 0, -i * 72 * D2R],
+    rot: [0, 0, (36 - i * 72) * D2R],
     scale: 0.7,
   };
 }

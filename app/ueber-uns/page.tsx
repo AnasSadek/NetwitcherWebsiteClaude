@@ -3,7 +3,8 @@ import { ButtonLink } from "@/components/Button";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
-import { StarMark, ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { BrandStar } from "@/components/brand/Logo";
 import { ARROW_TARGETS } from "@/components/arrowTargets";
 
 export const metadata: Metadata = {
@@ -61,7 +62,7 @@ export default function UeberUnsPage() {
             <Reveal delay={0.15}>
               <div className="relative mx-auto flex h-72 w-72 items-center justify-center">
                 <div aria-hidden="true" className="absolute inset-0 rounded-full bg-violet/15 blur-3xl" />
-                <StarMark size={220} className="animate-float motion-reduce:animate-none" />
+                <BrandStar size={220} className="animate-float motion-reduce:animate-none" />
               </div>
             </Reveal>
           </div>

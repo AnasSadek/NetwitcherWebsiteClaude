@@ -4,15 +4,13 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
-  motion,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
-  useTransform,
   type MotionValue,
 } from "framer-motion";
 import { ButtonLink } from "@/components/Button";
-import { StarMark } from "@/components/arrows";
+import { BrandStar, BrandWordmark } from "@/components/brand/Logo";
 import { whatsappHref } from "@/lib/site";
 
 const StoryScene = dynamic(() => import("@/components/three/StoryScene"), {
@@ -36,14 +34,22 @@ function Overlay({
   children: React.ReactNode;
 }) {
   const [a, b] = range;
-  const fade = 0.22 * (b - a);
-  // Szene 1 (a=0) ist beim Laden sofort sichtbar
-  const opacity = useTransform(
-    progress,
-    a === 0 ? [0, b - fade, b] : [a, a + fade, b - fade, b],
-    a === 0 ? [1, 1, 0] : [0, 1, 1, 0]
-  );
-  const y = useTransform(progress, [a, a + fade], a === 0 ? [0, 0] : [28, 0]);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Imperativ statt motion.div: umgeht Framer's WAAPI-Scroll-Optimierung,
+  // die bei diesen Overlays falsche Timeline-Offsets erzeugte.
+  useMotionValueEvent(progress, "change", (p) => {
+    const el = ref.current;
+    if (!el) return;
+    const fade = 0.22 * (b - a);
+    const up = a === 0 ? 1 : Math.min(1, Math.max(0, (p - a) / fade));
+    const down = Math.min(1, Math.max(0, (b - p) / fade));
+    const o = Math.min(up, down);
+    el.style.opacity = String(o);
+    el.style.transform = a === 0 ? "none" : `translateY(${(1 - up) * 28}px)`;
+    el.style.visibility = o <= 0.001 ? "hidden" : "visible";
+  });
+
   const alignCls =
     align === "center"
       ? "items-center justify-center text-center"
@@ -53,12 +59,13 @@ function Overlay({
           ? "items-end justify-center pb-[9vh] text-center"
           : "items-end justify-start pb-[12vh] pl-[6vw] text-left";
   return (
-    <motion.div
-      style={{ opacity, y }}
+    <div
+      ref={ref}
+      style={{ opacity: a === 0 ? 1 : 0, visibility: a === 0 ? "visible" : "hidden" }}
       className={`pointer-events-none absolute inset-0 flex px-5 ${alignCls}`}
     >
       <div className="pointer-events-auto max-w-3xl">{children}</div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -100,12 +107,15 @@ function StaticStory() {
     <section className="relative overflow-hidden">
       <div className="aurora absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto flex min-h-[92svh] max-w-4xl flex-col items-center justify-center px-5 pt-28 text-center">
-        <StarMark size={140} />
-        <h1 className="mt-10 font-heading text-4xl font-extrabold tracking-tight md:text-6xl">
-          Content. Kampagnen. <span className="text-gradient">Conversion.</span>
+        <BrandStar size={140} />
+        <div className="mt-8 flex justify-center">
+          <BrandWordmark height={24} className="max-w-[80vw] text-snow" />
+        </div>
+        <h1 className="mt-8 font-heading text-3xl font-extrabold tracking-tight md:text-5xl">
+          Content. Studio. <span className="text-gradient">Conversion.</span>
         </h1>
-        <p className="mt-4 font-heading text-xs font-medium uppercase tracking-[0.3em] text-mist">
-          Netwitcher · Studio Berlin
+        <p className="mt-4 font-heading text-xs font-medium uppercase tracking-[0.3em] text-sun">
+          Magic in Every Click · Studio Berlin
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-4">
           <ButtonLink href="/kontakt#termin">Erstgespräch buchen</ButtonLink>
@@ -184,19 +194,21 @@ export function Story() {
       <div className="sticky top-0 h-screen overflow-hidden">
         {webgl && <StoryScene progress={progressRef} mouse={mouseRef} />}
 
-        {/* Szene 1 · Attention */}
+        {/* Szene 1 · Attention – echtes Logo-Lockup */}
         <Overlay progress={scrollYProgress} range={[0, 0.13]}>
-          <p className="mb-5 font-heading text-[11px] font-medium uppercase tracking-[0.35em] text-mint">
-            Netwitcher · Studio Berlin
+          <div className="flex justify-center">
+            <BrandWordmark height={26} className="max-w-[78vw] text-snow drop-shadow-[0_2px_20px_rgba(6,6,15,.9)]" />
+          </div>
+          <p className="mt-4 font-heading text-[11px] font-medium uppercase tracking-[0.35em] text-sun">
+            Magic in Every Click
           </p>
-          <h1 className="font-heading text-4xl font-extrabold leading-[1.05] tracking-tight drop-shadow-[0_2px_20px_rgba(6,6,15,.9)] sm:text-5xl md:text-7xl">
-            Content. Kampagnen.
-            <br />
+          <h1 className="mt-8 font-heading text-3xl font-extrabold leading-[1.05] tracking-tight drop-shadow-[0_2px_20px_rgba(6,6,15,.9)] sm:text-4xl md:text-6xl">
+            Content. Studio.{" "}
             <span className="text-gradient">Conversion.</span>
           </h1>
           <div className="mt-9 flex flex-wrap justify-center gap-4">
             <ButtonLink href="/kontakt#termin">Erstgespräch buchen</ButtonLink>
-            <ButtonLink href="/studio" variant="secondary">Studio entdecken</ButtonLink>
+            <ButtonLink href="/studio" variant="secondary">Studio ansehen</ButtonLink>
           </div>
           <p className="mt-12 animate-pulse font-heading text-[10px] uppercase tracking-[0.3em] text-mist">
             Scrollen ↓

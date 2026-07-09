@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { StarMark } from "./arrows";
+import { BrandStar, BrandWordmark } from "./brand/Logo";
 import { site, whatsappHref, defaultWhatsappText } from "@/lib/site";
 import { leistungenServices } from "@/lib/services";
 
@@ -10,10 +10,8 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link href="/" className="flex items-center gap-2.5" aria-label="Netwitcher – Startseite">
-              <StarMark size={42} />
-              <span className="font-heading text-lg font-extrabold tracking-wider">
-                NETWITCHER
-              </span>
+              <BrandStar size={42} />
+              <BrandWordmark height={14} className="text-snow" />
             </Link>
             <p className="mt-4 font-heading text-xs font-medium uppercase tracking-[0.25em] text-sun">
               {site.slogan}

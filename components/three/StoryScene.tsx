@@ -20,37 +20,21 @@ type ProgressRef = React.MutableRefObject<number>;
 type MouseRef = React.MutableRefObject<{ x: number; y: number }>;
 
 /* ------------------------------------------------------------------ */
-/* Geometrie: Logo-Pfeil als extrudierte 3D-Form                       */
+/* Die echten 3D-Pfeil-Renderings (aus der hochgeladenen arrows_3d.ai) */
 /* ------------------------------------------------------------------ */
 
-/** Eckpunkte des Logo-Chevrons (SVG-100er-Raster), Spitze oben. */
-const ARROW_POINTS: [number, number][] = [
-  [50, 14], [74, 38], [76.5, 44], [79, 66], [68, 72.5],
-  [52, 56], [48, 56], [32, 72.5], [21, 66], [23.5, 44], [26, 38],
+/** Textur-Dateien in Stern-Reihenfolge (mint, violet, pink, sun, sky). */
+const ARROW_TEXTURES = [
+  "/brand/arrow3d-mint.png",
+  "/brand/arrow3d-violet.png",
+  "/brand/arrow3d-pink.png",
+  "/brand/arrow3d-sun.png",
+  "/brand/arrow3d-sky.png",
 ];
 
-function useArrowGeometry(): THREE.ExtrudeGeometry {
-  return useMemo(() => {
-    const s = 0.02; // 100er-Raster → ~2 Welteinheiten
-    const shape = new THREE.Shape();
-    ARROW_POINTS.forEach(([px, py], i) => {
-      const x = (px - 50) * s;
-      const y = (50 - py) * s + 0.14; // optisch zentrieren
-      if (i === 0) shape.moveTo(x, y);
-      else shape.lineTo(x, y);
-    });
-    shape.closePath();
-    const geo = new THREE.ExtrudeGeometry(shape, {
-      depth: 0.2,
-      bevelEnabled: true,
-      bevelThickness: 0.05,
-      bevelSize: 0.045,
-      bevelSegments: 3,
-    });
-    geo.center();
-    return geo;
-  }, []);
-}
+/** Seitenverhältnis der Renderings: 800×512. */
+const ARROW_W = 1.62;
+const ARROW_H = 1.04;
 
 /* ------------------------------------------------------------------ */
 /* Hilfen                                                              */
@@ -119,65 +103,85 @@ function Rig({ progress, mouse }: { progress: ProgressRef; mouse: MouseRef }) {
 /* Die fünf Logo-Pfeile                                                */
 /* ------------------------------------------------------------------ */
 
-function Arrows({ progress, mouse }: { progress: ProgressRef; mouse: MouseRef }) {
-  const geometry = useArrowGeometry();
-  const refs = useRef<(THREE.Mesh | null)[]>([]);
-  const anchors = useMemo(() => ARROW_HEX.map((_, i) => arrowAnchors(i)), []);
-  const materials = useMemo(
-    () =>
-      ARROW_HEX.map(
-        (hex) =>
-          new THREE.MeshStandardMaterial({
-            color: hex,
-            metalness: 0.3,
-            roughness: 0.28,
-            emissive: hex,
-            emissiveIntensity: 0.18,
-          })
-      ),
-    []
-  );
+function ArrowObject({
+  index,
+  progress,
+  mouse,
+}: {
+  index: number;
+  progress: ProgressRef;
+  mouse: MouseRef;
+}) {
+  const group = useRef<THREE.Group>(null);
+  const glowRef = useRef<THREE.Sprite>(null);
+  const tex = useSoftTexture(ARROW_TEXTURES[index]);
+  const glowTex = useGlowTexture(ARROW_HEX[index]);
+  const anchors = useMemo(() => arrowAnchors(index), [index]);
+  const i = index;
 
   useFrame(({ clock }) => {
+    const g = group.current;
+    if (!g) return;
     const p = progress.current;
     const t = clock.elapsedTime;
     const chaosSpin = envelope(p, 0.14, 0.3, 0.35); // Taumeln nur im Chaos
     const heroPhase = 1 - phase(p, 0.1, 0.18); // Maus-Einfluss im Hero
     const burst = phase(p, 0.88, 1);
+    const tf = sampleAnchors(anchors, p);
+    const float = Math.sin(t * (0.5 + i * 0.13) + i * 2.1) * 0.1 * (1 - burst);
 
-    for (let i = 0; i < 5; i++) {
-      const mesh = refs.current[i];
-      if (!mesh) continue;
-      const tf = sampleAnchors(anchors[i], p);
-      const float = Math.sin(t * (0.5 + i * 0.13) + i * 2.1) * 0.1 * (1 - burst);
-
-      mesh.position.set(
-        tf.pos[0] + mouse.current.x * (0.18 + i * 0.05) * heroPhase,
-        tf.pos[1] + float + mouse.current.y * -(0.12 + i * 0.04) * heroPhase,
-        tf.pos[2]
-      );
-      mesh.rotation.set(
-        tf.rot[0] + Math.sin(t * 0.4 + i) * 0.08 * (1 - burst) + chaosSpin * t * (0.3 + i * 0.1),
-        tf.rot[1] + Math.cos(t * 0.35 + i * 1.7) * 0.1 * (1 - burst) + chaosSpin * t * 0.25,
-        tf.rot[2]
-      );
-      const pulse = 1 + Math.sin(t * 2.2 + i) * 0.015;
-      mesh.scale.setScalar(tf.scale * pulse);
-      materials[i].emissiveIntensity = 0.18 + burst * 0.5 + heroPhase * 0.12;
+    g.position.set(
+      tf.pos[0] + mouse.current.x * (0.18 + i * 0.05) * heroPhase,
+      tf.pos[1] + float + mouse.current.y * -(0.12 + i * 0.04) * heroPhase,
+      tf.pos[2]
+    );
+    // Die Original-Renderings zeigen mit der Spitze nach unten -> Pi-Versatz zu den
+    // (aufwaerts gedachten) Ankern. Kippwinkel klein halten, damit die gebackene
+    // 3D-Perspektive der echten Assets glaubwuerdig bleibt.
+    g.rotation.set(
+      (tf.rot[0] + Math.sin(t * 0.4 + i) * 0.08 * (1 - burst)) * 0.4 + chaosSpin * Math.sin(t * 0.5 + i) * 0.35,
+      (tf.rot[1] + Math.cos(t * 0.35 + i * 1.7) * 0.1 * (1 - burst)) * 0.4 + chaosSpin * Math.cos(t * 0.4 + i) * 0.3,
+      tf.rot[2] + Math.PI + chaosSpin * Math.sin(t * 0.3 + i * 2) * 0.5
+    );
+    const pulse = 1 + Math.sin(t * 2.2 + i) * 0.015;
+    g.scale.setScalar(tf.scale * pulse);
+    if (glowRef.current) {
+      (glowRef.current.material as THREE.SpriteMaterial).opacity =
+        0.26 * heroPhase + 0.16 + burst * 0.4;
     }
   });
 
   return (
+    <group ref={group}>
+      <sprite ref={glowRef} scale={[2.6, 2.6, 1]} position={[0, 0, -0.25]}>
+        <spriteMaterial
+          map={glowTex}
+          transparent
+          opacity={0.3}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </sprite>
+      <mesh>
+        <planeGeometry args={[ARROW_W, ARROW_H]} />
+        <meshBasicMaterial
+          map={tex ?? undefined}
+          color={tex ? "#ffffff" : ARROW_HEX[index]}
+          transparent
+          alphaTest={0.08}
+          side={THREE.DoubleSide}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+function Arrows({ progress, mouse }: { progress: ProgressRef; mouse: MouseRef }) {
+  return (
     <group>
       {ARROW_HEX.map((hex, i) => (
-        <mesh
-          key={hex}
-          ref={(m) => {
-            refs.current[i] = m;
-          }}
-          geometry={geometry}
-          material={materials[i]}
-        />
+        <ArrowObject key={hex} index={i} progress={progress} mouse={mouse} />
       ))}
     </group>
   );

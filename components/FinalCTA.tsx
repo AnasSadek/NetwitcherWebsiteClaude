@@ -1,6 +1,6 @@
 import { ButtonLink } from "./Button";
 import { Reveal } from "./Reveal";
-import { StarMark } from "./arrows";
+import { BrandStar } from "./brand/Logo";
 import { whatsappHref, defaultWhatsappText } from "@/lib/site";
 
 export function FinalCTA({
@@ -18,7 +18,7 @@ export function FinalCTA({
       />
       <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
         <Reveal>
-          <StarMark size={64} className="mx-auto mb-8 animate-float motion-reduce:animate-none" />
+          <BrandStar size={64} className="mx-auto mb-8 animate-float motion-reduce:animate-none" />
           <h2 id="final-cta" className="text-3xl font-extrabold tracking-tight md:text-5xl">
             {title}
           </h2>
