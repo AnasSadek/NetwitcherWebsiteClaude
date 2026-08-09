@@ -155,6 +155,8 @@ function StaticStory() {
 export function Story() {
   const reduce = useReducedMotion();
   const [webgl, setWebgl] = useState<boolean | null>(null);
+  // Render-Loop nur aktiv, wenn die Story im Viewport UND der Tab sichtbar ist.
+  const [active, setActive] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const mouseRef = useRef({ x: 0, y: 0 });
@@ -185,6 +187,28 @@ export function Story() {
     return () => window.removeEventListener("pointermove", onMove);
   }, []);
 
+  // Render-Loop pausieren, sobald die Story den Viewport verlässt
+  // (Besucher liest weiter unten) oder der Tab in den Hintergrund geht.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    let onScreen = true;
+    const sync = () => setActive(onScreen && !document.hidden);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        sync();
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
+
   if (reduce || webgl === false) {
     return <StaticStory />;
   }
@@ -192,7 +216,7 @@ export function Story() {
   return (
     <section ref={containerRef} className="relative" style={{ height: "700vh" }} aria-label="Von Aufmerksamkeit zu Conversion">
       <div className="sticky top-0 h-screen overflow-hidden">
-        {webgl && <StoryScene progress={progressRef} mouse={mouseRef} />}
+        {webgl && <StoryScene progress={progressRef} mouse={mouseRef} active={active} />}
 
         {/* Szene 1 · Attention – echtes Logo-Lockup */}
         <Overlay progress={scrollYProgress} range={[0, 0.13]}>

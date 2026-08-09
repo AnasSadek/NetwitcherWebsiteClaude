@@ -561,12 +561,17 @@ function CenterGlow({ progress }: { progress: ProgressRef }) {
 export default function StoryScene({
   progress,
   mouse,
+  active = true,
 }: {
   progress: ProgressRef;
   mouse: MouseRef;
+  /** false, sobald die Story aus dem Viewport gescrollt oder der Tab versteckt ist
+   *  → Render-Loop pausiert (spart GPU/Akku). */
+  active?: boolean;
 }) {
   return (
     <Canvas
+      frameloop={active ? "always" : "never"}
       dpr={[1, 1.75]}
       camera={{ fov: 42, position: [0, 0, 6.4] }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
