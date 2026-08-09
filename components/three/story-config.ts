@@ -18,7 +18,8 @@ export const SCENES = {
 /** Ankerzeitpunkte = Szenengrenzen (letzter bei 0.94, damit der Stern vor Scroll-Ende komplett ist). */
 export const ANCHORS = [0, 0.14, 0.28, 0.42, 0.58, 0.72, 0.86, 0.94] as const;
 
-export const ARROW_HEX = ["#2EE6C8", "#8B5CF6", "#F468A8", "#F5D33D", "#0FB9F2"] as const;
+// Offizielle Netwitcher-Markenfarben (Brand Guideline)
+export const ARROW_HEX = ["#2DE2CC", "#845DCE", "#F266B6", "#F7D739", "#03BEF7"] as const;
 
 export const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 

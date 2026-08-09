@@ -6,17 +6,21 @@ import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const orbitron = localFont({
-  src: "./fonts/orbitron-var.woff2",
-  variable: "--font-orbitron",
-  weight: "500 900",
+// Oxanium – umlautsicherer, squared-techno Display-Font, der die Form des
+// offiziellen EP-Boxi-Logofonts aufnimmt. (EP-Boxi selbst hat keine Umlaute
+// und lebt daher nur im SVG-Logo/Wordmark weiter.)
+const oxanium = localFont({
+  src: "./fonts/oxanium.woff2",
+  variable: "--font-oxanium",
+  weight: "400 800",
   display: "swap",
 });
 
-const grotesk = localFont({
-  src: "./fonts/space-grotesk-var.woff2",
-  variable: "--font-grotesk",
-  weight: "300 700",
+// Nunito Sans – lizenzfreier Ersatz für den Marken-Body-Font „Ballega".
+const nunito = localFont({
+  src: "./fonts/nunito-sans.woff2",
+  variable: "--font-nunito",
+  weight: "300 800",
   display: "swap",
 });
 
@@ -83,7 +87,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de" className={`${orbitron.variable} ${grotesk.variable}`}>
+    <html lang="de" className={`${oxanium.variable} ${nunito.variable}`}>
       <body>
         <script
           type="application/ld+json"

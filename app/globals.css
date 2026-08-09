@@ -6,21 +6,24 @@
   --color-night-700: #121226;
   --color-night-600: #1a1a33;
   --color-line: rgba(255, 255, 255, 0.08);
-  --color-mint: #2ee6c8;
-  --color-violet: #8b5cf6;
-  --color-pink: #f468a8;
-  --color-sun: #f5d33d;
-  --color-sky: #0fb9f2;
+  /* Offizielle Netwitcher-Markenfarben (aus dem Brand Guideline extrahiert) */
+  --color-mint: #2de2cc;
+  --color-violet: #845dce;
+  --color-pink: #f266b6;
+  --color-sun: #f7d739;
+  --color-sky: #03bef7;
   --color-snow: #f4f4fb;
   --color-mist: #a3a3c2;
   --color-whatsapp: #25d366;
 
-  --font-heading: var(--font-orbitron), "Orbitron", system-ui, sans-serif;
-  --font-body: var(--font-grotesk), "Space Grotesk", system-ui, sans-serif;
+  /* Heading: Oxanium (umlautsicher, echot EP-Boxi). Logo bleibt echtes EP-Boxi (SVG).
+     Body: Nunito Sans als lizenzfreier Ballega-Ersatz. */
+  --font-heading: var(--font-oxanium), "Oxanium", system-ui, sans-serif;
+  --font-body: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
 
-  --shadow-glow-violet: 0 0 40px rgba(139, 92, 246, 0.35);
-  --shadow-glow-mint: 0 0 40px rgba(46, 230, 200, 0.3);
-  --shadow-glow-pink: 0 0 40px rgba(244, 104, 168, 0.3);
+  --shadow-glow-violet: 0 0 40px rgba(132, 93, 206, 0.4);
+  --shadow-glow-mint: 0 0 40px rgba(45, 226, 204, 0.3);
+  --shadow-glow-pink: 0 0 40px rgba(242, 102, 182, 0.32);
 
   --animate-float: float 7s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;

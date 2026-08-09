@@ -6,11 +6,11 @@ import type { AccentColor } from "@/lib/services";
  */
 
 export const ARROW_COLORS: Record<AccentColor, string> = {
-  mint: "#2EE6C8",
-  violet: "#8B5CF6",
-  pink: "#F468A8",
-  sun: "#F5D33D",
-  sky: "#0FB9F2",
+  mint: "#2DE2CC",
+  violet: "#845DCE",
+  pink: "#F266B6",
+  sun: "#F7D739",
+  sky: "#03BEF7",
 };
 
 /** Reihenfolge im Stern (oben beginnend, im Uhrzeigersinn) wie im Original-Logo. */
