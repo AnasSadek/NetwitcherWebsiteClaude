@@ -13,14 +13,14 @@ export const metadata: Metadata = {
 export default function KontaktPage() {
   return (
     <>
-      <section className="aurora relative overflow-hidden pt-36 pb-14 md:pt-44">
+      <section className="relative overflow-hidden pt-36 pb-14 md:pt-44">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             align="left"
             eyebrow="Kontakt"
             title={
               <span className="text-4xl md:text-5xl">
-                Lass uns über <span className="text-gradient">dein Wachstum</span> reden
+                Lass uns über <span className="text-mint">dein Wachstum</span> reden
               </span>
             }
             intro="Erzähl uns kurz, was du vorhast – wir melden uns innerhalb eines Werktags mit einer ehrlichen Einschätzung. Kein Verkaufsdruck, keine Warteschleife."

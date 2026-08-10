@@ -35,7 +35,7 @@ const werte = [
 export default function UeberUnsPage() {
   return (
     <>
-      <section className="aurora relative overflow-hidden pt-36 pb-20 md:pt-44">
+      <section className="relative overflow-hidden pt-36 pb-20 md:pt-44">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="grid items-center gap-12 lg:grid-cols-[1.2fr_.8fr]">
             <Reveal>
@@ -44,7 +44,7 @@ export default function UeberUnsPage() {
               </p>
               <h1 className="text-3xl font-extrabold leading-tight tracking-tight md:text-5xl">
                 Wir sind das Studio, das{" "}
-                <span className="text-gradient">Content wie Vertrieb</span> denkt.
+                <span className="text-mint">Content wie Vertrieb</span> denkt.
               </h1>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-mist md:text-lg">
                 Netwitcher ist eine Digital Agency und ein Content-Studio aus Berlin.
@@ -56,13 +56,13 @@ export default function UeberUnsPage() {
               </p>
               <div className="mt-9 flex flex-wrap gap-4">
                 <ButtonLink href="/kontakt#termin">Lern uns kennen – kostenloses Erstgespräch</ButtonLink>
-                <ButtonLink href="/studio" variant="secondary">Unser Studio in Berlin</ButtonLink>
+                <ButtonLink href="/studio" variant="ghost">Unser Studio in Berlin</ButtonLink>
               </div>
             </Reveal>
             <Reveal delay={0.15}>
               <div className="relative mx-auto flex h-72 w-72 items-center justify-center">
                 <div aria-hidden="true" className="absolute inset-0 rounded-full bg-violet/15 blur-3xl" />
-                <BrandStar size={220} className="animate-float motion-reduce:animate-none" />
+                <BrandStar size={220} className="" />
               </div>
             </Reveal>
           </div>
@@ -76,7 +76,7 @@ export default function UeberUnsPage() {
             eyebrow="Fünf Pfeile, ein Team"
             title={
               <>
-                Warum unser Logo ein <span className="text-gradient">Stern aus Pfeilen</span> ist
+                Warum unser Logo ein <span className="text-mint">Stern aus Pfeilen</span> ist
               </>
             }
             intro="Jeder Pfeil steht für eine Disziplin – Webdesign, Strategie, Content, Fotografie, Social Media. Einzeln sind sie Werkzeuge. Zusammengesetzt ergeben sie den Stern: Marketing, das aus einem Guss funktioniert. Genau so arbeiten wir."
@@ -107,7 +107,7 @@ export default function UeberUnsPage() {
             {werte.map((wert, i) => (
               <Reveal key={wert.title} delay={(i % 2) * 0.08}>
                 <div className="h-full rounded-2xl border border-line bg-night-700/60 p-8 backdrop-blur">
-                  <span className="font-heading text-2xl font-extrabold text-gradient">
+                  <span className="font-heading text-2xl font-extrabold text-mint">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-3 font-heading text-lg font-bold">{wert.title}</h3>
@@ -137,7 +137,7 @@ export default function UeberUnsPage() {
               E-Commerce-Marke.
             </p>
             <div className="mt-9">
-              <ButtonLink href="/studio" variant="warm">Studio entdecken</ButtonLink>
+              <ButtonLink href="/studio" variant="studio">Studio entdecken</ButtonLink>
             </div>
           </Reveal>
         </div>

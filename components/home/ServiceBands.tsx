@@ -70,7 +70,7 @@ function BandRow({ band, index }: { band: Band; index: number }) {
           </p>
           <h3 className="mt-3 flex items-baseline gap-4">
             <span
-              className="font-heading text-6xl font-black leading-none tracking-tight md:text-8xl"
+              className="font-heading text-5xl font-black leading-none tracking-tight break-words sm:text-6xl lg:text-8xl"
               style={{ color: hex }}
             >
               {band.title}

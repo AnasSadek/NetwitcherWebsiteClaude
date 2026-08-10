@@ -92,7 +92,7 @@ export function Footer() {
             </ul>
             <Link
               href="/kontakt#termin"
-              className="mt-6 inline-flex rounded-full bg-gradient-to-r from-pink to-sun px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-night transition-transform hover:-translate-y-0.5"
+              className="mt-6 inline-flex rounded bg-sun px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-night transition-colors hover:brightness-110"
             >
               Termin buchen
             </Link>

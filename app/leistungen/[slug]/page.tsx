@@ -105,7 +105,7 @@ export default async function ServicePage({
                   <ButtonLink href={`/kontakt?service=${encodeURIComponent(service.navTitle)}`}>
                     {service.cta}
                   </ButtonLink>
-                  <ButtonLink href="/kontakt#termin" variant="secondary">
+                  <ButtonLink href="/kontakt#termin" variant="ghost">
                     Kostenloses Erstgespräch
                   </ButtonLink>
                 </div>

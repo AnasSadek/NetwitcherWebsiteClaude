@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { ButtonLink } from "@/components/Button";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { Media } from "@/components/ui/Media";
 import { media } from "@/lib/media";
 import { getService } from "@/lib/services";
 
@@ -52,10 +52,10 @@ export default function StudioPage() {
                 {studio.hero.intro}
               </p>
               <div className="mt-9 flex flex-wrap gap-4">
-                <ButtonLink href="/kontakt?service=Fotoshooting" variant="warm">
+                <ButtonLink href="/kontakt?service=Fotoshooting" variant="studio">
                   Studio-Shooting anfragen
                 </ButtonLink>
-                <ButtonLink href="/kontakt#termin" variant="secondary">
+                <ButtonLink href="/kontakt#termin" variant="ghost">
                   Kostenloses Erstgespräch
                 </ButtonLink>
               </div>
@@ -66,11 +66,8 @@ export default function StudioPage() {
                   aria-hidden="true"
                   className="absolute -inset-3 rounded-3xl bg-gradient-to-tr from-pink/40 via-violet/25 to-sun/40 opacity-60 blur-xl"
                 />
-                <Image
-                  src={media.studio.src}
-                  alt={media.studio.alt}
-                  width={media.studio.width}
-                  height={media.studio.height}
+                <Media
+                  asset={media.studio}
                   className="relative rounded-3xl border border-line object-cover"
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   priority
@@ -89,7 +86,7 @@ export default function StudioPage() {
             eyebrowColor="text-pink"
             title={
               <>
-                Ein Ort. <span className="text-gradient-warm">Alle Formate.</span>
+                Ein Ort. <span className="text-sun">Alle Formate.</span>
               </>
             }
             intro="Vom Produktbild bis zum Kampagnenvideo: Wir produzieren dort, wo Licht, Technik und Team schon bereitstehen – das macht uns schnell und die Qualität konstant."
@@ -116,14 +113,7 @@ export default function StudioPage() {
           <div className="grid items-stretch gap-6 lg:grid-cols-[.9fr_1.1fr]">
             <Reveal>
               <figure className="relative h-full overflow-hidden rounded-3xl border border-line">
-                <Image
-                  src={media.product.src}
-                  alt={media.product.alt}
-                  width={media.product.width}
-                  height={media.product.height}
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                />
+                <Media asset={media.product} className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
                 <figcaption className="absolute bottom-4 left-4 rounded-full border border-line bg-night/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-mint backdrop-blur">
                   Produktfotografie
                 </figcaption>
@@ -132,14 +122,7 @@ export default function StudioPage() {
             <div className="flex flex-col gap-6">
               <Reveal delay={0.1}>
                 <figure className="relative overflow-hidden rounded-3xl border border-line">
-                  <Image
-                    src={media.reels.src}
-                    alt={media.reels.alt}
-                    width={media.reels.width}
-                    height={media.reels.height}
-                    className="w-full object-cover transition-transform duration-700 hover:scale-105"
-                    sizes="(min-width: 1024px) 55vw, 100vw"
-                  />
+                  <Media asset={media.reels} className="w-full object-cover transition-transform duration-700 hover:scale-105" />
                   <figcaption className="absolute bottom-4 left-4 rounded-full border border-line bg-night/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-sky backdrop-blur">
                     Reels & Video-Produktion
                   </figcaption>
@@ -157,7 +140,7 @@ export default function StudioPage() {
                     Content im Postfach.
                   </p>
                   <div className="mt-6">
-                    <ButtonLink href="/kontakt?service=Fotoshooting" variant="warm">
+                    <ButtonLink href="/kontakt?service=Fotoshooting" variant="studio">
                       Studio-Shooting anfragen
                     </ButtonLink>
                   </div>

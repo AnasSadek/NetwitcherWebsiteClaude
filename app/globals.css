@@ -89,20 +89,6 @@ h3,
     radial-gradient(500px 300px at 50% 100%, rgba(244, 104, 168, 0.08), transparent 70%);
 }
 
-.text-gradient {
-  background: linear-gradient(100deg, var(--color-violet), var(--color-sky) 55%, var(--color-mint));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.text-gradient-warm {
-  background: linear-gradient(100deg, var(--color-pink), var(--color-sun));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 /* Fokus sichtbar & markenkonform */
 :focus-visible {
   outline: 2px solid var(--color-mint);

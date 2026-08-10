@@ -21,14 +21,14 @@ const dateFmt = new Intl.DateTimeFormat("de-DE", {
 export default function BlogPage() {
   return (
     <>
-      <section className="aurora relative overflow-hidden pt-36 pb-16 md:pt-44">
+      <section className="relative overflow-hidden pt-36 pb-16 md:pt-44">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             align="left"
             eyebrow="Blog"
             title={
               <span className="text-4xl md:text-5xl">
-                Praxiswissen statt <span className="text-gradient">Marketing-Blabla</span>
+                Praxiswissen statt <span className="text-mint">Marketing-Blabla</span>
               </span>
             }
             intro="Was wir im Studio und in Kampagnen jeden Tag lernen, schreiben wir hier auf – konkret, anwendbar und ohne Verkaufsdruck."

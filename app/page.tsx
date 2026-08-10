@@ -1,27 +1,44 @@
 import type { Metadata } from "next";
-import { FinalCTA } from "@/components/FinalCTA";
+import { Hero } from "@/components/home/Hero";
+import { Studio } from "@/components/home/Studio";
+import { Formats } from "@/components/home/Formats";
+import { Launch } from "@/components/home/Launch";
 import { ServiceBands } from "@/components/home/ServiceBands";
-import { Story } from "@/components/story/Story";
+import { Conversion } from "@/components/home/Conversion";
 
 export const metadata: Metadata = {
-  title: "Content Creation & Digital Marketing Agentur Berlin – Netwitcher",
+  title: "Content Studio & Digital Agency Berlin – Netwitcher",
   description:
-    "Content. Kampagnen. Conversion. Netwitcher ist die visuelle Digital Agency mit eigenem Content-Studio in Berlin: Produktfotografie, Reels, Video, Social Media, Ads und Webdesign.",
+    "Netwitcher produziert Produktfotografie, Reels, Werbevideos und Social Content im eigenen Studio in Berlin – und bringt sie über Social Ads, Google Ads und Websites bis zur Anfrage.",
 };
 
+/**
+ * Startseite — „Directed Momentum".
+ *
+ * Kapitelfolge: CAPTURE → CRAFT → LAUNCH → CONVERT.
+ * Redaktionell komponiert, fotografiegeführt; Bewegung nur dort, wo sie
+ * etwas erzählt (Hero-Reveal, Format-Reframing, Marken-Zusammenlauf).
+ */
 export default function HomePage() {
   return (
     <>
-      {/* Cinematische Scroll-Story: From Attention to Conversion */}
-      <Story />
+      {/* 01 · Das Studio arbeitet bereits */}
+      <Hero />
 
-      {/* Editoriale Leistungsübersicht: MACHEN / BEWEGEN / BAUEN */}
+      {/* 02 · Content Studio Berlin — Produktion */}
+      <Studio />
+
+      {/* 03 · Ein Shooting, viele Formate */}
+      <Formats />
+
+      {/* 04 + 05 · Distribution → digitales Ziel */}
+      <Launch />
+
+      {/* 06 · Der Rest des Systems */}
       <ServiceBands />
 
-      <FinalCTA
-        title="Bereit für den nächsten Schritt?"
-        text="Erzähl uns kurz, was du vorhast – wir zeigen dir den direktesten Weg von Aufmerksamkeit zu Anfragen."
-      />
+      {/* 07 · Conversion */}
+      <Conversion />
     </>
   );
 }

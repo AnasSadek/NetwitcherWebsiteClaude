@@ -13,14 +13,14 @@ export const metadata: Metadata = {
 export default function ProjektePage() {
   return (
     <>
-      <section className="aurora relative overflow-hidden pt-36 pb-16 md:pt-44">
+      <section className="relative overflow-hidden pt-36 pb-16 md:pt-44">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             align="left"
             eyebrow="Projekte & Case Studies"
             title={
               <span className="text-4xl md:text-5xl">
-                Arbeit, die man <span className="text-gradient">messen kann</span>
+                Arbeit, die man <span className="text-mint">messen kann</span>
               </span>
             }
             intro="Sechs Branchen, sechs typische Ausgangslagen, sechs Wege zum Ergebnis. Die Cases zeigen, wie wir denken und arbeiten – konkrete Kundennamen und Kennzahlen ergänzen wir nach Freigabe unserer Kunden."

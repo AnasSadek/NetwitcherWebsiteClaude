@@ -70,7 +70,7 @@ export function Header() {
                   href={item.href}
                   aria-expanded={servicesOpen}
                   onFocus={() => setServicesOpen(true)}
-                  className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded px-3.5 py-2.5 text-sm font-medium transition-colors ${
                     pathname.startsWith("/leistungen")
                       ? "text-snow"
                       : "text-mist hover:text-snow"
@@ -112,7 +112,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                className={`rounded px-3.5 py-2.5 text-sm font-medium transition-colors ${
                   pathname === item.href ? "text-snow" : "text-mist hover:text-snow"
                 }`}
               >
@@ -125,16 +125,16 @@ export function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/kontakt"
-            className="hidden rounded-full bg-gradient-to-r from-violet to-sky px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-night shadow-glow-violet transition-all duration-200 hover:-translate-y-0.5 sm:inline-flex"
+            className="hidden rounded bg-snow px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-night transition-colors duration-200 hover:bg-white sm:inline-flex"
           >
-            Kostenloses Erstgespräch
+            Projekt anfragen
           </Link>
           <button
             type="button"
             onClick={() => setMobileOpen((o) => !o)}
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-full border border-line lg:hidden"
+            className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded border border-line lg:hidden"
           >
             <span
               className={`h-0.5 w-5 bg-snow transition-transform ${
@@ -172,9 +172,9 @@ export function Header() {
               ))}
               <Link
                 href="/kontakt"
-                className="mt-3 block rounded-full bg-gradient-to-r from-violet to-sky px-5 py-3 text-center font-heading text-sm font-bold text-night"
+                className="mt-3 block rounded bg-snow px-5 py-3 text-center font-heading text-sm font-bold text-night"
               >
-                Kostenloses Erstgespräch
+                Projekt anfragen
               </Link>
             </div>
           </motion.nav>

@@ -1,38 +1,48 @@
+import Link from "next/link";
 import { ButtonLink } from "./Button";
 import { Reveal } from "./Reveal";
 import { BrandStar } from "./brand/Logo";
-import { whatsappHref, defaultWhatsappText } from "@/lib/site";
+import { whatsappHref } from "@/lib/site";
 
+/**
+ * Abschluss-CTA für die Unterseiten (die Startseite nutzt <Conversion/>).
+ * Ruhig gesetzt: eine primäre Aktion, Rest als Textlinks. Kein Blur-Blob,
+ * kein schwebendes Logo, keine drei gleichwertigen Pillen.
+ */
 export function FinalCTA({
-  title = "Bereit für Content, der verkauft?",
-  text = "Erzähl uns kurz, was du vorhast – wir zeigen dir, welche Inhalte, Kampagnen und digitalen Schritte für dein Wachstum am meisten Sinn machen. Kostenlos, ehrlich und ohne Agentur-Sprech.",
+  title = "Was willst du als Nächstes produzieren?",
+  text = "Erzähl uns kurz, was ansteht – wir sagen dir ehrlich, was sich lohnt und was nicht.",
 }: {
   title?: string;
   text?: string;
 }) {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32" aria-labelledby="final-cta">
-      <div
-        aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet/15 blur-3xl"
-      />
-      <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
+    <section className="border-t border-line py-24 md:py-32" aria-labelledby="final-cta">
+      <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
         <Reveal>
-          <BrandStar size={64} className="mx-auto mb-8 animate-float motion-reduce:animate-none" />
-          <h2 id="final-cta" className="text-3xl font-extrabold tracking-tight md:text-5xl">
+          <BrandStar size={56} className="mx-auto mb-8" />
+          <h2 id="final-cta" className="font-heading text-3xl font-black tracking-tight md:text-4xl">
             {title}
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-mist md:text-lg">
-            {text}
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <ButtonLink href="/kontakt#termin">Kostenloses Erstgespräch buchen</ButtonLink>
-            <ButtonLink href={whatsappHref(defaultWhatsappText)} variant="whatsapp" external>
-              WhatsApp schreiben
-            </ButtonLink>
-            <ButtonLink href="/kontakt?service=Fotoshooting" variant="secondary">
-              Studio-Shooting anfragen
-            </ButtonLink>
+          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-mist">{text}</p>
+          <div className="mt-9 flex flex-col items-center gap-5">
+            <ButtonLink href="/kontakt">Erstgespräch buchen</ButtonLink>
+            <p className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-mist">
+              <Link
+                href="/kontakt?service=Fotoshooting"
+                className="underline-offset-4 transition-colors hover:text-snow hover:underline"
+              >
+                Studio anfragen
+              </Link>
+              <a
+                href={whatsappHref()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-offset-4 transition-colors hover:text-snow hover:underline"
+              >
+                WhatsApp schreiben
+              </a>
+            </p>
           </div>
         </Reveal>
       </div>

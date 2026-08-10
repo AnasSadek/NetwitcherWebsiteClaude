@@ -23,7 +23,7 @@ const features = [
 export default function FekraHubPage() {
   return (
     <>
-      <section className="aurora relative overflow-hidden pt-36 pb-20 md:pt-44">
+      <section className="relative overflow-hidden pt-36 pb-20 md:pt-44">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="max-w-3xl">
             <Reveal>
@@ -32,7 +32,7 @@ export default function FekraHubPage() {
               </p>
               <h1 className="text-3xl font-extrabold leading-tight tracking-tight md:text-5xl">
                 FekraHub: Schulverwaltung,{" "}
-                <span className="text-gradient">die sich selbst erklärt</span>
+                <span className="text-mint">die sich selbst erklärt</span>
               </h1>
               <p className="mt-6 text-base leading-relaxed text-mist md:text-lg">
                 FekraHub ist unsere selbst entwickelte Plattform für Schulen und
@@ -42,7 +42,7 @@ export default function FekraHubPage() {
               </p>
               <div className="mt-9 flex flex-wrap gap-4">
                 <ButtonLink href="/kontakt?service=Software">Demo anfragen</ButtonLink>
-                <ButtonLink href="/leistungen/softwareentwicklung" variant="secondary">
+                <ButtonLink href="/leistungen/softwareentwicklung" variant="ghost">
                   Eigene Lösung entwickeln lassen
                 </ButtonLink>
               </div>
