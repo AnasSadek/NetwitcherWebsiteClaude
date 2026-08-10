@@ -9,13 +9,11 @@ import { leistungenServices } from "@/lib/services";
 import { ARROW_PATH } from "./arrows";
 
 const navItems = [
-  { href: "/", label: "Startseite" },
   { href: "/leistungen", label: "Leistungen", dropdown: true },
   { href: "/studio", label: "Studio" },
   { href: "/projekte", label: "Projekte" },
   { href: "/ueber-uns", label: "Über uns" },
   { href: "/blog", label: "Blog" },
-  { href: "/kontakt", label: "Kontakt" },
 ];
 
 export function Header() {
@@ -143,7 +141,7 @@ export function Header() {
             href="/kontakt"
             className="hidden rounded bg-snow px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-night transition-colors duration-200 hover:bg-white sm:inline-flex"
           >
-            Projekt anfragen
+            Projekt starten
           </Link>
           <button
             type="button"
@@ -190,7 +188,7 @@ export function Header() {
                 href="/kontakt"
                 className="mt-3 block rounded bg-snow px-5 py-3 text-center font-heading text-sm font-bold text-night"
               >
-                Projekt anfragen
+                Projekt starten
               </Link>
             </div>
           </motion.nav>

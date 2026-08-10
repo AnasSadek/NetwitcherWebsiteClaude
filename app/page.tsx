@@ -1,44 +1,26 @@
 import type { Metadata } from "next";
-import { Hero } from "@/components/home/Hero";
-import { Studio } from "@/components/home/Studio";
-import { Formats } from "@/components/home/Formats";
-import { Launch } from "@/components/home/Launch";
+import { Film } from "@/components/film/Film";
 import { ServiceBands } from "@/components/home/ServiceBands";
-import { Conversion } from "@/components/home/Conversion";
 
 export const metadata: Metadata = {
   title: "Content Studio & Digital Agency Berlin, Netwitcher",
   description:
-    "Netwitcher produziert Produktfotografie, Reels, Werbevideos und Social Content im eigenen Studio in Berlin und bringt sie über Social Ads, Google Ads und Websites bis zur Anfrage.",
+    "Netwitcher produziert Foto, Video, Reels und Social Content im eigenen Studio in Berlin und bringt ihn über Social Media, Meta Ads, TikTok Ads und Google Ads zu den richtigen Menschen.",
 };
 
 /**
- * Startseite — „Directed Momentum".
+ * Startseite — „From Nothing to Attention".
  *
- * Kapitelfolge: CAPTURE → CRAFT → LAUNCH → CONVERT.
- * Redaktionell komponiert, fotografiegeführt; Bewegung nur dort, wo sie
- * etwas erzählt (Hero-Reveal, Format-Reframing, Marken-Zusammenlauf).
+ * Ein durchgehender Scroll-Film erzählt die Transformation:
+ * Nichts → Aufmerksamkeit → Content → Distribution → Ziel → Handlung → Stern.
+ * Text verkauft die Leistungen, Motion erzählt die Geschichte.
+ * Danach: die Leistungsübersicht als echtes, scanbares DOM.
  */
 export default function HomePage() {
   return (
     <>
-      {/* 01 · Das Studio arbeitet bereits */}
-      <Hero />
-
-      {/* 02 · Content Studio Berlin, Produktion */}
-      <Studio />
-
-      {/* 03 · Ein Shooting, viele Formate */}
-      <Formats />
-
-      {/* 04 + 05 · Distribution → digitales Ziel */}
-      <Launch />
-
-      {/* 06 · Der Rest des Systems */}
+      <Film />
       <ServiceBands />
-
-      {/* 07 · Conversion */}
-      <Conversion />
     </>
   );
 }

@@ -6,9 +6,18 @@ import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-// Oxanium – umlautsicherer, squared-techno Display-Font, der die Form des
-// offiziellen EP-Boxi-Logofonts aufnimmt. (EP-Boxi selbst hat keine Umlaute
-// und lebt daher nur im SVG-Logo/Wordmark weiter.)
+// EP Boxi Bold – der offizielle Netwitcher-Display-Font, für Deutsch
+// nachgerüstet: Ä/Ö/Ü wurden aus den Original-Outlines + quadratischen
+// Punkten (Geometrie des Punkt-Glyphs) komponiert. Nur Versalien.
+const epboxi = localFont({
+  src: "./fonts/epboxi-display.woff2",
+  variable: "--font-epboxi",
+  weight: "700",
+  display: "swap",
+});
+
+// Oxanium – umlautsicherer Zweit-Display-Font für gemischt gesetzte
+// Überschriften der Unterseiten (EP-Boxi ist reine Versalschrift).
 const oxanium = localFont({
   src: "./fonts/oxanium.woff2",
   variable: "--font-oxanium",
@@ -87,7 +96,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de" className={`${oxanium.variable} ${nunito.variable}`}>
+    <html lang="de" className={`${epboxi.variable} ${oxanium.variable} ${nunito.variable}`}>
       <body>
         <script
           type="application/ld+json"

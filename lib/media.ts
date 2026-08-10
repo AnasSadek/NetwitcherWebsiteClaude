@@ -56,10 +56,3 @@ export const media = {
   },
 } as const satisfies Record<string, ImageAsset>;
 
-/** Studio-Loop fürs Hero-Kapitel (lazy, pausiert offscreen). */
-export const heroVideo = {
-  mp4: "/media/studio-loop.mp4",
-  poster: "/media/studio-loop-poster.avif",
-  width: 1280,
-  height: 720,
-} as const;

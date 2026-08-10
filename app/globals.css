@@ -16,8 +16,11 @@
   --color-mist: #a3a3c2;
   --color-whatsapp: #25d366;
 
-  /* Heading: Oxanium (umlautsicher, echot EP-Boxi). Logo bleibt echtes EP-Boxi (SVG).
-     Body: Nunito Sans als lizenzfreier Ballega-Ersatz. */
+  /* Display: echtes EP Boxi Bold (mit nachgerüsteten Umlauten) für große
+     Versal-Statements. Heading: Oxanium für gemischt gesetzte Überschriften.
+     Body: Nunito Sans als dokumentierter Ersatz für den fehlenden
+     Marken-Body-Font „Ballega" (Datei liegt nicht vor). */
+  --font-boxi: var(--font-epboxi), var(--font-oxanium), system-ui, sans-serif;
   --font-heading: var(--font-oxanium), "Oxanium", system-ui, sans-serif;
   --font-body: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
 
@@ -35,22 +38,25 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* In @layer base, damit Utility-Klassen (z. B. font-boxi) sie überstimmen können. */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  background-color: var(--color-night);
-  color: var(--color-snow);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-}
+  body {
+    background-color: var(--color-night);
+    color: var(--color-snow);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
 
-h1,
-h2,
-h3,
-.font-heading {
-  font-family: var(--font-heading);
+  h1,
+  h2,
+  h3,
+  .font-heading {
+    font-family: var(--font-heading);
+  }
 }
 
 ::selection {
