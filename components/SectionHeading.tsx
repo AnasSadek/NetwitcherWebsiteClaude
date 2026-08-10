@@ -6,12 +6,15 @@ export function SectionHeading({
   intro,
   align = "center",
   eyebrowColor = "text-mint",
+  as: Tag = "h2",
 }: {
   eyebrow?: string;
   title: React.ReactNode;
   intro?: string;
   align?: "center" | "left";
   eyebrowColor?: string;
+  /** Seitentitel bekommen "h1", Abschnittstitel bleiben "h2". */
+  as?: "h1" | "h2";
 }) {
   const alignCls = align === "center" ? "text-center mx-auto" : "text-left";
   return (
@@ -24,9 +27,9 @@ export function SectionHeading({
             {eyebrow}
           </p>
         )}
-        <h2 className="text-3xl font-extrabold leading-tight tracking-tight md:text-4xl lg:text-[2.75rem]">
+        <Tag className="text-3xl font-extrabold leading-tight tracking-tight md:text-4xl lg:text-[2.75rem]">
           {title}
-        </h2>
+        </Tag>
         {intro && (
           <p className="mt-5 text-base leading-relaxed text-mist md:text-lg">
             {intro}

@@ -5,9 +5,9 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { cases } from "@/lib/cases";
 
 export const metadata: Metadata = {
-  title: "Projekte & Case Studies – Content, Websites & Kampagnen",
+  title: "Projekte & Case Studies, Content, Websites & Kampagnen",
   description:
-    "So arbeitet Netwitcher: Case Studies aus Food, Beauty, E-Commerce, Handwerk und B2B – Herausforderung, Lösung und Ergebnis pro Projekt. Aus Berlin, für ganz Deutschland.",
+    "So arbeitet Netwitcher: Case Studies aus Food, Beauty, E-Commerce, Handwerk und B2B: Herausforderung, Lösung und Ergebnis pro Projekt. Aus Berlin, für ganz Deutschland.",
 };
 
 export default function ProjektePage() {
@@ -16,6 +16,7 @@ export default function ProjektePage() {
       <section className="relative overflow-hidden pt-36 pb-16 md:pt-44">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
+            as="h1"
             align="left"
             eyebrow="Projekte & Case Studies"
             title={
@@ -23,7 +24,7 @@ export default function ProjektePage() {
                 Arbeit, die man <span className="text-mint">messen kann</span>
               </span>
             }
-            intro="Sechs Branchen, sechs typische Ausgangslagen, sechs Wege zum Ergebnis. Die Cases zeigen, wie wir denken und arbeiten – konkrete Kundennamen und Kennzahlen ergänzen wir nach Freigabe unserer Kunden."
+            intro="Sechs Branchen, sechs typische Ausgangslagen, sechs Wege zum Ergebnis. Die Cases zeigen, wie wir denken und arbeiten. Konkrete Kundennamen und Kennzahlen ergänzen wir nach Freigabe unserer Kunden."
           />
         </div>
       </section>
@@ -38,7 +39,7 @@ export default function ProjektePage() {
       </section>
       <FinalCTA
         title="Dein Projekt könnte das nächste sein."
-        text="Egal ob Restaurant, Shop, Handwerk oder B2B: Erzähl uns deine Ausgangslage – wir zeigen dir, wie wir sie angehen würden. Kostenlos und unverbindlich."
+        text="Egal ob Restaurant, Shop, Handwerk oder B2B: Erzähl uns deine Ausgangslage. Wir zeigen dir, wie wir sie angehen würden. Kostenlos und unverbindlich."
       />
     </>
   );

@@ -93,12 +93,12 @@ export default async function BlogPostPage({
             ))}
           </div>
           <Reveal>
-            <div className="mt-14 rounded-2xl border border-line bg-night-700/60 p-8 text-center backdrop-blur">
+            <div className="mt-14 rounded border border-line bg-night-700/60 p-8 text-center backdrop-blur">
               <h2 className="font-heading text-lg font-bold">
                 Diese Themen für dein Unternehmen umsetzen?
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-mist">
-                Im kostenlosen Erstgespräch übertragen wir das auf deine Marke – konkret und ohne Verpflichtung.
+                Im kostenlosen Erstgespräch übertragen wir das auf deine Marke: konkret und ohne Verpflichtung.
               </p>
               <div className="mt-6">
                 <ButtonLink href="/kontakt#termin">Kostenloses Erstgespräch buchen</ButtonLink>

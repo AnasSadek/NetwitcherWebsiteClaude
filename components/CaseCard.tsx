@@ -7,7 +7,7 @@ export function CaseCard({ item, delay = 0 }: { item: CaseStudy; delay?: number 
   const accent = ARROW_COLORS[item.color];
   return (
     <Reveal as="article" delay={delay} className="h-full">
-      <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-night-700/60 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
+      <div className="group flex h-full flex-col overflow-hidden rounded border border-line bg-night-700/60 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
         <div
           className="relative flex h-36 items-end overflow-hidden p-6"
           style={{
@@ -24,7 +24,7 @@ export function CaseCard({ item, delay = 0 }: { item: CaseStudy; delay?: number 
             <path d={ARROW_PATH} fill={accent} />
           </svg>
           <p
-            className="font-heading text-xs font-bold uppercase tracking-[0.2em]"
+            className="font-heading text-xs font-bold tracking-wide"
             style={{ color: accent }}
           >
             {item.category}
@@ -48,7 +48,7 @@ export function CaseCard({ item, delay = 0 }: { item: CaseStudy; delay?: number 
           </div>
           <ul className="mt-auto flex flex-wrap gap-1.5 pt-2">
             {item.services.map((s) => (
-              <li key={s} className="rounded-full border border-line px-2.5 py-1 text-[11px] text-mist">
+              <li key={s} className="rounded border border-line px-2.5 py-1 text-[11px] text-mist">
                 {s}
               </li>
             ))}
@@ -59,7 +59,9 @@ export function CaseCard({ item, delay = 0 }: { item: CaseStudy; delay?: number 
             style={{ color: accent }}
           >
             Ähnliches Projekt starten
-            <span aria-hidden="true" className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
+            <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform duration-200 group-hover/link:translate-x-1">
+            <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
+          </svg>
           </Link>
         </div>
       </div>

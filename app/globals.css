@@ -21,23 +21,8 @@
   --font-heading: var(--font-oxanium), "Oxanium", system-ui, sans-serif;
   --font-body: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
 
-  --shadow-glow-violet: 0 0 40px rgba(132, 93, 206, 0.4);
-  --shadow-glow-mint: 0 0 40px rgba(45, 226, 204, 0.3);
-  --shadow-glow-pink: 0 0 40px rgba(242, 102, 182, 0.32);
-
-  --animate-float: float 7s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-  --animate-marquee: marquee 30s linear infinite;
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-14px) rotate(3deg);
-    }
-  }
   @keyframes pulse-ring {
     0% {
       transform: scale(1);
@@ -46,14 +31,6 @@
     100% {
       transform: scale(1.7);
       opacity: 0;
-    }
-  }
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
     }
   }
 }
@@ -79,14 +56,6 @@ h3,
 ::selection {
   background: var(--color-violet);
   color: var(--color-snow);
-}
-
-/* Aurora-Hintergrund für Sektionen */
-.aurora {
-  background:
-    radial-gradient(600px 300px at 15% 0%, rgba(139, 92, 246, 0.14), transparent 70%),
-    radial-gradient(500px 280px at 85% 20%, rgba(15, 185, 242, 0.1), transparent 70%),
-    radial-gradient(500px 300px at 50% 100%, rgba(244, 104, 168, 0.08), transparent 70%);
 }
 
 /* Fokus sichtbar & markenkonform */

@@ -60,7 +60,7 @@ export function Hero() {
   }, [reduce]);
 
   return (
-    <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
+    <section className="relative overflow-hidden pt-24 pb-16 md:pt-28 md:pb-24">
       <div className="mx-auto grid max-w-[1600px] items-center gap-10 px-5 sm:px-8 lg:grid-cols-[minmax(0,46%)_minmax(0,54%)] lg:gap-6 lg:pl-[6vw] lg:pr-0">
         {/* Typo-Spalte */}
         <div className="relative z-10 max-w-xl">
@@ -69,11 +69,10 @@ export function Hero() {
           </p>
 
           <h1 className="mt-6 font-heading text-[2.6rem] font-black leading-[0.98] tracking-tight sm:text-6xl xl:text-[4.4rem]">
-            Wir produzieren Content —
+            Content, der
             <br />
-            und bringen ihn bis zur{" "}
             <span className="relative inline-block">
-              Anfrage.
+              Anfragen bringt.
               <span
                 aria-hidden="true"
                 className="absolute -bottom-1 left-0 h-[3px] bg-sun transition-[width] duration-[900ms] ease-out"
@@ -83,8 +82,8 @@ export function Hero() {
           </h1>
 
           <p className="mt-7 max-w-md text-lg leading-relaxed text-mist">
-            Produktfotografie, Reels, Werbevideos, Social Ads und Websites —
-            aus einem Team in Berlin.
+            Produktfotografie, Reels, Werbevideos, Social Ads und Websites.
+            Aus einem Team in Berlin.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -98,7 +97,7 @@ export function Hero() {
         {/* Produktions-Frame: bricht rechts aus dem Raster */}
         <div ref={frameRef} className="relative lg:-mr-[4vw]">
           <figure className="relative aspect-[4/3] overflow-hidden bg-night-800 sm:aspect-[16/10]">
-            {/* Basis: Studio-Still (immer da – trägt das Design auch ohne Video) */}
+            {/* Basis: Studio-Still (immer da, trägt das Design auch ohne Video) */}
             <Media
               asset={media.studio}
               priority
@@ -164,17 +163,8 @@ export function Hero() {
             <span aria-hidden="true" className="absolute left-4 top-4 h-5 w-5 border-l border-t border-white/35" />
             <span aria-hidden="true" className="absolute bottom-4 right-4 h-5 w-5 border-b border-r border-white/35" />
 
-            <figcaption className="absolute bottom-4 left-4 font-heading text-[10px] font-bold uppercase tracking-[0.22em] text-snow/70">
-              Studio Berlin · Produktion
-            </figcaption>
           </figure>
 
-          {/* Leistungs-Marker statt Trust-Chips-Pillen */}
-          <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2 pl-1 font-heading text-[11px] font-bold uppercase tracking-[0.18em] text-mist">
-            {["Produktfotografie", "Reels", "Werbevideo", "Social Ads", "Webdesign"].map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ul>
         </div>
       </div>
     </section>

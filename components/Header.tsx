@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BrandStar, BrandWordmark } from "./brand/Logo";
 import { leistungenServices } from "@/lib/services";
+import { ARROW_PATH } from "./arrows";
 
 const navItems = [
   { href: "/", label: "Startseite" },
@@ -24,11 +25,21 @@ export function Header() {
   const pathname = usePathname();
   const reduce = useReducedMotion();
 
+  // Sentinel statt Scroll-Listener: der Beobachter feuert nur beim Übertritt,
+  // nicht bei jedem Scroll-Frame.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const sentinel = document.createElement("div");
+    sentinel.style.cssText = "position:absolute;top:24px;height:1px;width:1px;";
+    document.body.prepend(sentinel);
+    const io = new IntersectionObserver(
+      ([e]) => setScrolled(!e.isIntersecting),
+      { threshold: 0 }
+    );
+    io.observe(sentinel);
+    return () => {
+      io.disconnect();
+      sentinel.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -48,7 +59,7 @@ export function Header() {
         <Link
           href="/"
           className="group flex items-center gap-2.5"
-          aria-label="Netwitcher – Startseite"
+          aria-label="Netwitcher, Startseite"
         >
           <BrandStar
             size={38}
@@ -76,7 +87,12 @@ export function Header() {
                       : "text-mist hover:text-snow"
                   }`}
                 >
-                  {item.label} <span aria-hidden="true">▾</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    {item.label}
+                    <svg width="9" height="9" viewBox="0 0 100 100" aria-hidden="true" className="opacity-70">
+                      <path d={ARROW_PATH} fill="currentColor" transform="rotate(180 50 50)" />
+                    </svg>
+                  </span>
                 </Link>
                 <AnimatePresence>
                   {servicesOpen && (
@@ -87,10 +103,10 @@ export function Header() {
                       transition={{ duration: 0.18 }}
                       className="absolute left-1/2 top-full w-72 -translate-x-1/2 pt-3"
                     >
-                      <div className="rounded-2xl border border-line bg-night-800/95 p-2 shadow-2xl backdrop-blur-xl">
+                      <div className="rounded border border-line bg-night-800/95 p-2 shadow-2xl backdrop-blur-xl">
                         <Link
                           href="/studio"
-                          className="block rounded-xl px-4 py-2.5 text-sm font-semibold text-pink transition-colors hover:bg-white/5"
+                          className="block rounded px-4 py-2.5 text-sm font-semibold text-pink transition-colors hover:bg-white/5"
                         >
                           Content Creation & Studio Berlin
                         </Link>
@@ -98,7 +114,7 @@ export function Header() {
                           <Link
                             key={s.slug}
                             href={s.href}
-                            className="block rounded-xl px-4 py-2.5 text-sm text-mist transition-colors hover:bg-white/5 hover:text-snow"
+                            className="block rounded px-4 py-2.5 text-sm text-mist transition-colors hover:bg-white/5 hover:text-snow"
                           >
                             {s.navTitle}
                           </Link>
@@ -165,7 +181,7 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block rounded-xl px-4 py-3 text-base font-medium text-mist transition-colors hover:bg-white/5 hover:text-snow"
+                  className="block rounded px-4 py-3 text-base font-medium text-mist transition-colors hover:bg-white/5 hover:text-snow"
                 >
                   {item.label}
                 </Link>

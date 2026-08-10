@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useRef, useState } from "react";
+import { useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import { Media } from "@/components/ui/Media";
 import { media } from "@/lib/media";
 
@@ -15,10 +15,10 @@ import { media } from "@/lib/media";
  */
 
 const FORMATS = [
-  { ratio: "9 / 16", label: "9:16", use: "Reels · TikTok · Stories" },
-  { ratio: "4 / 5", label: "4:5", use: "Feed · Social Ads" },
-  { ratio: "1 / 1", label: "1:1", use: "Grid · Katalog" },
-  { ratio: "16 / 9", label: "16:9", use: "Website · YouTube" },
+  { ratio: "9 / 16", label: "9:16", use: "Reels, TikTok, Stories" },
+  { ratio: "4 / 5", label: "4:5", use: "Feed und Social Ads" },
+  { ratio: "1 / 1", label: "1:1", use: "Grid und Katalog" },
+  { ratio: "16 / 9", label: "16:9", use: "Website und YouTube" },
 ] as const;
 
 export function Formats() {
@@ -26,29 +26,21 @@ export function Formats() {
   const sectionRef = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    if (reduce) return;
-    const el = sectionRef.current;
-    if (!el) return;
+  // Fortschritt, während die Sektion durchs Fenster läuft. useScroll läuft
+  // außerhalb des Render-Zyklus; gesetzt wird nur, wenn der Index kippt.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
 
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        const r = el.getBoundingClientRect();
-        const vh = window.innerHeight;
-        // Fortschritt, während die Sektion durchs Fenster läuft
-        const p = (vh * 0.75 - r.top) / (vh * 0.75 + r.height * 0.5);
-        const clamped = Math.min(0.999, Math.max(0, p));
-        setIndex(Math.floor(clamped * FORMATS.length));
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [reduce]);
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    if (reduce) return;
+    const next = Math.min(
+      FORMATS.length - 1,
+      Math.floor(Math.min(0.999, Math.max(0, (p - 0.15) / 0.6)) * FORMATS.length)
+    );
+    setIndex((cur) => (cur === next ? cur : next));
+  });
 
   const active = FORMATS[Math.min(index, FORMATS.length - 1)];
 
@@ -56,10 +48,7 @@ export function Formats() {
     <section ref={sectionRef} className="relative py-24 md:py-36">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)]">
         <div>
-          <p className="font-heading text-[11px] font-bold uppercase tracking-[0.28em] text-mist">
-            Ein System
-          </p>
-          <h2 className="mt-5 max-w-lg font-heading text-3xl font-black leading-[1.03] tracking-tight md:text-5xl">
+          <h2 className="max-w-lg font-heading text-3xl font-black leading-[1.03] tracking-tight md:text-5xl">
             Ein Shooting.
             <br />
             Viele Formate.
@@ -69,7 +58,7 @@ export function Formats() {
             zum Reel, zur Anzeige, zum Shop-Bild und zum Website-Header.
           </p>
 
-          {/* Format-Index – zeigt, wo wir gerade sind */}
+          {/* Format-Index, zeigt, wo wir gerade sind */}
           <ul className="mt-9 max-w-sm">
             {FORMATS.map((f, i) => {
               const on = i === Math.min(index, FORMATS.length - 1);
@@ -114,9 +103,6 @@ export function Formats() {
             <span aria-hidden="true" className="absolute left-3 top-3 h-4 w-4 border-l border-t border-white/40" />
             <span aria-hidden="true" className="absolute bottom-3 right-3 h-4 w-4 border-b border-r border-white/40" />
           </figure>
-          <p className="mt-3 text-center font-heading text-[10px] font-bold uppercase tracking-[0.22em] text-mist">
-            {reduce ? "4:5 · Feed" : `${active.label} · ${active.use}`}
-          </p>
         </div>
       </div>
     </section>

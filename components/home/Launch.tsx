@@ -23,7 +23,7 @@ const CHANNELS = [
 export function Launch() {
   return (
     <>
-      {/* 04 — Distribution: dicht gesetzt */}
+      {/* 04, Distribution: dicht gesetzt */}
       <section className="relative bg-night-800 py-20 md:py-28">
         <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-[6vw]">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-6">
@@ -38,7 +38,7 @@ export function Launch() {
               </h2>
               <p className="mt-6 max-w-md text-base leading-relaxed text-mist">
                 Wir planen, veröffentlichen und bewerben die Inhalte dort, wo
-                deine Zielgruppe sie sieht — mit sauberem Tracking statt
+                deine Zielgruppe sie sieht, mit sauberem Tracking statt
                 Bauchgefühl.
               </p>
               <div className="mt-8">
@@ -68,7 +68,7 @@ export function Launch() {
                         style={{ background: i < 2 ? ARROW_COLORS.sky : ARROW_COLORS.violet }}
                       />
                     </div>
-                    <p className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.16em]">
+                    <p className="mt-3 font-heading text-sm font-bold tracking-tight">
                       {c.label}
                     </p>
                     <p className="mt-1 text-[11px] leading-snug text-mist">{c.note}</p>
@@ -80,22 +80,19 @@ export function Launch() {
         </div>
       </section>
 
-      {/* 05 — Ziel: ruhiger, mehr Weißraum */}
+      {/* 05, Ziel: ruhiger, mehr Weißraum */}
       <section className="relative py-28 md:py-40">
         <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-[6vw]">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
             <Reveal className="lg:col-span-6 lg:order-2">
-              <p className="font-heading text-[11px] font-bold uppercase tracking-[0.28em] text-mint">
-                Digitales Ziel
-              </p>
-              <h2 className="mt-5 font-heading text-3xl font-black leading-[1.03] tracking-tight md:text-5xl">
+              <h2 className=" font-heading text-3xl font-black leading-[1.03] tracking-tight md:text-5xl">
                 Traffic braucht
                 <br />
                 ein Ziel.
               </h2>
               <p className="mt-6 max-w-md text-base leading-relaxed text-mist">
                 Wir bauen Websites, Landingpages und Shops, die zu deinem
-                Content und deinen Kampagnen passen — schnell, messbar und
+                Content und deinen Kampagnen passen, schnell, messbar und
                 auf die Anfrage hin gebaut.
               </p>
               <ul className="mt-8 max-w-md divide-y divide-line border-t border-line">

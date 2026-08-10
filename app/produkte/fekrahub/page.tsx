@@ -6,18 +6,18 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
 
 export const metadata: Metadata = {
-  title: "FekraHub – unsere Plattform für Bildungseinrichtungen",
+  title: "FekraHub, unsere Plattform für Bildungseinrichtungen",
   description:
     "FekraHub ist die von Netwitcher entwickelte Verwaltungsplattform für Schulen und Bildungseinrichtungen: Anmeldungen, Kurse, Kommunikation und Berichte an einem Ort.",
 };
 
 const features = [
-  { title: "Digitale Anmeldung", text: "Eltern melden Kinder online an – ohne Papierformulare, mit klarem Status für Verwaltung und Familien.", color: "mint" },
-  { title: "Kurs- & Klassenverwaltung", text: "Kurse, Klassen, Lehrkräfte und Räume zentral organisiert – inklusive Zuweisungen und Kapazitäten.", color: "violet" },
-  { title: "Kommunikation", text: "Ankündigungen und Nachrichten erreichen Eltern zuverlässig – mehrsprachig und nachvollziehbar.", color: "pink" },
-  { title: "Berichte & Zeugnisse", text: "Leistungsberichte digital erstellen, freigeben und teilen – mit Rollen und Rechten für jedes Teammitglied.", color: "sun" },
-  { title: "Rollen & Rechte", text: "Verwaltung, Lehrkräfte, Eltern: Jede Rolle sieht genau das, was sie braucht – nicht mehr und nicht weniger.", color: "sky" },
-  { title: "Sicher & DSGVO-bewusst", text: "Entwickelt und gehostet mit Fokus auf Datenschutz – sensible Schülerdaten bleiben geschützt.", color: "mint" },
+  { title: "Digitale Anmeldung", text: "Eltern melden Kinder online an, ohne Papierformulare, mit klarem Status für Verwaltung und Familien.", color: "mint" },
+  { title: "Kurs- & Klassenverwaltung", text: "Kurse, Klassen, Lehrkräfte und Räume zentral organisiert, inklusive Zuweisungen und Kapazitäten.", color: "violet" },
+  { title: "Kommunikation", text: "Ankündigungen und Nachrichten erreichen Eltern zuverlässig, mehrsprachig und nachvollziehbar.", color: "pink" },
+  { title: "Berichte & Zeugnisse", text: "Leistungsberichte digital erstellen, freigeben und teilen, mit Rollen und Rechten für jedes Teammitglied.", color: "sun" },
+  { title: "Rollen & Rechte", text: "Verwaltung, Lehrkräfte, Eltern: Jede Rolle sieht genau das, was sie braucht, nicht mehr und nicht weniger.", color: "sky" },
+  { title: "Sicher & DSGVO-bewusst", text: "Entwickelt und gehostet mit Fokus auf Datenschutz, sensible Schülerdaten bleiben geschützt.", color: "mint" },
 ] as const;
 
 export default function FekraHubPage() {
@@ -37,7 +37,7 @@ export default function FekraHubPage() {
               <p className="mt-6 text-base leading-relaxed text-mist md:text-lg">
                 FekraHub ist unsere selbst entwickelte Plattform für Schulen und
                 Bildungseinrichtungen: Anmeldungen, Kurse, Kommunikation und
-                Berichte an einem Ort – gebaut, weil Zettelwirtschaft und
+                Berichte an einem Ort, gebaut, weil Zettelwirtschaft und
                 Excel-Listen wertvolle Zeit kosten, die in den Unterricht gehört.
               </p>
               <div className="mt-9 flex flex-wrap gap-4">
@@ -56,12 +56,12 @@ export default function FekraHubPage() {
           <SectionHeading
             eyebrow="Funktionen"
             title="Alles Wichtige an einem Ort"
-            intro="FekraHub deckt den Alltag einer Bildungseinrichtung ab – von der ersten Anmeldung bis zum Zeugnis."
+            intro="FekraHub deckt den Alltag einer Bildungseinrichtung ab, von der ersten Anmeldung bis zum Zeugnis."
           />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((f, i) => (
               <Reveal key={f.title} delay={(i % 3) * 0.08}>
-                <div className="h-full rounded-2xl border border-line bg-night-700/60 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
+                <div className="h-full rounded border border-line bg-night-700/60 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
                   <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" className="mb-4">
                     <path d={ARROW_PATH} fill={ARROW_COLORS[f.color]} />
                   </svg>
@@ -81,9 +81,9 @@ export default function FekraHubPage() {
               Warum wir ein eigenes Produkt bauen
             </h2>
             <p className="mt-6 text-base leading-relaxed text-mist">
-              FekraHub ist mehr als ein Produkt – es ist unser Beweis, dass wir
+              FekraHub ist mehr als ein Produkt. Es ist unser Beweis, dass wir
               Software nicht nur versprechen, sondern betreiben. Jede Erfahrung aus
-              dem echten Plattform-Alltag – Rollenmodelle, Datenmodelle, Support –
+              dem echten Plattform-Alltag, Rollenmodelle, Datenmodelle, Support,
               fließt direkt in die individuellen Lösungen, die wir für Kunden
               entwickeln.
             </p>
@@ -92,7 +92,7 @@ export default function FekraHubPage() {
       </section>
 
       <FinalCTA
-        title="Interesse an FekraHub – oder an deiner eigenen Plattform?"
+        title="Interesse an FekraHub, oder an deiner eigenen Plattform?"
         text="Wir zeigen dir FekraHub gern in einer Demo. Und wenn du ein eigenes digitales Werkzeug brauchst: Genau solche Systeme entwickeln wir."
       />
     </>

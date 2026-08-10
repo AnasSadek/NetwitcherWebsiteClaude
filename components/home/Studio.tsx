@@ -24,8 +24,8 @@ export function Studio() {
               deiner Marke aussieht.
             </h2>
             <p className="max-w-xs text-sm leading-relaxed text-mist">
-              Foto, Reels und Werbecontent aus unserem Studio in Berlin —
-              geplant, produziert und geschnitten im selben Team.
+              Foto, Reels und Werbecontent aus unserem Studio in Berlin. Geplant,
+              produziert und geschnitten im selben Team.
             </p>
           </div>
         </Reveal>
@@ -40,9 +40,6 @@ export function Studio() {
                 sizes="(min-width: 768px) 58vw, 100vw"
                 className="aspect-[16/11] w-full object-cover"
               />
-              <figcaption className="mt-3 font-heading text-[10px] font-bold uppercase tracking-[0.22em] text-mist">
-                01 · Studio Berlin — Set &amp; Licht
-              </figcaption>
             </figure>
           </Reveal>
 
@@ -66,7 +63,7 @@ export function Studio() {
             </ul>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <ButtonLink href="/kontakt?service=Fotoshooting" variant="studio">
-                Studio-Shooting anfragen
+                Studio anfragen
               </ButtonLink>
               <Link
                 href="/studio"
@@ -85,9 +82,6 @@ export function Studio() {
                 sizes="(min-width: 768px) 32vw, 100vw"
                 className="aspect-[3/4] w-full object-cover"
               />
-              <figcaption className="mt-3 font-heading text-[10px] font-bold uppercase tracking-[0.22em] text-mist">
-                02 · Kamera am Produkttisch
-              </figcaption>
             </figure>
           </Reveal>
 
@@ -98,9 +92,6 @@ export function Studio() {
                 sizes="(min-width: 768px) 64vw, 100vw"
                 className="aspect-[16/9] w-full object-cover"
               />
-              <figcaption className="mt-3 font-heading text-[10px] font-bold uppercase tracking-[0.22em] text-mist">
-                03 · Reel-Produktion — vertikal, direkt für Social
-              </figcaption>
             </figure>
           </Reveal>
         </div>

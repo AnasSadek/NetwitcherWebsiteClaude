@@ -27,11 +27,11 @@ const nunito = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Netwitcher – Digital Agency & Content-Studio Berlin",
+    default: "Netwitcher, Digital Agency & Content-Studio Berlin",
     template: "%s | Netwitcher Berlin",
   },
   description:
-    "Netwitcher ist deine Digital Agency und dein Content-Studio in Berlin: Produktfotografie, Reels, Videoproduktion, Social Media, Ads, Webdesign und SEO – Content, der Anfragen bringt.",
+    "Netwitcher ist deine Digital Agency und dein Content-Studio in Berlin: Produktfotografie, Reels, Videoproduktion, Social Media, Ads, Webdesign und SEO, Content, der Anfragen bringt.",
   keywords: [
     "Content Creation Berlin",
     "Produktfotografie Berlin",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "de_DE",
     siteName: site.name,
-    title: "Netwitcher – Digital Agency & Content-Studio Berlin",
+    title: "Netwitcher, Digital Agency & Content-Studio Berlin",
     description:
       "Content, der auffällt. Marketing, das verkauft. Fotos, Reels, Kampagnen und Webseiten aus Berlin.",
   },

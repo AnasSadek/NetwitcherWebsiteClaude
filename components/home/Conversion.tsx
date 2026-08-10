@@ -52,7 +52,7 @@ export function Conversion() {
   return (
     <section className="relative py-32 md:py-48" aria-labelledby="conversion-title">
       <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
-        {/* Marke läuft zusammen – eine Bewegung, dann Ruhe */}
+        {/* Marke läuft zusammen, eine Bewegung, dann Ruhe */}
         <div ref={ref} className="relative mx-auto mb-14 h-[104px] w-[104px]">
           {/* Der echte Stern erscheint, sobald die Arme angekommen sind */}
           <div
@@ -90,7 +90,7 @@ export function Conversion() {
           Was willst du als Nächstes produzieren?
         </h2>
         <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-mist">
-          Erzähl uns kurz, was ansteht — wir sagen dir ehrlich, was sich lohnt
+          Erzähl uns kurz, was ansteht. Wir sagen dir ehrlich, was sich lohnt
           und was nicht.
         </p>
 

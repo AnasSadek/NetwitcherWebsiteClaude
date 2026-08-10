@@ -11,7 +11,7 @@ import { whatsappHref } from "@/lib/site";
  */
 export function FinalCTA({
   title = "Was willst du als Nächstes produzieren?",
-  text = "Erzähl uns kurz, was ansteht – wir sagen dir ehrlich, was sich lohnt und was nicht.",
+  text = "Erzähl uns kurz, was ansteht. Wir sagen dir ehrlich, was sich lohnt und was nicht.",
 }: {
   title?: string;
   text?: string;

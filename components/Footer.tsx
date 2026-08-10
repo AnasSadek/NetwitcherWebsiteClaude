@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandStar, BrandWordmark } from "./brand/Logo";
+import { ARROW_PATH } from "./arrows";
 import { site, whatsappHref, defaultWhatsappText } from "@/lib/site";
 import { leistungenServices } from "@/lib/services";
 
@@ -9,7 +10,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link href="/" className="flex items-center gap-2.5" aria-label="Netwitcher – Startseite">
+            <Link href="/" className="flex items-center gap-2.5" aria-label="Netwitcher, Startseite">
               <BrandStar size={42} />
               <BrandWordmark height={14} className="text-snow" />
             </Link>
@@ -18,7 +19,7 @@ export function Footer() {
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist">
               Digital Agency & Content-Studio in Berlin. Wir produzieren Content,
-              der Aufmerksamkeit erzeugt – und Kampagnen, die Kunden bringen.
+              der Aufmerksamkeit erzeugt, und Kampagnen, die Kunden bringen.
             </p>
           </div>
 
@@ -40,8 +41,11 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <Link href="/leistungen" className="text-snow underline-offset-4 hover:underline">
-                  Alle Leistungen →
+                <Link href="/leistungen" className="group inline-flex items-center gap-2 text-snow underline-offset-4 hover:underline">
+                  Alle Leistungen
+                  <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+                    <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
+                  </svg>
                 </Link>
               </li>
             </ul>
@@ -94,7 +98,7 @@ export function Footer() {
               href="/kontakt#termin"
               className="mt-6 inline-flex rounded bg-sun px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-night transition-colors hover:brightness-110"
             >
-              Termin buchen
+              Erstgespräch buchen
             </Link>
           </div>
         </div>
@@ -104,7 +108,7 @@ export function Footer() {
             © {new Date().getFullYear()} {site.legalName} · Berlin
           </p>
           <p className="font-heading uppercase tracking-[0.25em]">
-            Magic in Every Click ✦
+            Magic in Every Click
           </p>
         </div>
       </div>

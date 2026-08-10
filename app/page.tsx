@@ -7,9 +7,9 @@ import { ServiceBands } from "@/components/home/ServiceBands";
 import { Conversion } from "@/components/home/Conversion";
 
 export const metadata: Metadata = {
-  title: "Content Studio & Digital Agency Berlin – Netwitcher",
+  title: "Content Studio & Digital Agency Berlin, Netwitcher",
   description:
-    "Netwitcher produziert Produktfotografie, Reels, Werbevideos und Social Content im eigenen Studio in Berlin – und bringt sie über Social Ads, Google Ads und Websites bis zur Anfrage.",
+    "Netwitcher produziert Produktfotografie, Reels, Werbevideos und Social Content im eigenen Studio in Berlin und bringt sie über Social Ads, Google Ads und Websites bis zur Anfrage.",
 };
 
 /**
@@ -25,7 +25,7 @@ export default function HomePage() {
       {/* 01 · Das Studio arbeitet bereits */}
       <Hero />
 
-      {/* 02 · Content Studio Berlin — Produktion */}
+      {/* 02 · Content Studio Berlin, Produktion */}
       <Studio />
 
       {/* 03 · Ein Shooting, viele Formate */}

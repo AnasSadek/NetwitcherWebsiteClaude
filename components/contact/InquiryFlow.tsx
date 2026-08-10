@@ -140,7 +140,7 @@ function Flow() {
 
   const buildMessage = () => {
     const lines = [
-      `Thema: ${topic?.label ?? "–"}`,
+      `Thema: ${topic?.label ?? "-"}`,
       `Zeitrahmen: ${TIMINGS.find((t) => t.id === timing)?.label ?? "offen"}`,
       "",
       fields.message,
@@ -190,7 +190,7 @@ function Flow() {
         aria-live="polite"
         className="font-heading text-xs font-bold uppercase tracking-[0.25em] text-mist"
       >
-        Schritt {step + 1} von 3 — {STEP_LABELS[step]}
+        Schritt {step + 1} von 3: {STEP_LABELS[step]}
       </p>
       <div className="mt-3 flex gap-1.5" aria-hidden="true">
         {STEP_LABELS.map((label, i) => (
@@ -356,7 +356,7 @@ function Flow() {
                   Wie erreichen wir dich?
                 </h2>
                 <p className="mt-3 text-sm text-mist">
-                  Wir antworten innerhalb eines Werktags — mit einer ehrlichen
+                  Wir antworten innerhalb eines Werktags, mit einer ehrlichen
                   Einschätzung, nicht mit einem Verkaufsgespräch.
                 </p>
 
@@ -462,8 +462,8 @@ function Flow() {
                 {sent && (
                   <p role="status" className="mt-6 border-l-2 border-mint pl-4 text-sm leading-relaxed text-mist">
                     {sent === "mail"
-                      ? "Dein E-Mail-Programm öffnet sich mit der fertigen Anfrage — einmal absenden, dann ist sie bei uns."
-                      : "WhatsApp öffnet sich mit der fertigen Nachricht — einmal absenden, dann ist sie bei uns."}{" "}
+                      ? "Dein E-Mail-Programm öffnet sich mit der fertigen Anfrage, einmal absenden, dann ist sie bei uns."
+                      : "WhatsApp öffnet sich mit der fertigen Nachricht, einmal absenden, dann ist sie bei uns."}{" "}
                     Klappt das nicht, erreichst du uns direkt unter{" "}
                     <a href={`mailto:${site.email}`} className="text-snow underline underline-offset-2">
                       {site.email}

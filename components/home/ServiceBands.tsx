@@ -12,7 +12,6 @@ import { getService } from "@/lib/services";
  */
 
 type Band = {
-  kicker: string;
   title: string;
   lead: string;
   accent: AccentColor;
@@ -21,35 +20,24 @@ type Band = {
 
 const BANDS: Band[] = [
   {
-    kicker: "01 — Produktion",
     title: "Machen",
-    lead: "Die Fotos, Reels und Videos, die deine Marke jeden Monat braucht — aus dem Studio Berlin.",
+    lead: "Produktion: die Fotos, Reels und Videos, die deine Marke jeden Monat braucht. Aus dem Studio Berlin.",
     accent: "pink",
     slugs: ["studio", "foto-videoproduktion", "branding-design", "druck-printdesign"],
   },
   {
-    kicker: "02 — Distribution & Wachstum",
     title: "Bewegen",
-    lead: "Produzierter Content wird zu Kampagnen — auf den Kanälen, wo deine Kunden sind.",
+    lead: "Distribution: produzierter Content wird zu Kampagnen, auf den Kanälen, wo deine Kunden sind.",
     accent: "sky",
     slugs: ["social-media-management", "performance-marketing", "seo"],
   },
   {
-    kicker: "03 — Digitale Erlebnisse",
     title: "Bauen",
-    lead: "Die Website, der Shop und die Systeme, die aus Aufmerksamkeit Anfragen machen.",
+    lead: "Digitale Erlebnisse: die Website, der Shop und die Systeme, die aus Aufmerksamkeit Anfragen machen.",
     accent: "mint",
     slugs: ["webdesign-ecommerce", "softwareentwicklung", "technischer-support"],
   },
 ];
-
-const accentText: Record<AccentColor, string> = {
-  mint: "text-mint",
-  violet: "text-violet",
-  pink: "text-pink",
-  sun: "text-sun",
-  sky: "text-sky",
-};
 
 function BandRow({ band, index }: { band: Band; index: number }) {
   const flip = index % 2 === 1; // Band 2 spiegelverkehrt → Asymmetrie
@@ -65,10 +53,7 @@ function BandRow({ band, index }: { band: Band; index: number }) {
       >
         {/* Titelspalte */}
         <Reveal className={`md:col-span-5 ${flip ? "md:[direction:ltr]" : ""}`}>
-          <p className={`font-heading text-xs font-bold uppercase tracking-[0.25em] ${accentText[band.accent]}`}>
-            {band.kicker}
-          </p>
-          <h3 className="mt-3 flex items-baseline gap-4">
+          <h3 className="flex items-baseline gap-4">
             <span
               className="font-heading text-5xl font-black leading-none tracking-tight break-words sm:text-6xl lg:text-8xl"
               style={{ color: hex }}
@@ -101,7 +86,7 @@ function BandRow({ band, index }: { band: Band; index: number }) {
                     {s!.navTitle}
                   </span>
                   <span className="ml-auto hidden max-w-[16rem] text-right text-xs text-mist md:block">
-                    {s!.bullets.slice(0, 2).join(" · ")}
+                    {s!.bullets[0]}
                   </span>
                 </Link>
               </Reveal>
@@ -120,10 +105,7 @@ export function ServiceBands() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="font-heading text-xs font-bold uppercase tracking-[0.25em] text-mist">
-                Leistungen
-              </p>
-              <h2 id="leistungen-home" className="mt-3 max-w-xl text-3xl font-black leading-[1.05] tracking-tight md:text-5xl">
+              <h2 id="leistungen-home" className="max-w-xl text-3xl font-black leading-[1.05] tracking-tight md:text-5xl">
                 Ein Team. Von der Aufnahme bis zur Anfrage.
               </h2>
             </div>
@@ -132,7 +114,9 @@ export function ServiceBands() {
               className="group inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-widest text-snow"
             >
               Alle Leistungen
-              <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+              <svg width="11" height="11" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+                <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
+              </svg>
             </Link>
           </div>
         </Reveal>

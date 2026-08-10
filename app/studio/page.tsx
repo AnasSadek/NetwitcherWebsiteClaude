@@ -16,13 +16,13 @@ export const metadata: Metadata = {
 };
 
 const studioAngebote = [
-  { title: "Produktfotografie", text: "E-Commerce-Freisteller, Lifestyle-Szenen und Detailaufnahmen mit Set-Design – Bilder, die den Preis deines Produkts rechtfertigen.", color: "sun" },
-  { title: "Food & Beverage Shoots", text: "Gerichte, Drinks und Zutaten, inszeniert mit Licht und Textur – Content, der Appetit macht und Reservierungen bringt.", color: "pink" },
-  { title: "Beauty & Kosmetik Content", text: "Texturen, Swatches, Anwendung: Beauty-Content mit dem Look großer Marken – produziert für Feed, Shop und Ads.", color: "violet" },
-  { title: "E-Commerce Produktbilder", text: "Einheitliche Bildserien für dein komplettes Sortiment – konsistent, skalierbar und shop-optimiert angeliefert.", color: "mint" },
-  { title: "Reels für Instagram & TikTok", text: "Vertikal gedacht, mit Hook geplant, nativ geschnitten – Reels, die organische Reichweite holen statt sie zu kaufen.", color: "sky" },
-  { title: "Werbevideos für Ads", text: "Kurze Performance-Videos mit klarer Botschaft und CTA – das Material, das Meta- und TikTok-Kampagnen wirklich brauchen.", color: "violet" },
-  { title: "Behind-the-Scenes Content", text: "Echte Einblicke in dein Team und deine Produktion – der Content, der Vertrauen aufbaut und Marken nahbar macht.", color: "pink" },
+  { title: "Produktfotografie", text: "E-Commerce-Freisteller, Lifestyle-Szenen und Detailaufnahmen mit Set-Design, Bilder, die den Preis deines Produkts rechtfertigen.", color: "sun" },
+  { title: "Food & Beverage Shoots", text: "Gerichte, Drinks und Zutaten, inszeniert mit Licht und Textur, Content, der Appetit macht und Reservierungen bringt.", color: "pink" },
+  { title: "Beauty & Kosmetik Content", text: "Texturen, Swatches, Anwendung: Beauty-Content mit dem Look großer Marken, produziert für Feed, Shop und Ads.", color: "violet" },
+  { title: "E-Commerce Produktbilder", text: "Einheitliche Bildserien für dein komplettes Sortiment, konsistent, skalierbar und shop-optimiert angeliefert.", color: "mint" },
+  { title: "Reels für Instagram & TikTok", text: "Vertikal gedacht, mit Hook geplant, nativ geschnitten: Reels, die organische Reichweite holen statt sie zu kaufen.", color: "sky" },
+  { title: "Werbevideos für Ads", text: "Kurze Performance-Videos mit klarer Botschaft und CTA. Das Material, das Meta- und TikTok-Kampagnen wirklich brauchen.", color: "violet" },
+  { title: "Behind-the-Scenes Content", text: "Echte Einblicke in dein Team und deine Produktion, der Content, der Vertrauen aufbaut und Marken nahbar macht.", color: "pink" },
   { title: "Content für Webseiten & Landingpages", text: "Header-Bilder, Team-Fotos und Produktvisuals, die deine Website vom Template zum Markenauftritt machen.", color: "mint" },
 ] as const;
 
@@ -64,11 +64,11 @@ export default function StudioPage() {
               <div className="relative">
                 <div
                   aria-hidden="true"
-                  className="absolute -inset-3 rounded-3xl bg-gradient-to-tr from-pink/40 via-violet/25 to-sun/40 opacity-60 blur-xl"
+                  className="absolute -inset-3 rounded bg-gradient-to-tr from-pink/40 via-violet/25 to-sun/40 opacity-60 blur-xl"
                 />
                 <Media
                   asset={media.studio}
-                  className="relative rounded-3xl border border-line object-cover"
+                  className="relative rounded border border-line object-cover"
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   priority
                 />
@@ -82,19 +82,18 @@ export default function StudioPage() {
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
-            eyebrow="Was im Studio entsteht"
             eyebrowColor="text-pink"
             title={
               <>
                 Ein Ort. <span className="text-sun">Alle Formate.</span>
               </>
             }
-            intro="Vom Produktbild bis zum Kampagnenvideo: Wir produzieren dort, wo Licht, Technik und Team schon bereitstehen – das macht uns schnell und die Qualität konstant."
+            intro="Vom Produktbild bis zum Kampagnenvideo: Wir produzieren dort, wo Licht, Technik und Team schon bereitstehen. Das macht uns schnell und die Qualität konstant."
           />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {studioAngebote.map((item, i) => (
               <Reveal key={item.title} delay={(i % 4) * 0.07}>
-                <div className="group h-full rounded-2xl border border-line bg-night-700/60 p-6 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
+                <div className="group h-full rounded border border-line bg-night-700/60 p-6 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
                   <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true" className="mb-4 transition-transform duration-300 group-hover:rotate-12">
                     <path d={ARROW_PATH} fill={ARROW_COLORS[item.color]} />
                   </svg>
@@ -112,24 +111,24 @@ export default function StudioPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="grid items-stretch gap-6 lg:grid-cols-[.9fr_1.1fr]">
             <Reveal>
-              <figure className="relative h-full overflow-hidden rounded-3xl border border-line">
+              <figure className="relative h-full overflow-hidden rounded border border-line">
                 <Media asset={media.product} className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
-                <figcaption className="absolute bottom-4 left-4 rounded-full border border-line bg-night/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-mint backdrop-blur">
+                <figcaption className="absolute bottom-4 left-4 rounded border border-line bg-night/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-mint backdrop-blur">
                   Produktfotografie
                 </figcaption>
               </figure>
             </Reveal>
             <div className="flex flex-col gap-6">
               <Reveal delay={0.1}>
-                <figure className="relative overflow-hidden rounded-3xl border border-line">
+                <figure className="relative overflow-hidden rounded border border-line">
                   <Media asset={media.reels} className="w-full object-cover transition-transform duration-700 hover:scale-105" />
-                  <figcaption className="absolute bottom-4 left-4 rounded-full border border-line bg-night/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-sky backdrop-blur">
+                  <figcaption className="absolute bottom-4 left-4 rounded border border-line bg-night/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-sky backdrop-blur">
                     Reels & Video-Produktion
                   </figcaption>
                 </figure>
               </Reveal>
               <Reveal delay={0.2}>
-                <div className="flex flex-1 flex-col justify-center rounded-3xl border border-line bg-night-700/60 p-8 backdrop-blur">
+                <div className="flex flex-1 flex-col justify-center rounded border border-line bg-night-700/60 p-8 backdrop-blur">
                   <h2 className="font-heading text-xl font-bold">
                     Produkt einsenden, Content zurückbekommen
                   </h2>
@@ -156,7 +155,7 @@ export default function StudioPage() {
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-3">
           {studio.sections.map((sec, i) => (
             <Reveal key={sec.heading} delay={i * 0.1}>
-              <div className="h-full rounded-2xl border border-line bg-night-700/60 p-8 backdrop-blur">
+              <div className="h-full rounded border border-line bg-night-700/60 p-8 backdrop-blur">
                 <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" className="mb-5">
                   <path d={ARROW_PATH} fill={ARROW_COLORS.pink} transform={`rotate(${i * 72} 50 50)`} />
                 </svg>
@@ -171,11 +170,11 @@ export default function StudioPage() {
       {/* FAQ */}
       <section className="bg-night-800 py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <SectionHeading eyebrow="Häufige Fragen" eyebrowColor="text-pink" title="Gut zu wissen" />
+          <SectionHeading title="Gut zu wissen" />
           <div className="mt-10 space-y-4">
             {studio.faq.map((f) => (
               <Reveal key={f.q}>
-                <details className="group rounded-2xl border border-line bg-night-700/60 px-6 py-5 backdrop-blur">
+                <details className="group rounded border border-line bg-night-700/60 px-6 py-5 backdrop-blur">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-heading text-sm font-bold">
                     {f.q}
                     <span aria-hidden="true" className="text-mist transition-transform duration-200 group-open:rotate-45">＋</span>
@@ -190,7 +189,7 @@ export default function StudioPage() {
 
       <FinalCTA
         title="Dein Produkt verdient bessere Bilder."
-        text="Erzähl uns, was du verkaufst – wir zeigen dir, wie es im richtigen Licht aussieht. Erstgespräch und Konzeptidee sind kostenlos."
+        text="Erzähl uns, was du verkaufst. Wir zeigen dir, wie es im richtigen Licht aussieht. Erstgespräch und Konzeptidee sind kostenlos."
       />
     </>
   );

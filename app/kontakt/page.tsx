@@ -3,9 +3,9 @@ import { InquiryFlow } from "@/components/contact/InquiryFlow";
 import { site, whatsappHref, defaultWhatsappText } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Kontakt – Anfrage stellen oder Erstgespräch buchen",
+  title: "Kontakt und Anfrage",
   description:
-    "Erzähl uns in drei kurzen Schritten, was ansteht: Content, Fotoshooting, Social Media, Ads, Website, SEO, Branding oder Software. Antwort innerhalb eines Werktags – aus Berlin.",
+    "Erzähl uns in drei kurzen Schritten, was ansteht: Content, Fotoshooting, Social Media, Ads, Website, SEO, Branding oder Software. Antwort innerhalb eines Werktags. Aus Berlin.",
 };
 
 export default function KontaktPage() {
@@ -14,14 +14,11 @@ export default function KontaktPage() {
       <section className="pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <header className="max-w-2xl">
-            <p className="font-heading text-xs font-bold uppercase tracking-[0.3em] text-sun">
-              Anfrage
-            </p>
-            <h1 className="mt-5 font-heading text-4xl font-black leading-[1.03] tracking-tight md:text-6xl">
+            <h1 className="font-heading text-4xl font-black leading-[1.03] tracking-tight md:text-6xl">
               Lass uns loslegen.
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-mist">
-              Drei kurze Schritte – danach wissen wir genug für eine ehrliche
+              Drei kurze Schritte, danach wissen wir genug für eine ehrliche
               Einschätzung. Kein Fragebogen, kein Verkaufsdruck.
             </p>
           </header>
@@ -30,7 +27,7 @@ export default function KontaktPage() {
             {/* Anfrage-Dialog */}
             <InquiryFlow />
 
-            {/* Direkter Weg — bewusst schmal und ruhig */}
+            {/* Direkter Weg, bewusst schmal und ruhig */}
             <aside>
               <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-snow">
                 Lieber direkt?
@@ -81,11 +78,11 @@ export default function KontaktPage() {
 
               <div id="termin" className="mt-12 scroll-mt-32">
                 <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-snow">
-                  Erstgespräch buchen
+                  Erstgespräch
                 </h2>
                 <p className="mt-4 text-sm leading-relaxed text-mist">
-                  20–30 Minuten per Video-Call oder Telefon. Wir hören zu, ordnen
-                  ein und sagen dir, was sich lohnt – und was nicht. Kostenlos.
+                  20-30 Minuten per Video-Call oder Telefon. Wir hören zu, ordnen
+                  ein und sagen dir, was sich lohnt und was nicht. Kostenlos.
                 </p>
                 <a
                   href={site.calendlyUrl}
@@ -93,11 +90,11 @@ export default function KontaktPage() {
                   rel="noopener noreferrer"
                   className="mt-6 inline-flex items-center justify-center gap-2.5 rounded border border-white/25 px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-snow transition-colors hover:border-white/60 hover:bg-white/5"
                 >
-                  Termin wählen
+                  Erstgespräch buchen
                 </a>
                 <p className="mt-4 text-xs leading-relaxed text-mist">
-                  Passt kein Termin? Schick uns zwei Wunschzeiten per WhatsApp –
-                  wir bestätigen den passenden.
+                  Passt kein Termin? Schick uns zwei Wunschzeiten per WhatsApp, wir
+                  bestätigen den passenden.
                 </p>
               </div>
             </aside>
