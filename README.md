@@ -48,7 +48,7 @@ auf lokale Pfade um. Danach kann der `remotePatterns`-Eintrag in
 | `app/datenschutz/page.tsx` | Hosting-Anbieter, ggf. Analytics/Pixel-Abschnitt |
 | `app/agb/page.tsx` | Rechtlich prüfen lassen |
 | `lib/cases.ts` | Echte Kunden, Kennzahlen und Projektbilder ergänzen |
-| `components/ContactForm.tsx` | Formular-Backend anbinden (derzeit `mailto:`-Fallback) |
+| `components/contact/InquiryFlow.tsx` | Formular-Backend anbinden – `buildMessage()` an eine API-Route POSTen (derzeit `mailto:`/WhatsApp-Versand) |
 
 ## Struktur
 

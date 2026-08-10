@@ -1,122 +1,106 @@
 import type { Metadata } from "next";
-import { ContactForm } from "@/components/ContactForm";
-import { Reveal } from "@/components/Reveal";
-import { SectionHeading } from "@/components/SectionHeading";
+import { InquiryFlow } from "@/components/contact/InquiryFlow";
 import { site, whatsappHref, defaultWhatsappText } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Kontakt – kostenloses Erstgespräch buchen",
+  title: "Kontakt – Anfrage stellen oder Erstgespräch buchen",
   description:
-    "Kontaktiere Netwitcher in Berlin: kostenloses Erstgespräch buchen, per WhatsApp schreiben oder Anfrage senden – für Content, Fotoshootings, Social Media, Ads, Websites und mehr.",
+    "Erzähl uns in drei kurzen Schritten, was ansteht: Content, Fotoshooting, Social Media, Ads, Website, SEO, Branding oder Software. Antwort innerhalb eines Werktags – aus Berlin.",
 };
 
 export default function KontaktPage() {
   return (
     <>
-      <section className="relative overflow-hidden pt-36 pb-14 md:pt-44">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <SectionHeading
-            align="left"
-            eyebrow="Kontakt"
-            title={
-              <span className="text-4xl md:text-5xl">
-                Lass uns über <span className="text-mint">dein Wachstum</span> reden
-              </span>
-            }
-            intro="Erzähl uns kurz, was du vorhast – wir melden uns innerhalb eines Werktags mit einer ehrlichen Einschätzung. Kein Verkaufsdruck, keine Warteschleife."
-          />
-        </div>
-      </section>
+      <section className="pt-32 pb-20 md:pt-40 md:pb-28">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <header className="max-w-2xl">
+            <p className="font-heading text-xs font-bold uppercase tracking-[0.3em] text-sun">
+              Anfrage
+            </p>
+            <h1 className="mt-5 font-heading text-4xl font-black leading-[1.03] tracking-tight md:text-6xl">
+              Lass uns loslegen.
+            </h1>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-mist">
+              Drei kurze Schritte – danach wissen wir genug für eine ehrliche
+              Einschätzung. Kein Fragebogen, kein Verkaufsdruck.
+            </p>
+          </header>
 
-      <section className="pb-24">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_.9fr]">
-          {/* Formular */}
-          <Reveal>
-            <div className="rounded-3xl border border-line bg-night-700/40 p-7 backdrop-blur md:p-10">
-              <h2 className="mb-7 font-heading text-xl font-bold">Anfrage senden</h2>
-              <ContactForm />
-            </div>
-          </Reveal>
+          <div className="mt-16 grid gap-14 border-t border-line pt-12 lg:grid-cols-[minmax(0,58%)_minmax(0,42%)] lg:gap-20 md:mt-20">
+            {/* Anfrage-Dialog */}
+            <InquiryFlow />
 
-          {/* Direktkontakt + Calendly */}
-          <div className="space-y-6">
-            <Reveal delay={0.1}>
-              <div className="rounded-3xl border border-line bg-night-700/40 p-7 backdrop-blur md:p-8">
-                <h2 className="font-heading text-xl font-bold">Direkt erreichen</h2>
-                <ul className="mt-6 space-y-4 text-sm">
-                  <li>
-                    <a
-                      href={whatsappHref(defaultWhatsappText)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-center gap-4 rounded-2xl border border-line bg-white/[.03] px-5 py-4 transition-colors hover:border-whatsapp/50"
-                    >
-                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-whatsapp/15 text-whatsapp" aria-hidden="true">✆</span>
-                      <span>
-                        <span className="block font-heading text-sm font-bold">WhatsApp</span>
-                        <span className="text-mist">Schnellste Antwort – meist innerhalb weniger Stunden</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={`mailto:${site.email}`}
-                      className="group flex items-center gap-4 rounded-2xl border border-line bg-white/[.03] px-5 py-4 transition-colors hover:border-violet/50"
-                    >
-                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-violet/15 text-violet" aria-hidden="true">✉</span>
-                      <span>
-                        <span className="block font-heading text-sm font-bold">E-Mail</span>
-                        <span className="text-mist">{site.email}</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={site.phoneHref}
-                      className="group flex items-center gap-4 rounded-2xl border border-line bg-white/[.03] px-5 py-4 transition-colors hover:border-sky/50"
-                    >
-                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-sky/15 text-sky" aria-hidden="true">☎</span>
-                      <span>
-                        <span className="block font-heading text-sm font-bold">Telefon</span>
-                        <span className="text-mist">{site.phone}</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li className="flex items-center gap-4 rounded-2xl border border-line bg-white/[.03] px-5 py-4">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-sun/15 text-sun" aria-hidden="true">✦</span>
-                    <span>
-                      <span className="block font-heading text-sm font-bold">Studio</span>
-                      <span className="text-mist">{site.city}, {site.country}</span>
+            {/* Direkter Weg — bewusst schmal und ruhig */}
+            <aside>
+              <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-snow">
+                Lieber direkt?
+              </h2>
+              <ul className="mt-6 divide-y divide-line border-y border-line text-sm">
+                <li>
+                  <a
+                    href={whatsappHref(defaultWhatsappText)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-baseline justify-between gap-4 py-4 transition-colors"
+                  >
+                    <span className="font-heading font-bold text-whatsapp">WhatsApp</span>
+                    <span className="text-right text-mist transition-colors group-hover:text-snow">
+                      Meist Antwort am selben Tag
                     </span>
-                  </li>
-                </ul>
-              </div>
-            </Reveal>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="group flex items-baseline justify-between gap-4 py-4 transition-colors"
+                  >
+                    <span className="font-heading font-bold">E-Mail</span>
+                    <span className="text-right text-mist transition-colors group-hover:text-snow">
+                      {site.email}
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={site.phoneHref}
+                    className="group flex items-baseline justify-between gap-4 py-4 transition-colors"
+                  >
+                    <span className="font-heading font-bold">Telefon</span>
+                    <span className="text-right text-mist transition-colors group-hover:text-snow">
+                      {site.phone}
+                    </span>
+                  </a>
+                </li>
+                <li className="flex items-baseline justify-between gap-4 py-4">
+                  <span className="font-heading font-bold">Studio</span>
+                  <span className="text-right text-mist">
+                    {site.city}, {site.country}
+                  </span>
+                </li>
+              </ul>
 
-            <Reveal delay={0.2}>
-              <div id="termin" className="scroll-mt-28 rounded-3xl border border-line bg-night-700/40 p-7 backdrop-blur md:p-8">
-                <h2 className="font-heading text-xl font-bold">
-                  Kostenloses Erstgespräch buchen
+              <div id="termin" className="mt-12 scroll-mt-32">
+                <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-snow">
+                  Erstgespräch buchen
                 </h2>
-                <p className="mt-3 text-sm leading-relaxed text-mist">
-                  20–30 Minuten, in denen wir dein Vorhaben verstehen und dir eine
-                  ehrliche Einschätzung geben – per Video-Call oder Telefon. Wähl
-                  einfach einen Termin, der dir passt:
+                <p className="mt-4 text-sm leading-relaxed text-mist">
+                  20–30 Minuten per Video-Call oder Telefon. Wir hören zu, ordnen
+                  ein und sagen dir, was sich lohnt – und was nicht. Kostenlos.
                 </p>
                 <a
                   href={site.calendlyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-violet to-sky px-6 py-4 font-heading text-sm font-bold tracking-wide text-night shadow-glow-violet transition-all duration-200 hover:-translate-y-0.5"
+                  className="mt-6 inline-flex items-center justify-center gap-2.5 rounded border border-white/25 px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-snow transition-colors hover:border-white/60 hover:bg-white/5"
                 >
-                  Termin über Calendly wählen →
+                  Termin wählen
                 </a>
-                <p className="mt-4 text-xs text-mist">
-                  Kein Calendly? Schreib uns einfach per WhatsApp oder E-Mail zwei
-                  Wunschtermine – wir bestätigen den passenden.
+                <p className="mt-4 text-xs leading-relaxed text-mist">
+                  Passt kein Termin? Schick uns zwei Wunschzeiten per WhatsApp –
+                  wir bestätigen den passenden.
                 </p>
               </div>
-            </Reveal>
+            </aside>
           </div>
         </div>
       </section>

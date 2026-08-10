@@ -14,14 +14,14 @@ export function PackageCard({
   return (
     <Reveal delay={delay} className="h-full">
       <div
-        className={`relative flex h-full flex-col rounded-2xl border p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 ${
+        className={`relative flex h-full flex-col rounded border p-7 transition-colors duration-200 ${
           pkg.highlight
-            ? "border-sky/50 bg-night-600/70 shadow-[0_0_60px_rgba(15,185,242,.12)]"
-            : "border-line bg-night-700/60"
+            ? "border-sky/45 bg-night-700"
+            : "border-line bg-night-800 hover:border-white/25"
         }`}
       >
         {pkg.highlight && (
-          <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-violet to-sky px-4 py-1.5 font-heading text-[10px] font-bold uppercase tracking-widest text-night">
+          <span className="absolute -top-3 left-7 bg-sky px-3 py-1 font-heading text-[10px] font-bold uppercase tracking-widest text-night">
             Am häufigsten gewählt
           </span>
         )}
@@ -56,10 +56,10 @@ export function PackageCard({
         </ul>
         <Link
           href={`/kontakt?service=${encodeURIComponent(pkg.name)}`}
-          className={`mt-7 inline-flex items-center justify-center rounded-full px-6 py-3 font-heading text-xs font-bold tracking-wide transition-all duration-200 hover:-translate-y-0.5 ${
+          className={`mt-7 inline-flex items-center justify-center rounded px-6 py-3 font-heading text-xs font-bold tracking-wide transition-colors duration-200 ${
             pkg.highlight
-              ? "bg-gradient-to-r from-violet to-sky text-night shadow-glow-violet"
-              : "border border-line bg-white/5 text-snow hover:border-white/30"
+              ? "bg-snow text-night hover:bg-white"
+              : "border border-white/25 text-snow hover:border-white/60 hover:bg-white/5"
           }`}
         >
           {pkg.cta}
