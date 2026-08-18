@@ -31,7 +31,7 @@ export function SectionHeading({
           {title}
         </Tag>
         {intro && (
-          <p className="mt-5 text-base leading-relaxed text-mist md:text-lg">
+          <p className="mt-5 text-base leading-relaxed text-ink-3 md:text-lg">
             {intro}
           </p>
         )}

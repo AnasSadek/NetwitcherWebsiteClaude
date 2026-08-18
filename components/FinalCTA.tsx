@@ -24,13 +24,13 @@ export function FinalCTA({
           <h2 id="final-cta" className="font-heading text-3xl font-black tracking-tight md:text-4xl">
             {title}
           </h2>
-          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-mist">{text}</p>
+          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-ink-3">{text}</p>
           <div className="mt-9 flex flex-col items-center gap-5">
             <ButtonLink href="/kontakt">Erstgespräch buchen</ButtonLink>
-            <p className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-mist">
+            <p className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-3">
               <Link
                 href="/kontakt?service=Fotoshooting"
-                className="underline-offset-4 transition-colors hover:text-snow hover:underline"
+                className="underline-offset-4 transition-colors hover:text-ink hover:underline"
               >
                 Studio anfragen
               </Link>
@@ -38,7 +38,7 @@ export function FinalCTA({
                 href={whatsappHref()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline-offset-4 transition-colors hover:text-snow hover:underline"
+                className="underline-offset-4 transition-colors hover:text-ink hover:underline"
               >
                 WhatsApp schreiben
               </a>

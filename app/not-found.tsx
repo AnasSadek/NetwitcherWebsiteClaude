@@ -8,7 +8,7 @@ export default function NotFound() {
         <BrandStar size={72} className="mx-auto mb-8" />
         <h1 className="font-heading text-5xl font-extrabold tracking-tight">404</h1>
         <p className="mt-4 text-lg font-bold">Diese Seite hat sich entzaubert.</p>
-        <p className="mt-3 text-sm leading-relaxed text-mist">
+        <p className="mt-3 text-sm leading-relaxed text-ink-3">
           Die gesuchte Seite existiert nicht (mehr). Aber keine Sorge, die Magie
           findest du auf der Startseite oder in unseren Leistungen.
         </p>

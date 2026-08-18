@@ -17,7 +17,7 @@ export default function KontaktPage() {
             <h1 className="font-heading text-4xl font-black leading-[1.03] tracking-tight md:text-6xl">
               Lass uns loslegen.
             </h1>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-mist">
+            <p className="mt-5 max-w-md text-base leading-relaxed text-ink-3">
               Drei kurze Schritte, danach wissen wir genug für eine ehrliche
               Einschätzung. Kein Fragebogen, kein Verkaufsdruck.
             </p>
@@ -29,7 +29,7 @@ export default function KontaktPage() {
 
             {/* Direkter Weg, bewusst schmal und ruhig */}
             <aside>
-              <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-snow">
+              <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-ink">
                 Lieber direkt?
               </h2>
               <ul className="mt-6 divide-y divide-line border-y border-line text-sm">
@@ -41,7 +41,7 @@ export default function KontaktPage() {
                     className="group flex items-baseline justify-between gap-4 py-4 transition-colors"
                   >
                     <span className="font-heading font-bold text-whatsapp">WhatsApp</span>
-                    <span className="text-right text-mist transition-colors group-hover:text-snow">
+                    <span className="text-right text-ink-3 transition-colors group-hover:text-ink">
                       Meist Antwort am selben Tag
                     </span>
                   </a>
@@ -52,7 +52,7 @@ export default function KontaktPage() {
                     className="group flex items-baseline justify-between gap-4 py-4 transition-colors"
                   >
                     <span className="font-heading font-bold">E-Mail</span>
-                    <span className="text-right text-mist transition-colors group-hover:text-snow">
+                    <span className="text-right text-ink-3 transition-colors group-hover:text-ink">
                       {site.email}
                     </span>
                   </a>
@@ -63,24 +63,24 @@ export default function KontaktPage() {
                     className="group flex items-baseline justify-between gap-4 py-4 transition-colors"
                   >
                     <span className="font-heading font-bold">Telefon</span>
-                    <span className="text-right text-mist transition-colors group-hover:text-snow">
+                    <span className="text-right text-ink-3 transition-colors group-hover:text-ink">
                       {site.phone}
                     </span>
                   </a>
                 </li>
                 <li className="flex items-baseline justify-between gap-4 py-4">
                   <span className="font-heading font-bold">Studio</span>
-                  <span className="text-right text-mist">
+                  <span className="text-right text-ink-3">
                     {site.city}, {site.country}
                   </span>
                 </li>
               </ul>
 
               <div id="termin" className="mt-12 scroll-mt-32">
-                <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-snow">
+                <h2 className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-ink">
                   Erstgespräch
                 </h2>
-                <p className="mt-4 text-sm leading-relaxed text-mist">
+                <p className="mt-4 text-sm leading-relaxed text-ink-3">
                   20-30 Minuten per Video-Call oder Telefon. Wir hören zu, ordnen
                   ein und sagen dir, was sich lohnt und was nicht. Kostenlos.
                 </p>
@@ -88,11 +88,11 @@ export default function KontaktPage() {
                   href={site.calendlyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-flex items-center justify-center gap-2.5 rounded border border-white/25 px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-snow transition-colors hover:border-white/60 hover:bg-white/5"
+                  className="mt-6 inline-flex items-center justify-center gap-2.5 rounded border border-ink/20 px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:border-ink/60 hover:bg-ink/5"
                 >
                   Erstgespräch buchen
                 </a>
-                <p className="mt-4 text-xs leading-relaxed text-mist">
+                <p className="mt-4 text-xs leading-relaxed text-ink-3">
                   Passt kein Termin? Schick uns zwei Wunschzeiten per WhatsApp, wir
                   bestätigen den passenden.
                 </p>

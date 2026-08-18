@@ -1,26 +1,28 @@
 import type { Metadata } from "next";
-import { Film } from "@/components/film/Film";
-import { ServiceBands } from "@/components/home/ServiceBands";
+import { Hero } from "@/components/mascot/Hero";
+import { Universe } from "@/components/home/Universe";
+import { Journey } from "@/components/home/Journey";
+import { Showcase } from "@/components/home/Showcase";
+import { Finale } from "@/components/home/Finale";
 
 export const metadata: Metadata = {
-  title: "Content Studio & Digital Agency Berlin, Netwitcher",
+  title: "Netwitcher, Digital Agency Berlin: Content, Ads, Web & Software",
   description:
-    "Netwitcher produziert Foto, Video, Reels und Social Content im eigenen Studio in Berlin und bringt ihn über Social Media, Meta Ads, TikTok Ads und Google Ads zu den richtigen Menschen.",
+    "Netwitcher macht Magie aus deiner Marke: Foto & Video aus dem eigenen Studio Berlin, Social Media & Ads, Websites, Shops und Software. Magic in Every Click.",
 };
 
 /**
- * Startseite — „From Nothing to Attention".
- *
- * Ein durchgehender Scroll-Film erzählt die Transformation:
- * Nichts → Aufmerksamkeit → Content → Distribution → Ziel → Handlung → Stern.
- * Text verkauft die Leistungen, Motion erzählt die Geschichte.
- * Danach: die Leistungsübersicht als echtes, scanbares DOM.
+ * Startseite. WITCH, der Kamera-Kopf, empfängt — danach:
+ * Universum (Leistungen) → Weg (Prozess) → Studio (Beweis) → Finale (CTA).
  */
 export default function HomePage() {
   return (
     <>
-      <Film />
-      <ServiceBands />
+      <Hero />
+      <Universe />
+      <Journey />
+      <Showcase />
+      <Finale />
     </>
   );
 }

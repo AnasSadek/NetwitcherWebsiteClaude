@@ -34,7 +34,7 @@ export default function FekraHubPage() {
                 FekraHub: Schulverwaltung,{" "}
                 <span className="text-mint">die sich selbst erklärt</span>
               </h1>
-              <p className="mt-6 text-base leading-relaxed text-mist md:text-lg">
+              <p className="mt-6 text-base leading-relaxed text-ink-3 md:text-lg">
                 FekraHub ist unsere selbst entwickelte Plattform für Schulen und
                 Bildungseinrichtungen: Anmeldungen, Kurse, Kommunikation und
                 Berichte an einem Ort, gebaut, weil Zettelwirtschaft und
@@ -61,12 +61,12 @@ export default function FekraHubPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((f, i) => (
               <Reveal key={f.title} delay={(i % 3) * 0.08}>
-                <div className="h-full rounded border border-line bg-night-700/60 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
+                <div className="h-full rounded border border-line bg-white p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
                   <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" className="mb-4">
                     <path d={ARROW_PATH} fill={ARROW_COLORS[f.color]} />
                   </svg>
                   <h3 className="font-heading text-base font-bold">{f.title}</h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-mist">{f.text}</p>
+                  <p className="mt-2.5 text-sm leading-relaxed text-ink-3">{f.text}</p>
                 </div>
               </Reveal>
             ))}
@@ -74,13 +74,13 @@ export default function FekraHubPage() {
         </div>
       </section>
 
-      <section className="bg-night-800 py-20 md:py-28">
+      <section className="bg-paper-2 py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <Reveal>
             <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
               Warum wir ein eigenes Produkt bauen
             </h2>
-            <p className="mt-6 text-base leading-relaxed text-mist">
+            <p className="mt-6 text-base leading-relaxed text-ink-3">
               FekraHub ist mehr als ein Produkt. Es ist unser Beweis, dass wir
               Software nicht nur versprechen, sondern betreiben. Jede Erfahrung aus
               dem echten Plattform-Alltag, Rollenmodelle, Datenmodelle, Support,

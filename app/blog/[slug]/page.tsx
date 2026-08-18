@@ -57,10 +57,10 @@ export default async function BlogPostPage({
       <article className="pt-36 pb-20 md:pt-44">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <Reveal>
-            <nav aria-label="Brotkrumen" className="mb-8 text-xs text-mist">
-              <Link href="/" className="hover:text-snow">Startseite</Link>
+            <nav aria-label="Brotkrumen" className="mb-8 text-xs text-ink-3">
+              <Link href="/" className="hover:text-ink">Startseite</Link>
               <span aria-hidden="true"> / </span>
-              <Link href="/blog" className="hover:text-snow">Blog</Link>
+              <Link href="/blog" className="hover:text-ink">Blog</Link>
             </nav>
             <p className="mb-4 font-heading text-xs font-bold uppercase tracking-[0.25em] text-mint">
               {post.category}
@@ -68,7 +68,7 @@ export default async function BlogPostPage({
             <h1 className="text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">
               {post.title}
             </h1>
-            <p className="mt-4 text-sm text-mist">
+            <p className="mt-4 text-sm text-ink-3">
               <time dateTime={post.date}>{dateFmt.format(new Date(post.date))}</time>
               {" · "}
               {post.readingTime} Lesezeit · Netwitcher Team
@@ -84,7 +84,7 @@ export default async function BlogPostPage({
                     </h2>
                   )}
                   {block.paragraphs.map((p, j) => (
-                    <p key={j} className="mb-4 text-base leading-relaxed text-mist">
+                    <p key={j} className="mb-4 text-base leading-relaxed text-ink-3">
                       {p}
                     </p>
                   ))}
@@ -93,11 +93,11 @@ export default async function BlogPostPage({
             ))}
           </div>
           <Reveal>
-            <div className="mt-14 rounded border border-line bg-night-700/60 p-8 text-center backdrop-blur">
+            <div className="mt-14 rounded border border-line bg-white p-8 text-center backdrop-blur">
               <h2 className="font-heading text-lg font-bold">
                 Diese Themen für dein Unternehmen umsetzen?
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-mist">
+              <p className="mt-3 text-sm leading-relaxed text-ink-3">
                 Im kostenlosen Erstgespräch übertragen wir das auf deine Marke: konkret und ohne Verpflichtung.
               </p>
               <div className="mt-6">

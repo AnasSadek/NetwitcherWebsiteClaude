@@ -46,7 +46,7 @@ export default function UeberUnsPage() {
                 Wir sind das Studio, das{" "}
                 <span className="text-mint">Content wie Vertrieb</span> denkt.
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-mist md:text-lg">
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-3 md:text-lg">
                 Netwitcher ist eine Digital Agency und ein Content-Studio aus Berlin.
                 Wir haben Netwitcher gegründet, weil wir zu oft dasselbe gesehen haben:
                 Unternehmen mit starken Produkten, deren Auftritt ihnen nicht gerecht
@@ -82,7 +82,7 @@ export default function UeberUnsPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {ARROW_TARGETS.map((t, i) => (
               <Reveal key={t.color} delay={i * 0.07}>
-                <div className="h-full rounded border border-line bg-night-700/60 p-6 text-center backdrop-blur transition-all duration-300 hover:-translate-y-1">
+                <div className="h-full rounded border border-line bg-white p-6 text-center backdrop-blur transition-all duration-300 hover:-translate-y-1">
                   <svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true" className="mx-auto mb-4">
                     <path d={ARROW_PATH} fill={ARROW_COLORS[t.color]} transform={`rotate(${i * 72} 50 50)`} />
                   </svg>
@@ -95,7 +95,7 @@ export default function UeberUnsPage() {
       </section>
 
       {/* Werte */}
-      <section className="bg-night-800 py-20 md:py-28">
+      <section className="bg-paper-2 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             title="Vier Prinzipien, an denen du uns messen kannst"
@@ -103,12 +103,12 @@ export default function UeberUnsPage() {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {werte.map((wert, i) => (
               <Reveal key={wert.title} delay={(i % 2) * 0.08}>
-                <div className="h-full rounded border border-line bg-night-700/60 p-8 backdrop-blur">
+                <div className="h-full rounded border border-line bg-white p-8 backdrop-blur">
                   <span className="font-heading text-2xl font-extrabold text-mint">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-3 font-heading text-lg font-bold">{wert.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-mist">{wert.text}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-3">{wert.text}</p>
                 </div>
               </Reveal>
             ))}
@@ -126,7 +126,7 @@ export default function UeberUnsPage() {
             <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
               Berlin ist unser Zuhause und unser Wettbewerbsvorteil
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-mist">
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ink-3">
               Mit unserem eigenen Content-Studio in Berlin produzieren wir dort, wo
               deine Zielgruppe lebt: schnell, flexibel und nah dran an Trends, die
               anderswo erst Monate später ankommen. Von hier aus betreuen wir

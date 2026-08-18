@@ -2,28 +2,28 @@ import Link from "next/link";
 import { ARROW_COLORS, ARROW_PATH } from "./arrows";
 
 /**
- * Netwitcher-Interaktionssystem.
+ * Netwitcher-Interaktionssystem (helle Bühne).
  *
- * Eine Familie, klare Rollen — keine Universal-Pille mit Gradient:
- *  primary   solide Markenfläche, hoher Kontrast, Pfeil wandert beim Hover
- *  studio    warme Studio-Aktion (gelb), gleiche Geometrie
- *  ghost     gerahmt, zurückhaltend — Sekundäraktion
- *  link      redaktioneller Textlink mit Unterstrich-Wischer
+ *  primary   Tinte auf Papier — der eine wichtige Klick
+ *  studio    warme Studio-Aktion (Sonnengelb)
+ *  ghost     gerahmt, zurückhaltend
+ *  link      redaktioneller Textlink
  *  whatsapp  Messenger-Aktion in Kanalfarbe
  *
- * Geometrie: leicht gerundete Kante (4px) statt Pillenform — nimmt die
- * kantige Logo-/EP-Boxi-Sprache auf. Keine Glow-Schatten.
+ * Pillenform, satte Fläche, Pfeil wandert beim Hover. Keine Verläufe auf
+ * Buttons — der Marken-Verlauf gehört den grossen Momenten.
  */
 
 const base =
-  "group relative inline-flex items-center justify-center gap-2.5 rounded font-heading text-sm font-bold tracking-wide transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-3";
+  "group relative inline-flex items-center justify-center gap-2.5 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-200 focus-visible:outline-3 focus-visible:outline-offset-3 active:translate-y-px";
 
 const styles = {
-  primary: `${base} bg-snow px-7 py-3.5 text-night hover:bg-white`,
-  studio: `${base} bg-sun px-7 py-3.5 text-night hover:brightness-110`,
-  ghost: `${base} border border-white/25 px-7 py-3.5 text-snow hover:border-white/60 hover:bg-white/5`,
-  whatsapp: `${base} bg-whatsapp px-7 py-3.5 text-night hover:brightness-110`,
-  link: "group inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.15em] text-snow transition-colors hover:text-mist",
+  primary: `${base} bg-ink px-7 py-3.5 text-white hover:bg-deep-2`,
+  studio: `${base} bg-sun px-7 py-3.5 text-ink hover:brightness-105`,
+  ghost: `${base} border-2 border-ink/15 px-7 py-3.5 text-ink hover:border-ink/40 hover:bg-ink/5`,
+  whatsapp: `${base} bg-whatsapp px-7 py-3.5 text-white hover:brightness-105`,
+  light: `${base} bg-white px-7 py-3.5 text-ink hover:bg-paper-2`,
+  link: "group inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.15em] text-ink transition-colors hover:text-violet",
 } as const;
 
 export type ButtonVariant = keyof typeof styles;
@@ -81,11 +81,11 @@ export function ButtonLink({
   );
 }
 
-/** Redaktioneller Textlink mit farbigem Pfeil-Bullet (Service-Kontext). */
+/** Redaktioneller Textlink mit farbigem Pfeil-Bullet. */
 export function ArrowLink({
   href,
   children,
-  color = "mint",
+  color = "violet",
   className = "",
 }: {
   href: string;

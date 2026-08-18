@@ -83,7 +83,7 @@ function Arrow({ color, className = "" }: { color: string; className?: string })
 }
 
 const inputCls =
-  "w-full rounded border border-white/15 bg-white/[0.03] px-4 py-3 text-base text-snow placeholder:text-mist/60 transition-colors hover:border-white/25 focus:border-mint focus:outline-none";
+  "w-full rounded border border-ink/15 bg-white px-4 py-3 text-base text-ink placeholder:text-ink-3 transition-colors hover:border-ink/20 focus:border-mint focus:outline-none";
 
 const STEP_LABELS = ["Thema", "Vorhaben", "Kontakt"];
 
@@ -188,7 +188,7 @@ function Flow() {
       {/* Fortschritt */}
       <p
         aria-live="polite"
-        className="font-heading text-xs font-bold uppercase tracking-[0.25em] text-mist"
+        className="font-heading text-xs font-bold uppercase tracking-[0.25em] text-ink-3"
       >
         Schritt {step + 1} von 3: {STEP_LABELS[step]}
       </p>
@@ -197,7 +197,7 @@ function Flow() {
           <span
             key={label}
             className={`h-0.5 flex-1 transition-colors duration-300 ${
-              i <= step ? "bg-mint" : "bg-white/12"
+              i <= step ? "bg-mint" : "bg-ink/10"
             }`}
           />
         ))}
@@ -223,7 +223,7 @@ function Flow() {
                 >
                   Wobei können wir helfen?
                 </h2>
-                <p className="mt-3 text-sm text-mist">
+                <p className="mt-3 text-sm text-ink-3">
                   Wähl das, was am ehesten passt. Alles Weitere klären wir im Gespräch.
                 </p>
                 <ul className="mt-7 grid gap-2 sm:grid-cols-2">
@@ -232,7 +232,7 @@ function Flow() {
                       <button
                         type="button"
                         onClick={() => choose(t)}
-                        className="group flex w-full items-start gap-3 rounded border border-white/12 bg-white/[0.02] px-4 py-4 text-left transition-colors hover:border-white/35 hover:bg-white/[0.05]"
+                        className="group flex w-full items-start gap-3 rounded border border-ink/10 bg-white px-4 py-4 text-left transition-colors hover:border-ink/35 hover:bg-ink/5"
                       >
                         <Arrow
                           color={ARROW_COLORS[t.accent]}
@@ -242,7 +242,7 @@ function Flow() {
                           <span className="block font-heading text-base font-bold tracking-tight">
                             {t.label}
                           </span>
-                          <span className="mt-0.5 block text-sm leading-snug text-mist">
+                          <span className="mt-0.5 block text-sm leading-snug text-ink-3">
                             {t.hint}
                           </span>
                         </span>
@@ -263,15 +263,15 @@ function Flow() {
                 >
                   Was steht an?
                 </h2>
-                <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-mist">
-                  <span className="inline-flex items-center gap-2 text-snow">
+                <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-3">
+                  <span className="inline-flex items-center gap-2 text-ink">
                     <Arrow color={ARROW_COLORS[topic?.accent ?? "mint"]} />
                     {topic?.label}
                   </span>
                   <button
                     type="button"
                     onClick={() => go(0)}
-                    className="underline underline-offset-4 transition-colors hover:text-snow"
+                    className="underline underline-offset-4 transition-colors hover:text-ink"
                   >
                     ändern
                   </button>
@@ -296,7 +296,7 @@ function Flow() {
                 <fieldset className="mt-7">
                   <legend className="mb-3 text-sm font-medium">
                     Wann soll es losgehen?{" "}
-                    <span className="text-mist">(optional)</span>
+                    <span className="text-ink-3">(optional)</span>
                   </legend>
                   <div className="flex flex-wrap gap-2">
                     {TIMINGS.map((t) => (
@@ -304,8 +304,8 @@ function Flow() {
                         key={t.id}
                         className={`cursor-pointer rounded border px-4 py-2.5 text-sm transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-mint ${
                           timing === t.id
-                            ? "border-mint bg-mint/10 text-snow"
-                            : "border-white/12 text-mist hover:border-white/35"
+                            ? "border-mint bg-mint/10 text-ink"
+                            : "border-ink/10 text-ink-3 hover:border-ink/35"
                         }`}
                       >
                         <input
@@ -326,7 +326,7 @@ function Flow() {
                   <button
                     type="button"
                     onClick={nextFromDetails}
-                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-snow px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-night transition-colors hover:bg-white"
+                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-ink px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
                   >
                     Weiter
                     <Arrow
@@ -337,7 +337,7 @@ function Flow() {
                   <button
                     type="button"
                     onClick={() => go(0)}
-                    className="text-sm text-mist underline underline-offset-4 transition-colors hover:text-snow"
+                    className="text-sm text-ink-3 underline underline-offset-4 transition-colors hover:text-ink"
                   >
                     Zurück
                   </button>
@@ -355,7 +355,7 @@ function Flow() {
                 >
                   Wie erreichen wir dich?
                 </h2>
-                <p className="mt-3 text-sm text-mist">
+                <p className="mt-3 text-sm text-ink-3">
                   Wir antworten innerhalb eines Werktags, mit einer ehrlichen
                   Einschätzung, nicht mit einem Verkaufsgespräch.
                 </p>
@@ -394,7 +394,7 @@ function Flow() {
                   </div>
                   <div>
                     <label htmlFor="company" className="mb-2 block text-sm font-medium">
-                      Unternehmen <span className="text-mist">(optional)</span>
+                      Unternehmen <span className="text-ink-3">(optional)</span>
                     </label>
                     <input
                       id="company"
@@ -408,7 +408,7 @@ function Flow() {
                   </div>
                   <div>
                     <label htmlFor="phone" className="mb-2 block text-sm font-medium">
-                      Telefon <span className="text-mist">(optional)</span>
+                      Telefon <span className="text-ink-3">(optional)</span>
                     </label>
                     <input
                       id="phone"
@@ -423,10 +423,10 @@ function Flow() {
                   </div>
                 </div>
 
-                <p className="mt-6 text-xs leading-relaxed text-mist">
+                <p className="mt-6 text-xs leading-relaxed text-ink-3">
                   Mit dem Absenden stimmst du der Verarbeitung deiner Angaben zur
                   Bearbeitung der Anfrage zu. Details in der{" "}
-                  <Link href="/datenschutz" className="underline underline-offset-2 hover:text-snow">
+                  <Link href="/datenschutz" className="underline underline-offset-2 hover:text-ink">
                     Datenschutzerklärung
                   </Link>
                   .
@@ -435,7 +435,7 @@ function Flow() {
                 <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                   <button
                     type="submit"
-                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-snow px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-night transition-colors hover:bg-white"
+                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-ink px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
                   >
                     Anfrage senden
                     <Arrow
@@ -446,26 +446,26 @@ function Flow() {
                   <button
                     type="button"
                     onClick={submitWhatsapp}
-                    className="text-sm text-whatsapp underline underline-offset-4 transition-colors hover:text-snow"
+                    className="text-sm text-whatsapp underline underline-offset-4 transition-colors hover:text-ink"
                   >
                     Lieber per WhatsApp schicken
                   </button>
                   <button
                     type="button"
                     onClick={() => go(1)}
-                    className="text-sm text-mist underline underline-offset-4 transition-colors hover:text-snow"
+                    className="text-sm text-ink-3 underline underline-offset-4 transition-colors hover:text-ink"
                   >
                     Zurück
                   </button>
                 </div>
 
                 {sent && (
-                  <p role="status" className="mt-6 border-l-2 border-mint pl-4 text-sm leading-relaxed text-mist">
+                  <p role="status" className="mt-6 border-l-2 border-mint pl-4 text-sm leading-relaxed text-ink-3">
                     {sent === "mail"
                       ? "Dein E-Mail-Programm öffnet sich mit der fertigen Anfrage, einmal absenden, dann ist sie bei uns."
                       : "WhatsApp öffnet sich mit der fertigen Nachricht, einmal absenden, dann ist sie bei uns."}{" "}
                     Klappt das nicht, erreichst du uns direkt unter{" "}
-                    <a href={`mailto:${site.email}`} className="text-snow underline underline-offset-2">
+                    <a href={`mailto:${site.email}`} className="text-ink underline underline-offset-2">
                       {site.email}
                     </a>
                     .

@@ -45,7 +45,7 @@ export default function BlogPage() {
                 <Reveal as="article" key={post.slug} delay={(i % 3) * 0.08} className="h-full">
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="group flex h-full flex-col rounded border border-line bg-night-700/60 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
+                    className="group flex h-full flex-col rounded border border-line bg-white p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
                   >
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <span
@@ -58,11 +58,11 @@ export default function BlogPage() {
                         <path d={ARROW_PATH} fill={accent} />
                       </svg>
                     </div>
-                    <h2 className="font-heading text-lg font-bold leading-snug transition-colors group-hover:text-snow">
+                    <h2 className="font-heading text-lg font-bold leading-snug transition-colors group-hover:text-ink">
                       {post.title}
                     </h2>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-mist">{post.excerpt}</p>
-                    <p className="mt-5 text-xs text-mist">
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-3">{post.excerpt}</p>
+                    <p className="mt-5 text-xs text-ink-3">
                       <time dateTime={post.date}>{dateFmt.format(new Date(post.date))}</time>
                       {" · "}
                       {post.readingTime} Lesezeit

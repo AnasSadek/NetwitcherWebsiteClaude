@@ -1,28 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  --color-night: #06060f;
-  --color-night-800: #0b0b1a;
-  --color-night-700: #121226;
-  --color-night-600: #1a1a33;
-  --color-line: rgba(255, 255, 255, 0.08);
-  /* Offizielle Netwitcher-Markenfarben (aus dem Brand Guideline extrahiert) */
-  --color-mint: #2de2cc;
-  --color-violet: #845dce;
-  --color-pink: #f266b6;
-  --color-sun: #f7d739;
-  --color-sky: #03bef7;
-  --color-snow: #f4f4fb;
-  --color-mist: #a3a3c2;
+  /* ---------------------------------------------------------------
+     Offizielle Netwitcher-Markenfarben.
+     Exakt die Werte aus der Logo-Vektordatei (public/brand/star.svg),
+     damit Flächen, 3D-Licht und Logo nie auseinanderlaufen.
+     --------------------------------------------------------------- */
+  --color-violet: #8b5cf6;
+  --color-mint: #2ee6c8;
+  --color-sky: #0fb9f2;
+  --color-pink: #f468a8;
+  --color-sun: #f5d33d;
+
+  /* Helle Premium-Bühne */
+  --color-paper: #faf8ff;
+  --color-paper-2: #f2eeff;
+  --color-paper-3: #e9e3ff;
+  --color-ink: #150a33;
+  --color-ink-2: #3a2f5c;
+  --color-ink-3: #6b6191;
+  --color-line: rgba(21, 10, 51, 0.1);
+  --color-line-2: rgba(21, 10, 51, 0.06);
+
+  /* Tiefe Bühne (Hero-Panel, Footer) */
+  --color-deep: #1c0d3f;
+  --color-deep-2: #2a1560;
   --color-whatsapp: #25d366;
 
-  /* Display: echtes EP Boxi Bold (mit nachgerüsteten Umlauten) für große
-     Versal-Statements. Heading: Oxanium für gemischt gesetzte Überschriften.
-     Body: Nunito Sans als dokumentierter Ersatz für den fehlenden
-     Marken-Body-Font „Ballega" (Datei liegt nicht vor). */
+  /* Display: echtes EP Boxi Bold (Umlaute nachgerüstet), reine Versalien.
+     Body: Nunito Sans als dokumentierter Ersatz fuer den nicht gelieferten
+     Marken-Body-Font "Ballega". */
   --font-boxi: var(--font-epboxi), var(--font-oxanium), system-ui, sans-serif;
-  --font-heading: var(--font-oxanium), "Oxanium", system-ui, sans-serif;
+  --font-heading: var(--font-oxanium), system-ui, sans-serif;
   --font-body: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
+
+  --radius-card: 28px;
+  --radius-pill: 999px;
 
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 
@@ -36,19 +49,22 @@
       opacity: 0;
     }
   }
+
+  --shadow-lift: 0 24px 60px -24px rgba(21, 10, 51, 0.28);
+  --shadow-soft: 0 8px 30px -12px rgba(21, 10, 51, 0.18);
 }
 
-/* In @layer base, damit Utility-Klassen (z. B. font-boxi) sie überstimmen können. */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: var(--color-night);
-    color: var(--color-snow);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1,
@@ -57,18 +73,50 @@
   .font-heading {
     font-family: var(--font-heading);
   }
+
+  ::selection {
+    background: var(--color-violet);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-violet);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 }
 
-::selection {
-  background: var(--color-violet);
-  color: var(--color-snow);
-}
+@layer utilities {
+  /* Der Marken-Verlauf, exakt in der Reihenfolge der Logo-Arme. */
+  .brand-sweep {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-sun) 0%,
+      var(--color-pink) 26%,
+      var(--color-violet) 52%,
+      var(--color-sky) 76%,
+      var(--color-mint) 100%
+    );
+  }
 
-/* Fokus sichtbar & markenkonform */
-:focus-visible {
-  outline: 2px solid var(--color-mint);
-  outline-offset: 3px;
-  border-radius: 4px;
+  /* Weiche Lichtinsel hinter dem Maskottchen. */
+  .stage-glow {
+    background-image:
+      radial-gradient(58% 52% at 50% 44%, rgba(139, 92, 246, 0.55), transparent 70%),
+      radial-gradient(40% 40% at 72% 68%, rgba(15, 185, 242, 0.28), transparent 72%),
+      radial-gradient(36% 36% at 28% 70%, rgba(244, 104, 168, 0.24), transparent 72%);
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: radial-gradient(rgba(21, 10, 51, 0.055) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
