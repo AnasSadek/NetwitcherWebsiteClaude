@@ -87,6 +87,21 @@
 }
 
 @layer utilities {
+  /* Position des echten Logo-Auges über der Objektiv-Linse des Renders.
+     Werte sind auf die jeweilige Bilddatei kalibriert (Portrait / Wide). */
+  .witch-stage {
+    --eye-x: 49.2%;
+    --eye-y: 39.6%;
+    --eye-s: 17.5%;
+  }
+  @media (min-width: 1024px) {
+    .witch-stage {
+      --eye-x: 49.9%;
+      --eye-y: 40%;
+      --eye-s: 8%;
+    }
+  }
+
   /* Der Marken-Verlauf, exakt in der Reihenfolge der Logo-Arme. */
   .brand-sweep {
     background-image: linear-gradient(
