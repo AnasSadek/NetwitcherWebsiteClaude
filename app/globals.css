@@ -107,16 +107,6 @@
       radial-gradient(36% 36% at 28% 70%, rgba(244, 104, 168, 0.24), transparent 72%);
   }
 
-  .grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.5;
-    mix-blend-mode: multiply;
-    background-image: radial-gradient(rgba(21, 10, 51, 0.055) 1px, transparent 1px);
-    background-size: 3px 3px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

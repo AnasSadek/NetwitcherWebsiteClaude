@@ -80,10 +80,10 @@ export function Journey() {
           {/* Verbindungslinie, zeichnet sich einmal */}
           <div
             aria-hidden="true"
-            className="absolute left-[13px] top-4 hidden h-[3px] rounded-full brand-sweep md:block"
+            className="absolute left-[13px] top-4 hidden h-[3px] w-[calc(100%-26px)] origin-left rounded-full brand-sweep md:block"
             style={{
-              width: drawn || reduce ? "calc(100% - 26px)" : "0%",
-              transition: reduce ? "none" : "width 1100ms cubic-bezier(0.23,1,0.32,1) 150ms",
+              transform: drawn || reduce ? "scaleX(1)" : "scaleX(0)",
+              transition: reduce ? "none" : "transform 1100ms cubic-bezier(0.23,1,0.32,1) 150ms",
             }}
           />
           <ol className="grid gap-10 md:grid-cols-4 md:gap-6">
