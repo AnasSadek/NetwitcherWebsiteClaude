@@ -36,10 +36,24 @@ export function HeroStage() {
   const sx = useSpring(tx, { stiffness: 55, damping: 13, mass: 1 });
   const sy = useSpring(ty, { stiffness: 55, damping: 13, mass: 1 });
 
-  // Charakter: dreht sich leicht ZUM Cursor, hebt sich minimal
-  const charX = useTransform(sx, (v) => v * 16);
-  const charY = useTransform(sy, (v) => v * 9);
-  const charR = useTransform(sx, (v) => v * 2.2);
+  // Charakter: dezente Grundbewegung — die eigentliche Aussage ist die
+  // Kopfdrehung (Ansichten-Überblendung) + Pupillen-Blick des Logo-Auges
+  const charX = useTransform(sx, (v) => v * 9);
+  const charY = useTransform(sy, (v) => v * 6);
+  const charR = useTransform(sx, (v) => v * 1.1);
+
+  // Kopfdrehung: drei Renderings (links/frontal/rechts) werden nach
+  // Cursor-X überblendet — deterministisch, gefedert, umkehrbar.
+  const oL = useTransform(sx, [-0.85, -0.16], [1, 0]);
+  const oR = useTransform(sx, [0.16, 0.85], [0, 1]);
+  const oC = useTransform([oL, oR] as const, ([l, r]: number[]) => 1 - Math.max(l, r));
+
+  // Das Logo-Auge klebt auf der Linse: Position wandert mit der Ansicht,
+  // dazu Pupillen-Offset und leichte 3D-Neigung Richtung Cursor.
+  const eyeLeft = useTransform(sx, [-1, 0, 1], ["44.5%", "48.9%", "58.1%"]);
+  const eyeRotY = useTransform(sx, (v) => v * 30);
+  const pupilX = useTransform(sx, (v) => v * 9);
+  const pupilY = useTransform(sy, (v) => v * 7);
   // Karten: eigene Tiefe, gegenläufig
   const cardX = useTransform(sx, (v) => v * -26);
   const cardY = useTransform(sy, (v) => v * -14);
@@ -133,7 +147,7 @@ export function HeroStage() {
 
       {/* ---------- Der Charakter ---------- */}
       <motion.div
-        className="witch-stage relative mx-auto aspect-[4/5] w-full max-w-[560px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
+        className="witch-stage relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:900px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
         style={reduce ? undefined : { x: charX, y: charY, rotate: charR }}
         animate={
           reduce
@@ -141,30 +155,52 @@ export function HeroStage() {
             : { y: [0, -7, 0], transition: { duration: 5.2, repeat: Infinity, ease: "easeInOut" } }
         }
       >
-        <picture>
-          <source media="(min-width: 1024px)" type="image/avif" srcSet="/mascot/witch-wide.avif" />
-          <source media="(min-width: 1024px)" srcSet="/mascot/witch-wide.webp" />
-          <source type="image/avif" srcSet="/mascot/witch-portrait.avif" />
-          <img
-            src="/mascot/witch-portrait.webp"
-            alt="WITCH, das Netwitcher-Maskottchen: eine Figur mit Kamera-Kopf im lila Hoodie"
-            className="h-full w-full object-cover"
-            fetchPriority="high"
-          />
-        </picture>
-
-        {/* Echtes Logo als leuchtendes Auge — blinzelt eigenständig */}
         <motion.div
-          className="absolute"
+          className="h-full w-full will-change-[opacity]"
+          style={coarse || reduce ? undefined : { opacity: oC }}
+        >
+          <picture>
+            <source media="(min-width: 1024px)" type="image/avif" srcSet="/mascot/witch-wide.avif" />
+            <source media="(min-width: 1024px)" srcSet="/mascot/witch-wide.webp" />
+            <source type="image/avif" srcSet="/mascot/witch-portrait.avif" />
+            <img
+              src="/mascot/witch-portrait.webp"
+              alt="WITCH, das Netwitcher-Maskottchen: eine Figur mit Kamera-Kopf im lila Hoodie"
+              className="h-full w-full object-cover"
+              fetchPriority="high"
+            />
+          </picture>
+        </motion.div>
+
+        {/* Seitenansichten: nur Desktop, per Cursor-X eingeblendet */}
+        {!coarse && !reduce && (
+          <>
+            <motion.picture className="absolute inset-0 hidden will-change-[opacity] lg:block" style={{ opacity: oL }} aria-hidden="true">
+              <source type="image/avif" srcSet="/mascot/witch-wide-left.avif" />
+              <img src="/mascot/witch-wide-left.webp" alt="" className="h-full w-full object-cover" loading="eager" decoding="async" />
+            </motion.picture>
+            <motion.picture className="absolute inset-0 hidden will-change-[opacity] lg:block" style={{ opacity: oR }} aria-hidden="true">
+              <source type="image/avif" srcSet="/mascot/witch-wide-right.avif" />
+              <img src="/mascot/witch-wide-right.webp" alt="" className="h-full w-full object-cover" loading="eager" decoding="async" />
+            </motion.picture>
+          </>
+        )}
+
+        {/* Echtes Logo als leuchtendes Auge — folgt der Linse, blinzelt */}
+        <motion.div
+          className="absolute [transform-style:preserve-3d]"
           style={{
-            left: "var(--eye-x)",
+            left: coarse || reduce ? "var(--eye-x)" : (eyeLeft as unknown as string),
             top: "var(--eye-y)",
             width: "var(--eye-s)",
-            // KEIN transform hier: framer-motion überschreibt transform beim
-            // Animieren von scale. Zentrierung über negative Margins
+            // KEIN statisches transform: framer-motion verwaltet transform
+            // selbst (x/y/rotateY/scale). Zentrierung über negative Margins
             // (Margin-Prozente beziehen sich auf die Containerbreite).
             marginLeft: "calc(var(--eye-s) / -2)",
             marginTop: "calc(var(--eye-s) / -2)",
+            x: reduce ? 0 : pupilX,
+            y: reduce ? 0 : pupilY,
+            rotateY: coarse || reduce ? 0 : eyeRotY,
           }}
           animate={
             reduce
