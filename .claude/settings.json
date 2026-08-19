@@ -5,6 +5,15 @@
         "source": "github",
         "repo": "anthropics/skills"
       }
+    },
+    "21st": {
+      "source": {
+        "source": "github",
+        "repo": "21st-dev/claude-code-plugin"
+      }
     }
-  }
+  },
+  "enabledMcpjsonServers": [
+    "21st"
+  ]
 }
