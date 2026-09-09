@@ -27,6 +27,12 @@
   --color-deep-2: #2a1560;
   --color-whatsapp: #25d366;
 
+  /* Portfolio-Bühne: Licht aus, Arbeit an. Tiefer als --color-deep,
+     damit Medien und Farben tragen. */
+  --color-void: #0b0620;
+  --color-void-2: #130b30;
+  --color-void-3: #1b1140;
+
   /* Display: echtes EP Boxi Bold (Umlaute nachgerüstet), reine Versalien.
      Body: Nunito Sans als dokumentierter Ersatz fuer den nicht gelieferten
      Marken-Body-Font "Ballega". */
@@ -38,6 +44,16 @@
   --radius-pill: 999px;
 
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  --animate-strip: strip 70s linear infinite;
+
+  @keyframes strip {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 
   @keyframes pulse-ring {
     0% {
@@ -86,7 +102,48 @@
   }
 }
 
+@layer base {
+  /* Portfolio-Routen schalten die ganze Seite auf die dunkle Bühne
+     (inkl. Overscroll-Flächen). Gesetzt von components/portfolio/DarkStage. */
+  html[data-stage="dark"] body {
+    background-color: var(--color-void);
+    color: #fff;
+  }
+  html[data-stage="dark"] :focus-visible {
+    outline-color: var(--color-mint);
+  }
+}
+
 @layer utilities {
+  /* Website-Vorschau: langer Screenshot fährt beim Hover nach unten. */
+  .scroll-preview img {
+    object-position: top;
+    transition: object-position 5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @media (hover: hover) {
+    .scroll-preview:hover img {
+      object-position: bottom;
+    }
+  }
+
+  /* Feines Punktraster für Platzhalter & Bühnen. */
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  /* Weiche Ränder für den Filmstreifen. */
+  .fade-x {
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Position des echten Logo-Auges über der Objektiv-Linse des Renders.
      Werte sind auf die jeweilige Bilddatei kalibriert (Portrait / Wide). */
   .witch-stage {

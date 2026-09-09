@@ -48,6 +48,7 @@ auf lokale Pfade um. Danach kann der `remotePatterns`-Eintrag in
 | `app/datenschutz/page.tsx` | Hosting-Anbieter, ggf. Analytics/Pixel-Abschnitt |
 | `app/agb/page.tsx` | Rechtlich prüfen lassen |
 | `lib/cases.ts` | Echte Kunden, Kennzahlen und Projektbilder ergänzen |
+| `lib/portfolio.ts` + `public/portfolio/` | Portfolio-Projekte: Texte, Bilder, Videos, Website-Links (siehe `docs/06-portfolio.md`) |
 | `components/contact/InquiryFlow.tsx` | Formular-Backend anbinden – `buildMessage()` an eine API-Route POSTen (derzeit `mailto:`/WhatsApp-Versand) |
 
 ## Struktur
@@ -57,7 +58,8 @@ app/                  Seiten (App Router)
   page.tsx            Startseite (10 Sektionen)
   leistungen/         Übersicht + 9 Service-Seiten aus lib/services.ts
   studio/             Content Creation & Studio Berlin (Signature-Seite)
-  projekte/           Portfolio / Case Studies
+  portfolio/          Portfolio (/portfolio, /portfolio/[slug]) – Daten in lib/portfolio.ts, Anleitung docs/06-portfolio.md
+  projekte/           Branchen-Cases (Legacy)
   ueber-uns/          Über uns
   produkte/fekrahub/  Produktseite FekraHub
   blog/               Blog-Index + Artikel aus lib/blog.ts
