@@ -36,9 +36,11 @@ import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
 const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
 const smooth = (t: number) => t * t * (3 - 2 * t);
 const smoothEase = (t: number) => smooth(clamp(t, 0, 1));
+// Weiche Sättigung: nahe der Linse fein aufgelöst, am Bildschirmrand ≈ ±0.9.
+const soft = (v: number) => Math.tanh(v * 1.35);
 
-// Position der Linse im Bühnen-Koordinatensystem (-1..1), Desktop-Render.
-const EYE = { x: -0.02, y: -0.2 };
+/** Ab wann WITCH sich ohne Mausbewegung wieder selbst umschaut (ms). */
+const IDLE_AFTER = 3200;
 
 const SPRING = {
   eye: { stiffness: 320, damping: 26, mass: 0.6 },
@@ -134,7 +136,7 @@ export function HeroStage() {
 
   // Lehnen in die Bewegungsrichtung: aus der Kopf-Geschwindigkeit
   const vel = useVelocity(hx);
-  const lean = useSpring(useTransform(vel, (v) => clamp(v * 0.55, -2.5, 2.5)), SPRING.lean);
+  const lean = useSpring(useTransform(vel, (v) => clamp(v * 0.4, -1.8, 1.8)), SPRING.lean);
 
   /* ---------------- Körper: Versatz, 3D-Kippung, Lehnen ---------------- */
   const bodyTX = useTransform(bx, (v) => v * 10);
@@ -145,15 +147,16 @@ export function HeroStage() {
 
   /* ---------------- Kopf: Ansichten-Überblendung ---------------- */
   // Weiche Fenster statt linearer Mischung: die Drehung „rastet" spürbar.
-  const oL = useTransform(hx, (v) => (wide ? smoothEase((v + 0.2) / -0.55) : 0));
-  const oR = useTransform(hx, (v) => (wide ? smoothEase((v - 0.2) / 0.55) : 0));
+  const oL = useTransform(hx, (v) => (wide ? smoothEase((v + 0.18) / -0.5) : 0));
+  const oR = useTransform(hx, (v) => (wide ? smoothEase((v - 0.18) / 0.5) : 0));
   const oC = useTransform([oL, oR], ([l, r]: number[]) => 1 - Math.max(l, r));
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
-  // Blickrichtung relativ zur Linse, auf eine Ellipse begrenzt.
+  // Blickrichtung: das Ziel ist bereits relativ zur Linse, hier nur auf
+  // eine Ellipse begrenzt, damit Diagonalen nicht überschießen.
   const gaze = useTransform([ex, ey], ([x, y]: number[]) => {
-    let gx = (x - EYE.x) / 0.9;
-    let gy = (y - EYE.y) / 0.8;
+    let gx = x / 0.9;
+    let gy = y / 0.8;
     const m = Math.hypot(gx, gy);
     if (m > 1) {
       gx /= m;
@@ -176,8 +179,8 @@ export function HeroStage() {
 
   // Fokus: je näher der Zeiger an der Linse, desto stärker leuchtet sie.
   const focus = useTransform([ex, ey], ([x, y]: number[]) => {
-    const d = Math.hypot(x - EYE.x, (y - EYE.y) * 1.3);
-    return 1 - clamp((d - 0.1) / 0.35, 0, 1);
+    const d = Math.hypot(x, y * 1.3);
+    return 1 - clamp((d - 0.08) / 0.3, 0, 1);
   });
   const focusGlow = useTransform(focus, [0, 1], [0, 0.9]);
   const focusScale = useTransform(focus, [0, 1], [1, 1.07]);
@@ -195,61 +198,86 @@ export function HeroStage() {
   const glowY = useTransform(hy, (v) => 44 + v * 7);
   const glow = useMotionTemplate`radial-gradient(52% 46% at ${glowX}% ${glowY}%, rgba(139,92,246,0.6), transparent 70%), radial-gradient(38% 34% at 76% 70%, rgba(15,185,242,0.22), transparent 72%), radial-gradient(34% 30% at 22% 72%, rgba(244,104,168,0.2), transparent 72%)`;
 
-  /* ---------------- Zeiger über der Bühne ---------------- */
-  const rectRef = useRef<DOMRect | null>(null);
-  const [hovering, setHovering] = useState(false);
+  /* ---------------- Zeiger: WITCH schaut dem Cursor überall hin nach ---------------- */
+  // Richtung = Cursor minus Linsenmitte (echte Bildschirmposition), auf halbe
+  // Viewportbreite/-höhe normiert und weich gesättigt. So folgt der Blick
+  // auch über Headline, Header und Karten, nicht nur innerhalb der Bühne.
+  const charRef = useRef<HTMLDivElement>(null);
+  const lensRef = useRef({ x: 0, y: 0 });
+  const lastRef = useRef({ x: 0, y: 0, t: 0 });
+  const [idle, setIdle] = useState(!pointer);
+  // Ohne Maus (Touch, Reduced Motion aus) ist WITCH von Anfang an im
+  // Umschau-Modus; die Media-Flags kommen erst nach dem ersten Render.
+  useEffect(() => {
+    if (!pointer) setIdle(true);
+  }, [pointer]);
 
   useEffect(() => {
     if (!pointer) return;
-    const el = stageRef.current;
+    const el = charRef.current;
     if (!el) return;
-    const measure = () => (rectRef.current = el.getBoundingClientRect());
-    const onEnter = () => {
-      measure();
-      setHovering(true);
+    const measure = () => {
+      const r = el.getBoundingClientRect();
+      const cs = getComputedStyle(el);
+      const fx = parseFloat(cs.getPropertyValue("--eye-x")) / 100 || 0.49;
+      const fy = parseFloat(cs.getPropertyValue("--eye-y")) / 100 || 0.4;
+      lensRef.current = { x: r.left + r.width * fx, y: r.top + r.height * fy };
+    };
+    measure();
+    let timer = 0;
+    const armIdle = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setIdle(true), IDLE_AFTER);
     };
     const onMove = (e: PointerEvent) => {
-      const r = rectRef.current ?? measure();
-      tx.set(clamp(((e.clientX - r.left) / r.width) * 2 - 1));
-      ty.set(clamp(((e.clientY - r.top) / r.height) * 2 - 1));
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      const { x, y } = lensRef.current;
+      const nx = soft((e.clientX - x) / (window.innerWidth / 2));
+      const ny = soft((e.clientY - y) / (window.innerHeight / 2));
+      tx.set(nx);
+      ty.set(ny);
+      lastRef.current = { x: nx, y: ny, t: performance.now() };
+      setIdle(false);
+      armIdle();
     };
-    const onLeave = () => setHovering(false);
+    // Cursor verlässt das Fenster: nach kurzer Zeit umschauen
+    const onOut = (e: MouseEvent) => {
+      if (!e.relatedTarget) armIdle();
+    };
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     window.addEventListener("scroll", measure, { passive: true });
-    el.addEventListener("pointerenter", onEnter);
-    el.addEventListener("pointermove", onMove, { passive: true });
-    el.addEventListener("pointerleave", onLeave);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("mouseout", onOut);
+    armIdle();
     return () => {
+      window.clearTimeout(timer);
       ro.disconnect();
       window.removeEventListener("scroll", measure);
-      el.removeEventListener("pointerenter", onEnter);
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("mouseout", onOut);
     };
   }, [pointer, tx, ty]);
 
   /* ---------------- Umschauen, wenn niemand interagiert ---------------- */
-  // Desktop ohne Zeiger über der Bühne und Touch ohne Neigungssensor:
-  // ruhige, nicht periodische Blickwanderung. Auf dem Desktop kehrt WITCH
-  // erst kurz zur Mitte zurück, bevor er sich wieder umschaut.
+  // Startet erst nach IDLE_AFTER ohne Mausbewegung (Desktop) bzw. sofort
+  // (Touch ohne Neigungssensor) und blendet weich vom letzten Blickziel in
+  // eine ruhige, nicht periodische Wanderung. Die erste Mausbewegung
+  // übernimmt sofort wieder; die Federn glätten den Übergang.
   useEffect(() => {
-    if (!live || (pointer && hovering)) return;
+    if (!live || !idle) return;
     let raf = 0;
     let tilt = false;
     const t0 = performance.now();
-    const amp = coarse ? 1 : 0.55;
-    const delay = pointer ? 1400 : 0;
+    const from = { ...lastRef.current };
+    const amp = coarse ? 1 : 0.6;
     const loop = (now: number) => {
-      const t = (now - t0 - delay) / 1000;
-      if (t < 0) {
-        tx.set(0);
-        ty.set(0);
-      } else {
-        const ramp = smoothEase(t / 2.5);
-        tx.set((Math.sin(t * 0.35) * 0.5 + Math.sin(t * 0.13 + 1.7) * 0.25) * amp * ramp);
-        ty.set(Math.sin(t * 0.27 + 0.6) * 0.3 * amp * ramp);
-      }
+      const t = (now - t0) / 1000;
+      const ramp = smoothEase(t / 3);
+      const wx = (Math.sin(t * 0.35) * 0.5 + Math.sin(t * 0.13 + 1.7) * 0.25) * amp;
+      const wy = Math.sin(t * 0.27 + 0.6) * 0.3 * amp - 0.1;
+      tx.set(from.x + (wx - from.x) * ramp);
+      ty.set(from.y + (wy - from.y) * ramp);
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
@@ -271,7 +299,7 @@ export function HeroStage() {
       cancelAnimationFrame(raf);
       window.removeEventListener("deviceorientation", onTilt);
     };
-  }, [live, pointer, hovering, coarse, tx, ty]);
+  }, [live, idle, coarse, tx, ty]);
 
   /* ---------------- „Magic in Every Click": der Verschluss ---------------- */
   const [shot, setShot] = useState(0);
@@ -295,7 +323,10 @@ export function HeroStage() {
       <motion.div aria-hidden="true" className="absolute inset-0" style={live ? { background: glow } : undefined} />
 
       {/* ---------- Der Charakter ---------- */}
-      <div className="witch-stage relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:1000px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none">
+      <div
+        ref={charRef}
+        className="witch-stage relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:1000px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
+      >
         <div className={`h-full w-full ${live ? "animate-float" : ""}`}>
           <motion.div
             className="relative h-full w-full will-change-transform"
