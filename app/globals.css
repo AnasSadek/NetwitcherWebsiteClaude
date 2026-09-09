@@ -45,6 +45,17 @@
 
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
   --animate-strip: strip 70s linear infinite;
+  --animate-float: float 5.2s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-7px);
+    }
+  }
 
   @keyframes strip {
     from {
