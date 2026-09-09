@@ -26,8 +26,8 @@ export function Showcase() {
             <h2 id="showcase" className="font-boxi text-3xl leading-[1.1] text-ink md:text-5xl">
               AUS DEM STUDIO.
             </h2>
-            <ButtonLink href="/projekte" variant="ghost">
-              Projekte ansehen
+            <ButtonLink href="/portfolio" variant="ghost">
+              Portfolio ansehen
             </ButtonLink>
           </div>
         </Reveal>

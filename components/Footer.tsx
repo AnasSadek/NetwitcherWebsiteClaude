@@ -54,7 +54,7 @@ export function Footer() {
             </h2>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li><Link href="/ueber-uns" className="text-white/65 transition-colors hover:text-white">Über uns</Link></li>
-              <li><Link href="/projekte" className="text-white/65 transition-colors hover:text-white">Projekte & Cases</Link></li>
+              <li><Link href="/portfolio" className="text-white/65 transition-colors hover:text-white">Portfolio</Link></li>
               <li><Link href="/produkte/fekrahub" className="text-white/65 transition-colors hover:text-white">Produkte / FekraHub</Link></li>
               <li><Link href="/blog" className="text-white/65 transition-colors hover:text-white">Blog</Link></li>
               <li><Link href="/kontakt" className="text-white/65 transition-colors hover:text-white">Kontakt</Link></li>
