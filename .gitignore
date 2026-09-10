@@ -25,3 +25,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code – local, machine-specific settings (e.g. Impeccable hooks)
+.claude/settings.local.json
+
+# Pipeline-Abhängigkeiten der Kopfdrehung (separat installiert)
+scripts/headturn/node_modules

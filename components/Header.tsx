@@ -4,17 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { StarMark } from "./arrows";
+import { BrandStar, BrandWordmark } from "./brand/Logo";
 import { leistungenServices } from "@/lib/services";
+import { ARROW_PATH } from "./arrows";
 
 const navItems = [
-  { href: "/", label: "Startseite" },
   { href: "/leistungen", label: "Leistungen", dropdown: true },
   { href: "/studio", label: "Studio" },
-  { href: "/projekte", label: "Projekte" },
+  { href: "/portfolio", label: "Portfolio" },
   { href: "/ueber-uns", label: "Über uns" },
   { href: "/blog", label: "Blog" },
-  { href: "/kontakt", label: "Kontakt" },
 ];
 
 export function Header() {
@@ -23,12 +22,20 @@ export function Header() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
   const reduce = useReducedMotion();
+  // Auf der Portfolio-Bühne wechselt der Header auf helle Schrift.
+  const dark = pathname.startsWith("/portfolio");
 
+  // Sentinel statt Scroll-Listener: feuert nur beim Übertritt.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const sentinel = document.createElement("div");
+    sentinel.style.cssText = "position:absolute;top:24px;height:1px;width:1px;";
+    document.body.prepend(sentinel);
+    const io = new IntersectionObserver(([e]) => setScrolled(!e.isIntersecting), { threshold: 0 });
+    io.observe(sentinel);
+    return () => {
+      io.disconnect();
+      sentinel.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -38,25 +45,19 @@ export function Header() {
 
   return (
     <header
+      data-dark={dark || undefined}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-line bg-night/85 py-2 backdrop-blur-xl"
+          ? dark
+            ? "border-b border-white/10 bg-void/80 py-2 backdrop-blur-xl"
+            : "border-b border-line bg-paper/85 py-2 shadow-soft backdrop-blur-xl"
           : "bg-transparent py-4"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link
-          href="/"
-          className="group flex items-center gap-2.5"
-          aria-label="Netwitcher – Startseite"
-        >
-          <StarMark
-            size={38}
-            className="transition-transform duration-500 group-hover:rotate-[36deg]"
-          />
-          <span className="font-heading text-lg font-extrabold tracking-wider text-snow">
-            NETWITCHER
-          </span>
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 sm:px-6">
+        <Link href="/" className="group flex items-center gap-2.5" aria-label="Netwitcher, Startseite">
+          <BrandStar size={38} className="transition-transform duration-500 group-hover:rotate-[36deg]" />
+          <BrandWordmark height={14} className={dark ? "text-white" : "text-ink"} />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">
@@ -72,13 +73,18 @@ export function Header() {
                   href={item.href}
                   aria-expanded={servicesOpen}
                   onFocus={() => setServicesOpen(true)}
-                  className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-full px-3.5 py-2.5 text-sm font-semibold transition-colors ${
                     pathname.startsWith("/leistungen")
-                      ? "text-snow"
-                      : "text-mist hover:text-snow"
+                      ? dark ? "text-white" : "text-ink"
+                      : dark ? "text-white/60 hover:text-white" : "text-ink-3 hover:text-ink"
                   }`}
                 >
-                  {item.label} <span aria-hidden="true">▾</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    {item.label}
+                    <svg width="9" height="9" viewBox="0 0 100 100" aria-hidden="true" className="opacity-70">
+                      <path d={ARROW_PATH} fill="currentColor" transform="rotate(180 50 50)" />
+                    </svg>
+                  </span>
                 </Link>
                 <AnimatePresence>
                   {servicesOpen && (
@@ -89,10 +95,10 @@ export function Header() {
                       transition={{ duration: 0.18 }}
                       className="absolute left-1/2 top-full w-72 -translate-x-1/2 pt-3"
                     >
-                      <div className="rounded-2xl border border-line bg-night-800/95 p-2 shadow-2xl backdrop-blur-xl">
+                      <div className="rounded-card border border-line bg-white p-2 shadow-lift">
                         <Link
                           href="/studio"
-                          className="block rounded-xl px-4 py-2.5 text-sm font-semibold text-pink transition-colors hover:bg-white/5"
+                          className="block rounded-xl px-4 py-2.5 text-sm font-bold text-pink transition-colors hover:bg-paper-2"
                         >
                           Content Creation & Studio Berlin
                         </Link>
@@ -100,7 +106,7 @@ export function Header() {
                           <Link
                             key={s.slug}
                             href={s.href}
-                            className="block rounded-xl px-4 py-2.5 text-sm text-mist transition-colors hover:bg-white/5 hover:text-snow"
+                            className="block rounded-xl px-4 py-2.5 text-sm font-medium text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink"
                           >
                             {s.navTitle}
                           </Link>
@@ -114,8 +120,10 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
-                  pathname === item.href ? "text-snow" : "text-mist hover:text-snow"
+                className={`rounded-full px-3.5 py-2.5 text-sm font-semibold transition-colors ${
+                  pathname === item.href || pathname.startsWith(item.href + "/")
+                    ? dark ? "text-white" : "text-ink"
+                    : dark ? "text-white/60 hover:text-white" : "text-ink-3 hover:text-ink"
                 }`}
               >
                 {item.label}
@@ -127,27 +135,23 @@ export function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/kontakt"
-            className="hidden rounded-full bg-gradient-to-r from-violet to-sky px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-night shadow-glow-violet transition-all duration-200 hover:-translate-y-0.5 sm:inline-flex"
+            className={`hidden rounded-full px-5 py-2.5 font-heading text-xs font-bold tracking-wide transition-colors duration-200 sm:inline-flex ${
+              dark ? "bg-white text-ink hover:bg-paper-2" : "bg-ink text-white hover:bg-deep-2"
+            }`}
           >
-            Kostenloses Erstgespräch
+            Projekt starten
           </Link>
           <button
             type="button"
             onClick={() => setMobileOpen((o) => !o)}
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-full border border-line lg:hidden"
+            className={`flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-full border lg:hidden ${
+              dark ? "border-white/15 bg-white/10" : "border-line bg-white/70"
+            }`}
           >
-            <span
-              className={`h-0.5 w-5 bg-snow transition-transform ${
-                mobileOpen ? "translate-y-1 rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`h-0.5 w-5 bg-snow transition-transform ${
-                mobileOpen ? "-translate-y-1 -rotate-45" : ""
-              }`}
-            />
+            <span className={`h-0.5 w-5 transition-transform ${dark ? "bg-white" : "bg-ink"} ${mobileOpen ? "translate-y-1 rotate-45" : ""}`} />
+            <span className={`h-0.5 w-5 transition-transform ${dark ? "bg-white" : "bg-ink"} ${mobileOpen ? "-translate-y-1 -rotate-45" : ""}`} />
           </button>
         </div>
       </div>
@@ -160,23 +164,29 @@ export function Header() {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
             aria-label="Mobile Navigation"
-            className="overflow-hidden border-t border-line bg-night/95 backdrop-blur-xl lg:hidden"
+            className={`overflow-hidden border-t backdrop-blur-xl lg:hidden ${
+              dark ? "border-white/10 bg-void/95" : "border-line bg-paper/95"
+            }`}
           >
             <div className="space-y-1 px-4 py-4">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block rounded-xl px-4 py-3 text-base font-medium text-mist transition-colors hover:bg-white/5 hover:text-snow"
+                  className={`block rounded-xl px-4 py-3 text-base font-semibold transition-colors ${
+                    dark ? "text-white/80 hover:bg-white/10 hover:text-white" : "text-ink-2 hover:bg-white hover:text-ink"
+                  }`}
                 >
                   {item.label}
                 </Link>
               ))}
               <Link
                 href="/kontakt"
-                className="mt-3 block rounded-full bg-gradient-to-r from-violet to-sky px-5 py-3 text-center font-heading text-sm font-bold text-night"
+                className={`mt-3 block rounded-full px-5 py-3 text-center font-heading text-sm font-bold ${
+                  dark ? "bg-white text-ink" : "bg-ink text-white"
+                }`}
               >
-                Kostenloses Erstgespräch
+                Projekt starten
               </Link>
             </div>
           </motion.nav>

@@ -31,7 +31,7 @@ export function ServiceCard({
     <Reveal delay={delay} className="h-full">
       <Link
         href={service.href}
-        className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-night-700/60 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 ${accentBorder[service.color]}`}
+        className={`group relative flex h-full flex-col overflow-hidden rounded border border-line bg-white p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 ${accentBorder[service.color]}`}
       >
         <div
           aria-hidden="true"
@@ -40,7 +40,7 @@ export function ServiceCard({
         />
         <div className="mb-5 flex items-center justify-between">
           <span
-            className={`inline-flex h-13 w-13 items-center justify-center rounded-xl border border-line bg-white/5 p-3 transition-transform duration-300 group-hover:scale-110 ${accentText[service.color]}`}
+            className={`inline-flex h-13 w-13 items-center justify-center rounded border border-line bg-ink/5 p-3 transition-transform duration-300 group-hover:scale-110 ${accentText[service.color]}`}
           >
             <ServiceIcon icon={service.icon} />
           </span>
@@ -55,14 +55,14 @@ export function ServiceCard({
           </svg>
         </div>
         <h3 className="text-lg font-bold leading-snug">{service.title}</h3>
-        <p className="mt-3 flex-1 text-sm leading-relaxed text-mist">
+        <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-3">
           {service.teaser}
         </p>
         <ul className="mt-4 flex flex-wrap gap-1.5">
           {service.bullets.slice(0, 4).map((b) => (
             <li
               key={b}
-              className="rounded-full border border-line px-2.5 py-1 text-[11px] text-mist"
+              className="rounded border border-line px-2.5 py-1 text-[11px] text-ink-3"
             >
               {b}
             </li>
@@ -72,9 +72,15 @@ export function ServiceCard({
           className={`mt-6 inline-flex items-center gap-2 font-heading text-xs font-bold uppercase tracking-widest ${accentText[service.color]}`}
         >
           {service.cta}
-          <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
-            →
-          </span>
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 100 100"
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover:translate-x-1"
+          >
+            <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
+          </svg>
         </span>
       </Link>
     </Reveal>

@@ -3,7 +3,7 @@ import { LegalPage } from "@/components/LegalPage";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "AGB – Allgemeine Geschäftsbedingungen",
+  title: "AGB, Allgemeine Geschäftsbedingungen",
   description: "Allgemeine Geschäftsbedingungen der Netwitcher Digital Agency, Berlin.",
   robots: { index: false },
 };
@@ -104,9 +104,9 @@ export default function AgbPage() {
 
       <h2>§ 10 Schlussbestimmungen</h2>
       <p>
-        Es gilt das Recht der Bundesrepublik Deutschland. Erfüllungsort und – soweit
+        Es gilt das Recht der Bundesrepublik Deutschland. Erfüllungsort und, soweit
         der Kunde Kaufmann, juristische Person des öffentlichen Rechts oder
-        öffentlich-rechtliches Sondervermögen ist – Gerichtsstand ist Berlin.
+        öffentlich-rechtliches Sondervermögen ist, Gerichtsstand ist Berlin.
         Sollten einzelne Bestimmungen dieser AGB unwirksam sein, bleibt die
         Wirksamkeit der übrigen Bestimmungen unberührt.
       </p>

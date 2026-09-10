@@ -3,12 +3,12 @@ export const site = {
   legalName: "Netwitcher Digital Agency",
   slogan: "Magic in Every Click",
   claim: "Digital Agency & Content-Studio in Berlin",
-  url: "https://netwitcher.de",
-  email: "info@netwitcher.de",
-  // TODO: echte Telefonnummer & WhatsApp-Nummer eintragen (nur Ziffern bei whatsappNumber)
-  phone: "+49 30 12345678",
-  phoneHref: "tel:+493012345678",
-  whatsappNumber: "4915112345678",
+  // Kontaktdaten aus der offiziellen Netwitcher-Broschüre
+  url: "https://netwitcher.com",
+  email: "info@netwitcher.com",
+  phone: "+49 176 73247186",
+  phoneHref: "tel:+4917673247186",
+  whatsappNumber: "4917673247186",
   city: "Berlin",
   country: "Deutschland",
   // TODO: echte Straße + PLZ für Impressum/Schema eintragen

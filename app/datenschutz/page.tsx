@@ -78,7 +78,7 @@ export default function DatenschutzPage() {
       <h2>5. Analyse-Tools und Marketing</h2>
       <p>
         [Sofern eingesetzt: Hier Angaben zu Google Analytics, Meta Pixel, TikTok
-        Pixel o. Ä. ergänzen – inklusive Rechtsgrundlage (Einwilligung über ein
+        Pixel o. Ä. ergänzen, inklusive Rechtsgrundlage (Einwilligung über ein
         Consent-Banner, Art. 6 Abs. 1 lit. a DSGVO), Speicherdauer und
         Widerrufsmöglichkeit. Werden keine solchen Tools eingesetzt, kann dieser
         Abschnitt entfallen.]
@@ -94,7 +94,7 @@ export default function DatenschutzPage() {
         <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
         <li>Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
         <li>Widerruf erteilter Einwilligungen mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
-        <li>Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO) – zuständig ist die Berliner Beauftragte für Datenschutz und Informationsfreiheit</li>
+        <li>Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO), zuständig ist die Berliner Beauftragte für Datenschutz und Informationsfreiheit</li>
       </ul>
 
       <h2>7. Speicherdauer</h2>

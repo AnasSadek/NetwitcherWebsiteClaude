@@ -1,40 +1,71 @@
 @import "tailwindcss";
 
 @theme {
-  --color-night: #06060f;
-  --color-night-800: #0b0b1a;
-  --color-night-700: #121226;
-  --color-night-600: #1a1a33;
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-mint: #2ee6c8;
+  /* ---------------------------------------------------------------
+     Offizielle Netwitcher-Markenfarben.
+     Exakt die Werte aus der Logo-Vektordatei (public/brand/star.svg),
+     damit Flächen, 3D-Licht und Logo nie auseinanderlaufen.
+     --------------------------------------------------------------- */
   --color-violet: #8b5cf6;
+  --color-mint: #2ee6c8;
+  --color-sky: #0fb9f2;
   --color-pink: #f468a8;
   --color-sun: #f5d33d;
-  --color-sky: #0fb9f2;
-  --color-snow: #f4f4fb;
-  --color-mist: #a3a3c2;
+
+  /* Helle Premium-Bühne */
+  --color-paper: #faf8ff;
+  --color-paper-2: #f2eeff;
+  --color-paper-3: #e9e3ff;
+  --color-ink: #150a33;
+  --color-ink-2: #3a2f5c;
+  --color-ink-3: #6b6191;
+  --color-line: rgba(21, 10, 51, 0.1);
+  --color-line-2: rgba(21, 10, 51, 0.06);
+
+  /* Tiefe Bühne (Hero-Panel, Footer) */
+  --color-deep: #1c0d3f;
+  --color-deep-2: #2a1560;
   --color-whatsapp: #25d366;
 
-  --font-heading: var(--font-orbitron), "Orbitron", system-ui, sans-serif;
-  --font-body: var(--font-grotesk), "Space Grotesk", system-ui, sans-serif;
+  /* Portfolio-Bühne: Licht aus, Arbeit an. Tiefer als --color-deep,
+     damit Medien und Farben tragen. */
+  --color-void: #0b0620;
+  --color-void-2: #130b30;
+  --color-void-3: #1b1140;
 
-  --shadow-glow-violet: 0 0 40px rgba(139, 92, 246, 0.35);
-  --shadow-glow-mint: 0 0 40px rgba(46, 230, 200, 0.3);
-  --shadow-glow-pink: 0 0 40px rgba(244, 104, 168, 0.3);
+  /* Display: echtes EP Boxi Bold (Umlaute nachgerüstet), reine Versalien.
+     Body: Nunito Sans als dokumentierter Ersatz fuer den nicht gelieferten
+     Marken-Body-Font "Ballega". */
+  --font-boxi: var(--font-epboxi), var(--font-oxanium), system-ui, sans-serif;
+  --font-heading: var(--font-oxanium), system-ui, sans-serif;
+  --font-body: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
 
-  --animate-float: float 7s ease-in-out infinite;
+  --radius-card: 28px;
+  --radius-pill: 999px;
+
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-  --animate-marquee: marquee 30s linear infinite;
+  --animate-strip: strip 70s linear infinite;
+  --animate-float: float 5.2s ease-in-out infinite;
 
   @keyframes float {
     0%,
     100% {
-      transform: translateY(0) rotate(0deg);
+      transform: translateY(0);
     }
     50% {
-      transform: translateY(-14px) rotate(3deg);
+      transform: translateY(-7px);
     }
   }
+
+  @keyframes strip {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   @keyframes pulse-ring {
     0% {
       transform: scale(1);
@@ -45,66 +76,122 @@
       opacity: 0;
     }
   }
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+
+  --shadow-lift: 0 24px 60px -24px rgba(21, 10, 51, 0.28);
+  --shadow-soft: 0 8px 30px -12px rgba(21, 10, 51, 0.18);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  ::selection {
+    background: var(--color-violet);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-violet);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 }
 
-html {
-  scroll-behavior: smooth;
+@layer base {
+  /* Portfolio-Routen schalten die ganze Seite auf die dunkle Bühne
+     (inkl. Overscroll-Flächen). Gesetzt von components/portfolio/DarkStage. */
+  html[data-stage="dark"] body {
+    background-color: var(--color-void);
+    color: #fff;
+  }
+  html[data-stage="dark"] :focus-visible {
+    outline-color: var(--color-mint);
+  }
 }
 
-body {
-  background-color: var(--color-night);
-  color: var(--color-snow);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-}
+@layer utilities {
+  /* Website-Vorschau: langer Screenshot fährt beim Hover nach unten. */
+  .scroll-preview img {
+    object-position: top;
+    transition: object-position 5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @media (hover: hover) {
+    .scroll-preview:hover img {
+      object-position: bottom;
+    }
+  }
 
-h1,
-h2,
-h3,
-.font-heading {
-  font-family: var(--font-heading);
-}
+  /* Feines Punktraster für Platzhalter & Bühnen. */
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
 
-::selection {
-  background: var(--color-violet);
-  color: var(--color-snow);
-}
+  /* Weiche Ränder für den Filmstreifen. */
+  .fade-x {
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
 
-/* Aurora-Hintergrund für Sektionen */
-.aurora {
-  background:
-    radial-gradient(600px 300px at 15% 0%, rgba(139, 92, 246, 0.14), transparent 70%),
-    radial-gradient(500px 280px at 85% 20%, rgba(15, 185, 242, 0.1), transparent 70%),
-    radial-gradient(500px 300px at 50% 100%, rgba(244, 104, 168, 0.08), transparent 70%);
-}
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-.text-gradient {
-  background: linear-gradient(100deg, var(--color-violet), var(--color-sky) 55%, var(--color-mint));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+  /* Position des echten Logo-Auges über der Objektiv-Linse des Renders.
+     Werte sind auf die jeweilige Bilddatei kalibriert (Portrait / Wide). */
+  .witch-stage {
+    --eye-x: 49.2%;
+    --eye-y: 39.6%;
+    --eye-s: 17.5%;
+  }
+  /* Desktop: kalibriert auf den Center-Frame der Kopfdrehungs-Sequenz
+     (scripts/headturn/build.mjs gibt die Linsenmitte aus). */
+  @media (min-width: 1024px) {
+    .witch-stage {
+      --eye-x: 49.2%;
+      --eye-y: 39.3%;
+      --eye-s: 8.2%;
+    }
+  }
 
-.text-gradient-warm {
-  background: linear-gradient(100deg, var(--color-pink), var(--color-sun));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+  /* Der Marken-Verlauf, exakt in der Reihenfolge der Logo-Arme. */
+  .brand-sweep {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-sun) 0%,
+      var(--color-pink) 26%,
+      var(--color-violet) 52%,
+      var(--color-sky) 76%,
+      var(--color-mint) 100%
+    );
+  }
 
-/* Fokus sichtbar & markenkonform */
-:focus-visible {
-  outline: 2px solid var(--color-mint);
-  outline-offset: 3px;
-  border-radius: 4px;
+  /* Weiche Lichtinsel hinter dem Maskottchen. */
+  .stage-glow {
+    background-image:
+      radial-gradient(58% 52% at 50% 44%, rgba(139, 92, 246, 0.55), transparent 70%),
+      radial-gradient(40% 40% at 72% 68%, rgba(15, 185, 242, 0.28), transparent 72%),
+      radial-gradient(36% 36% at 28% 70%, rgba(244, 104, 168, 0.24), transparent 72%);
+  }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

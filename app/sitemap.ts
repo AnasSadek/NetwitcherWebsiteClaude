@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/blog";
+import { portfolioProjects } from "@/lib/portfolio";
 import { leistungenServices } from "@/lib/services";
 import { site } from "@/lib/site";
 
@@ -9,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/leistungen",
     "/studio",
+    "/portfolio",
     "/projekte",
     "/ueber-uns",
     "/produkte/fekrahub",
@@ -35,5 +37,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...servicePages, ...posts];
+  const projects = portfolioProjects.map((p) => ({
+    url: `${site.url}/portfolio/${p.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...servicePages, ...projects, ...posts];
 }
