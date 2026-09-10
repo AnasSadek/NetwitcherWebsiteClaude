@@ -1,0 +1,270 @@
+{
+ "categories": [
+  {
+   "id": "web",
+   "label": "Websites",
+   "color": "mint"
+  },
+  {
+   "id": "ecommerce",
+   "label": "E-Commerce",
+   "color": "mint"
+  },
+  {
+   "id": "social-video",
+   "label": "Social & Video",
+   "color": "pink"
+  },
+  {
+   "id": "photo",
+   "label": "Fotografie",
+   "color": "sun"
+  },
+  {
+   "id": "design",
+   "label": "Design & Branding",
+   "color": "sun"
+  },
+  {
+   "id": "software",
+   "label": "Software & Apps",
+   "color": "violet"
+  },
+  {
+   "id": "ai",
+   "label": "KI & Automation",
+   "color": "sky"
+  }
+ ],
+ "projects": [
+  {
+   "slug": "frida-eu",
+   "client": "FRIDA EU",
+   "title": "Digitaler Markenauftritt",
+   "description": "Projektbeschreibung folgt: In ein bis zwei Sätzen, was für FRIDA EU entstanden ist und welches Ziel es hatte.",
+   "year": 2025,
+   "categories": [
+    "web",
+    "design"
+   ],
+   "services": [
+    "Webdesign",
+    "Branding",
+    "Content"
+   ],
+   "color": "mint",
+   "featured": true,
+   "placeholder": true,
+   "cover": {
+    "alt": "FRIDA EU, Titelmotiv des Projekts",
+    "ratio": "16/10"
+   },
+   "website": {
+    "desktop": {
+     "alt": "FRIDA EU, Website auf dem Desktop",
+     "ratio": "16/10"
+    },
+    "mobile": {
+     "alt": "FRIDA EU, Website auf dem Smartphone",
+     "ratio": "9/16"
+    }
+   },
+   "images": [
+    {
+     "alt": "FRIDA EU, Markenanwendung",
+     "ratio": "4/5"
+    },
+    {
+     "alt": "FRIDA EU, Detail des Designsystems",
+     "ratio": "1/1"
+    },
+    {
+     "alt": "FRIDA EU, Bildwelt",
+     "ratio": "16/10"
+    }
+   ],
+   "story": [
+    {
+     "heading": "Ausgangslage",
+     "body": "Platzhalter: Wo stand die Marke, was hat gefehlt, was war das Ziel?"
+    },
+    {
+     "heading": "Umsetzung",
+     "body": "Platzhalter: Was genau wurde entwickelt, gestaltet oder produziert, und warum so?"
+    }
+   ]
+  },
+  {
+   "slug": "abziel",
+   "client": "ABZIEL",
+   "title": "Social Media & Reels",
+   "description": "Projektbeschreibung folgt: Kanal, Formate und Ziel der Content-Produktion für ABZIEL.",
+   "year": 2025,
+   "categories": [
+    "social-video"
+   ],
+   "services": [
+    "Social Media",
+    "Reels",
+    "Videoproduktion"
+   ],
+   "color": "pink",
+   "placeholder": true,
+   "cover": {
+    "alt": "ABZIEL, Titelmotiv des Projekts",
+    "ratio": "4/5"
+   },
+   "videos": [
+    {
+     "title": "Reel 01",
+     "source": "local",
+     "ratio": "9/16"
+    },
+    {
+     "title": "Reel 02",
+     "source": "local",
+     "ratio": "9/16"
+    },
+    {
+     "title": "Reel 03",
+     "source": "local",
+     "ratio": "9/16"
+    },
+    {
+     "title": "Werbefilm",
+     "source": "youtube",
+     "ratio": "16/9"
+    }
+   ],
+   "socialPosts": [
+    {
+     "alt": "ABZIEL, Social-Media-Post",
+     "ratio": "4/5"
+    },
+    {
+     "alt": "ABZIEL, Social-Media-Post",
+     "ratio": "4/5"
+    },
+    {
+     "alt": "ABZIEL, Social-Media-Post",
+     "ratio": "1/1"
+    },
+    {
+     "alt": "ABZIEL, Social-Media-Post",
+     "ratio": "4/5"
+    }
+   ]
+  },
+  {
+   "slug": "rushdia-care",
+   "client": "Rushdia Care",
+   "title": "Website & Fotografie",
+   "description": "Projektbeschreibung folgt: Website, Bildwelt und Ziel des Projekts für Rushdia Care.",
+   "year": 2024,
+   "categories": [
+    "web",
+    "photo"
+   ],
+   "services": [
+    "Webdesign",
+    "Fotografie",
+    "Texte"
+   ],
+   "color": "sky",
+   "placeholder": true,
+   "cover": {
+    "alt": "Rushdia Care, Titelmotiv des Projekts",
+    "ratio": "16/10"
+   },
+   "website": {
+    "desktop": {
+     "alt": "Rushdia Care, Website auf dem Desktop",
+     "ratio": "16/10"
+    },
+    "mobile": {
+     "alt": "Rushdia Care, Website auf dem Smartphone",
+     "ratio": "9/16"
+    }
+   },
+   "images": [
+    {
+     "alt": "Rushdia Care, Fotografie",
+     "ratio": "3/2"
+    },
+    {
+     "alt": "Rushdia Care, Fotografie",
+     "ratio": "4/5"
+    },
+    {
+     "alt": "Rushdia Care, Fotografie",
+     "ratio": "4/5"
+    },
+    {
+     "alt": "Rushdia Care, Fotografie",
+     "ratio": "3/2"
+    }
+   ]
+  },
+  {
+   "slug": "fekrahub",
+   "client": "FekraHub",
+   "title": "Plattform für Schulen",
+   "description": "Unsere eigene Verwaltungsplattform für Schulen: Anmeldungen, Kurse, Kommunikation und Berichte an einem Ort. Entwickelt und betrieben von Netwitcher.",
+   "year": "seit 2023",
+   "categories": [
+    "software"
+   ],
+   "services": [
+    "Produktdesign",
+    "Webanwendung",
+    "Plattform",
+    "Betrieb"
+   ],
+   "color": "violet",
+   "featured": true,
+   "placeholder": true,
+   "cover": {
+    "alt": "FekraHub, Übersicht der Plattform",
+    "ratio": "16/10"
+   },
+   "screens": [
+    {
+     "alt": "FekraHub, Dashboard der Verwaltung",
+     "ratio": "16/10",
+     "caption": "Dashboard"
+    },
+    {
+     "alt": "FekraHub, Kursverwaltung",
+     "ratio": "16/10",
+     "caption": "Kurse & Klassen"
+    },
+    {
+     "alt": "FekraHub, Elternansicht auf dem Smartphone",
+     "ratio": "9/16",
+     "caption": "Elternansicht"
+    },
+    {
+     "alt": "FekraHub, Berichte und Zeugnisse",
+     "ratio": "16/10",
+     "caption": "Berichte"
+    }
+   ],
+   "story": [
+    {
+     "heading": "Warum",
+     "body": "Zettelwirtschaft und Excel-Listen kosten Zeit, die in den Unterricht gehört. FekraHub bündelt den Alltag einer Bildungseinrichtung, von der ersten Anmeldung bis zum Zeugnis."
+    },
+    {
+     "heading": "Was",
+     "body": "Digitale Anmeldung, Kurs- und Klassenverwaltung, mehrsprachige Kommunikation mit Eltern, Berichte und Zeugnisse, dazu ein Rollen- und Rechtemodell für Verwaltung, Lehrkräfte und Familien."
+    }
+   ],
+   "links": [
+    {
+     "label": "Mehr zu FekraHub",
+     "href": "/produkte/fekrahub"
+    }
+   ]
+  }
+ ]
+}
