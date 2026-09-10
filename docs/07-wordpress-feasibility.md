@@ -129,13 +129,17 @@ Playwright/Chromium, 1440×900, 4 s schnelle Mausbewegung über den gesamten Vie
 
 | Engine | 1920 px | 1366 px | 820 px | 390 px |
 | --- | --- | --- | --- | --- |
-| Chromium/Edge | 0 % Differenz auf 7 von 8 Seiten* | ≤ 0,2 % (nur Hero-Zeitpunkt) | 0 %* | ≤ 0,36 % (Hero) |
-| Firefox | ≤ 0,17 % (Hero) | ≤ 0,33 % (Hero) | 0 % | ≤ 0,01 % |
-| WebKit/Safari | 0 % auf 6 von 8 Seiten* | ≤ 0,41 % (Hero) | 0 % | 0 % |
+| Chromium/Edge | 0 % außerhalb Hero, ≤ 0,13 % im Hero | 0 % / ≤ 0,2 % | 0 %** | 0 %** |
+| Firefox | 0 % / ≤ 0,24 % | 0 % / ≤ 0,33 % | 0 % | 0 % |
+| WebKit/Safari | 0 % / ≤ 0,79 % | 0 % / ≤ 0,41 % | 0 % | 0 % |
 
-\* Vier Paare der ersten Messung (Startseite 1920/820 Chromium, Startseite und Portfolio 1920 WebKit) zeigten 0,7–6,7 % Differenz. Ursache war die Messmethode, nicht die Seite: Playwrights `animations: "disabled"` beendet die Web-Animations von Framer Motion, ohne dass Framer den Endzustand setzt, dadurch blieben Reveal-Abschnitte in der **Next.js**-Aufnahme unsichtbar. Ohne diese Option (zweiter Lauf, siehe unten) verschwinden die Abweichungen.
+Erste Zahl: Differenz außerhalb des Hero-Bereichs (Layout, Typografie, Farben, Bilder), zweite: innerhalb des kontinuierlich animierten Hero (Aufnahmezeitpunkt von Blinzeln/Glow). Nicht-Startseiten haben keinen Hero und liegen durchgehend bei 0 % (Ausnahme: Portfolio-Index 0,15–0,33 % bei Chromium 820/390 px durch die laufende Filmstreifen-Animation).
+
+\* Vier Paare der ersten Messung (Startseite 1920/820 Chromium, Startseite und Portfolio 1920 WebKit) zeigten 0,7–6,7 % Differenz. Ursache war die Messmethode, nicht die Seite: Playwrights `animations: "disabled"` beendet die Web-Animations von Framer Motion, ohne dass Framer den Endzustand setzt, dadurch blieben Reveal-Abschnitte in der **Next.js**-Aufnahme unsichtbar. Im zweiten Lauf ohne diese Option (Tabelle oben) sind sie verschwunden.
+
+\*\* Chromium in Touch-Emulation (820/390 px) zeigt auf der Startseite 0,8–1,5 % Differenz im Abschnitt „Aus dem Studio“: `loading="lazy"`-Bilder, die beim schnellen Durchscrollen auf **beiden** Seiten noch nicht dekodiert waren (auf jeder Seite fehlten andere Kacheln, Layout identisch). Kein Rendering-Unterschied; Firefox und WebKit zeigen an denselben Viewports 0 %.
 - Hero-Funktionstest je Engine (Desktop-Viewports): Auge folgt der Maus, Canvas aktiv, 61 Frames geladen, auf beiden Seiten in Chromium, Firefox und WebKit. Tablet/Mobile: kein Canvas, keine Frame-Requests, auf beiden Seiten.
-- Restdifferenzen außerhalb des Hero: 0 Pixel in allen Paaren. Innerhalb des Hero-Bereichs bleiben ≤ 0,4 % durch den Aufnahmezeitpunkt (Blinzeln, Glow-Position).
+- Restdifferenzen außerhalb des Hero: 0 Pixel in allen Paaren (bis auf die Lazy-Load-Artefakte oben). Innerhalb des Hero-Bereichs bleiben ≤ 0,8 % durch den Aufnahmezeitpunkt (Blinzeln, Glow-Position).
 
 ### Nebenbefund (Next.js, unabhängig vom Experiment)
 Mit `prefers-reduced-motion: reduce` bleiben in der Next.js-Version alle `Reveal`-Abschnitte unsichtbar (`opacity: 0; transform: translateY(24px)` wird beim Server-Render gesetzt, aber mit `initial={false}` unter Reduced Motion nicht mehr aufgelöst). Reproduziert in Chromium/Firefox: die gesamte Startseite unterhalb des Hero ist für Nutzer mit reduzierter Bewegung leer. Das WP-Theme hat das Problem nicht (CSS-Klasse `.is-shown` wird unabhängig von der Animation gesetzt). Empfehlung: in `components/Reveal.tsx` bei `reduce` den sichtbaren Zustand direkt setzen (`initial={ opacity: 1, y: 0 }` oder Wrapper ohne Motion). Kleiner, isolierter Fix, in diesem Experiment bewusst nicht angefasst.

@@ -1,0 +1,662 @@
+[
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1920,
+   "h": 1003
+  },
+  "diff": {
+   "heightWp": 4854,
+   "heightNext": 4854,
+   "diffPixels": 11729,
+   "diffPct": 0.13,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5692,
+   "heightNext": 5692,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 893
+  },
+  "diff": {
+   "heightWp": 4714,
+   "heightNext": 4714,
+   "diffPixels": 7254,
+   "diffPct": 0.11,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5497,
+   "heightNext": 5497,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 820,
+   "h": 1294
+  },
+  "diff": {
+   "heightWp": 5618,
+   "heightNext": 5618,
+   "diffPixels": 54232,
+   "diffPct": 1.18,
+   "diffPixelsOutsideHero": 54232,
+   "diffPctOutsideHero": 1.53
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6464,
+   "heightNext": 6464,
+   "diffPixels": 7916,
+   "diffPct": 0.15
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 984
+  },
+  "diff": {
+   "heightWp": 7095,
+   "heightNext": 7095,
+   "diffPixels": 18966,
+   "diffPct": 0.69,
+   "diffPixelsOutsideHero": 18966,
+   "diffPctOutsideHero": 0.796
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7112,
+   "heightNext": 7112,
+   "diffPixels": 9073,
+   "diffPct": 0.33
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1920,
+   "h": 1003
+  },
+  "diff": {
+   "heightWp": 4854,
+   "heightNext": 4854,
+   "diffPixels": 22413,
+   "diffPct": 0.24,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5692,
+   "heightNext": 5692,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 893
+  },
+  "diff": {
+   "heightWp": 4714,
+   "heightNext": 4714,
+   "diffPixels": 19765,
+   "diffPct": 0.31,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5498,
+   "heightNext": 5498,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 820,
+   "h": 1294
+  },
+  "diff": {
+   "heightWp": 5618,
+   "heightNext": 5618,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6465,
+   "heightNext": 6465,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 984
+  },
+  "diff": {
+   "heightWp": 7095,
+   "heightNext": 7095,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7112,
+   "heightNext": 7112,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 451,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 451,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1920,
+   "h": 1008
+  },
+  "diff": {
+   "heightWp": 4851,
+   "heightNext": 4851,
+   "diffPixels": 73355,
+   "diffPct": 0.79,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5687,
+   "heightNext": 5687,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 393,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 393,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 898
+  },
+  "diff": {
+   "heightWp": 4711,
+   "heightNext": 4711,
+   "diffPixels": 20601,
+   "diffPct": 0.32,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5493,
+   "heightNext": 5493,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 820,
+   "h": 1292
+  },
+  "diff": {
+   "heightWp": 5605,
+   "heightNext": 5605,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6456,
+   "heightNext": 6456,
+   "diffPixels": 6,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 981
+  },
+  "diff": {
+   "heightWp": 7079,
+   "heightNext": 7079,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7095,
+   "heightNext": 7095,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ }
+]
