@@ -94,13 +94,12 @@ function nw_adjacent_projects(string $slug): array
     return ['prev' => null, 'next' => null];
 }
 
-/** "website" | "video" | "software" | "visual" (lib/portfolio.ts projectKind). */
+/** "website" | "video" | "software" | "visual" – by media present, as in lib/portfolio.ts projectKind(). */
 function nw_project_kind(array $p): string
 {
-    $cats = $p['categories'] ?? [];
-    if (in_array('web', $cats, true) || in_array('ecommerce', $cats, true)) return 'website';
-    if (in_array('social-video', $cats, true)) return 'video';
-    if (in_array('software', $cats, true) || in_array('ai', $cats, true)) return 'software';
+    if (!empty($p['website'])) return 'website';
+    if (!empty($p['videos'])) return 'video';
+    if (!empty($p['screens'])) return 'software';
     return 'visual';
 }
 

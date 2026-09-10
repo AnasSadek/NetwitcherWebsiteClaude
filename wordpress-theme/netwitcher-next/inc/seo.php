@@ -22,16 +22,14 @@ function nw_seo(): array
     } elseif (is_page()) {
         $slug = get_post_field('post_name', get_queried_object_id());
         $map = [
-            'leistungen' => ['Leistungen: Content, Marketing, Web & Software', 'Alle Leistungen von Netwitcher Berlin: Content Creation & Studio, Video, Social Media, Performance Marketing, Webdesign, SEO, Branding, Software, Support und Print.'],
-            'studio' => ['Content Creation & Studio Berlin', 'Content Creation Studio Berlin: Produktfotografie, Reels und Social-Media-Content aus einem Haus. Eigenes Studio, konsistenter Look, gebaut für Conversion.'],
-            'ueber-uns' => ['Über uns: Team & Arbeitsweise', 'Netwitcher ist ein Berliner Team aus Content-Creators, Strategen und Entwicklern. So arbeiten wir, dafür stehen wir.'],
+            'leistungen' => ['Leistungen, Content, Marketing, Web & Design aus Berlin', 'Alle Leistungen von Netwitcher Berlin: Content Creation, Foto- & Videoproduktion, Social Media, Performance Marketing, Webdesign, SEO, Branding, Software, Support und Print.'],
+            'ueber-uns' => ['Über uns. Das Team hinter Netwitcher', 'Netwitcher ist ein Berliner Studio für Content, Design, Technik und Marketing. Lerne das Team kennen, das Content als Verkaufswerkzeug denkt, nicht als Dekoration.'],
             'projekte' => ['Projekte & Case Studies, Content, Websites & Kampagnen', 'So arbeitet Netwitcher: Case Studies aus Food, Beauty, E-Commerce, Handwerk und B2B: Herausforderung, Lösung und Ergebnis pro Projekt. Aus Berlin, für ganz Deutschland.'],
-            'kontakt' => ['Kontakt & Erstgespräch', 'Projekt anfragen oder kostenloses Erstgespräch buchen. In drei kurzen Schritten sagst du uns, was ansteht. Antwort innerhalb eines Werktags.'],
-            'blog' => ['Blog: Content, Social Media & Marketing aus Berlin', 'Praxiswissen aus dem Netwitcher-Studio: Content Creation, Social Media, Ads und Websites, verständlich erklärt.'],
-            'fekrahub' => ['FekraHub: Plattform für Schulen', 'FekraHub ist unsere eigene Software: eine Plattform für Schulen mit Verwaltung, Kommunikation und Lernmaterial an einem Ort.'],
+            'kontakt' => ['Kontakt und Anfrage', 'Erzähl uns in drei kurzen Schritten, was ansteht: Content, Fotoshooting, Social Media, Ads, Website, SEO, Branding oder Software. Antwort innerhalb eines Werktags. Aus Berlin.'],
+            'fekrahub' => ['FekraHub, unsere Plattform für Bildungseinrichtungen', 'FekraHub ist die von Netwitcher entwickelte Verwaltungsplattform für Schulen und Bildungseinrichtungen: Anmeldungen, Kurse, Kommunikation und Berichte an einem Ort.'],
             'impressum' => ['Impressum', 'Impressum der Netwitcher Digital Agency, Berlin.'],
             'datenschutz' => ['Datenschutzerklärung', 'Datenschutzerklärung der Netwitcher Digital Agency, Berlin.'],
-            'agb' => ['AGB', 'Allgemeine Geschäftsbedingungen der Netwitcher Digital Agency, Berlin.'],
+            'agb' => ['AGB, Allgemeine Geschäftsbedingungen', 'Allgemeine Geschäftsbedingungen der Netwitcher Digital Agency, Berlin.'],
         ];
         if (isset($map[$slug])) {
             [$seo['title'], $seo['description']] = $map[$slug];
@@ -40,16 +38,19 @@ function nw_seo(): array
             $seo['description'] = $svc['seo']['description'];
         }
         if (in_array($slug, ['impressum', 'datenschutz', 'agb'], true)) $seo['noindex'] = true;
+    } elseif (is_home()) {
+        $seo['title'] = 'Blog, Praxiswissen zu Content, Foto & Marketing';
+        $seo['description'] = 'Der Netwitcher-Blog: ehrliches Praxiswissen zu Content Creation, Produktfotografie, Social Media und Performance Marketing. Aus unserem Studio in Berlin.';
     } elseif (is_singular('post')) {
         $seo['title'] = get_the_title();
         $seo['description'] = get_post_meta(get_the_ID(), '_nw_seo_description', true) ?: get_the_excerpt();
     } elseif (is_post_type_archive('portfolio')) {
-        $seo['title'] = 'Portfolio: Websites, Shops, Video & Software aus Berlin';
-        $seo['description'] = 'Ausgewählte Arbeiten von Netwitcher: Websites, E-Commerce, Social Video, Fotografie, Design, Software und KI. Echte Projekte, echte Ergebnisse.';
+        $seo['title'] = 'Unsere Arbeiten';
+        $seo['description'] = 'Ausgewählte Websites, Social-Media-Kampagnen, Videos, Designs, Software und digitale Erlebnisse von Netwitcher, Digital Agency & Content-Studio Berlin.';
     } elseif (is_singular('portfolio')) {
         $p = nw_project_data(get_the_ID());
-        $seo['title'] = ($p['title'] ?? get_the_title()) . ' · Portfolio';
-        $seo['description'] = $p['summary'] ?? '';
+        $seo['title'] = ($p['client'] ?? '') . ': ' . ($p['title'] ?? get_the_title());
+        $seo['description'] = $p['description'] ?? ($p['summary'] ?? '');
     } elseif (is_404()) {
         $seo['title'] = 'Seite nicht gefunden';
         $seo['noindex'] = true;
@@ -70,14 +71,14 @@ add_action('wp_head', function () {
     echo '<meta name="description" content="' . esc_attr($seo['description']) . '">' . "\n";
     echo '<meta name="robots" content="' . ($seo['noindex'] ? 'noindex, follow' : 'index, follow') . '">' . "\n";
     echo '<link rel="canonical" href="' . esc_url($url) . '">' . "\n";
-    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta property="og:type" content="' . (is_singular('portfolio') ? 'article' : 'website') . '">' . "\n";
     echo '<meta property="og:locale" content="de_DE">' . "\n";
     echo '<meta property="og:site_name" content="' . esc_attr($site['name']) . '">' . "\n";
     echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($seo['description']) . '">' . "\n";
     echo '<meta property="og:url" content="' . esc_url($url) . '">' . "\n";
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
-    echo '<meta name="theme-color" content="#faf8ff">' . "\n";
+    echo '<meta name="theme-color" content="' . (nw_is_dark_stage() ? '#0b0620' : '#faf8ff') . '">' . "\n";
     echo '<link rel="icon" href="' . esc_url(nw_asset('brand/icon.svg')) . '" type="image/svg+xml">' . "\n";
 }, 2);
 
