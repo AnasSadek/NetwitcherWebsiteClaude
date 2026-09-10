@@ -68,7 +68,7 @@ app/                  Seiten (App Router)
 components/           UI-Bausteine (Pfeile, Karten, Header, Formulare …)
 lib/                  Inhalte & Konfiguration (Copy lebt hier!)
 docs/                 Sitemap, Wireframe, Design-System, Animationsplan
-scripts/              fetch-media.mjs
+scripts/              fetch-media.mjs · headturn/ (Frame-Sequenz der WITCH-Kopfdrehung, siehe scripts/headturn/README.md)
 ```
 
 Alle deutschen Texte liegen zentral in `lib/` (services, cases, packages, blog) –
