@@ -14,6 +14,10 @@ import {
 import Link from "next/link";
 import { BrandStar } from "@/components/brand/Logo";
 import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
+import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
+import headTurnManifest from "./headturn.manifest.json";
+
+const HEAD_TURN = headTurnManifest as HeadTurnManifest;
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
@@ -152,11 +156,13 @@ export function HeroStage() {
   const bodyRY = useTransform(bx, (v) => v * 5);
   const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateX(${bodyRX}deg) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
 
-  /* ---------------- Kopf: Ansichten-Überblendung ---------------- */
-  // Weiche Fenster statt linearer Mischung: die Drehung „rastet" spürbar.
-  const oL = useTransform(hx, (v) => (wide ? smoothEase((v + 0.18) / -0.5) : 0));
-  const oR = useTransform(hx, (v) => (wide ? smoothEase((v - 0.18) / 0.5) : 0));
-  const oC = useTransform([oL, oR], ([l, r]: number[]) => 1 - Math.max(l, r));
+  /* ---------------- Kopf: Frame-Sequenz aus dem Turnaround-Clip ---------------- */
+  // Desktop mit Maus: der Kopf-Wert steuert die Sequenz (siehe HeadTurn).
+  const headTurn = pointer && wide;
+  // Linsenmitte wandert mit der Drehung; Versatz zur Mitte in Anteilen der
+  // Containerbreite bzw. -höhe (die Auge-Position ist auf die Mitte kalibriert).
+  const lensDX = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).x - HEAD_TURN.lens[HEAD_TURN.center].x) * 100 : 0));
+  const lensDY = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).y - HEAD_TURN.lens[HEAD_TURN.center].y) * 100 : 0));
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -173,11 +179,10 @@ export function HeroStage() {
   });
   const gazeX = useTransform(gaze, (g) => g[0] * 9);
   const gazeY = useTransform(gaze, (g) => g[1] * 7);
-  // Linse wandert mit der Kopfansicht: Anteil der eigenen Breite
-  // (Kalibrierung: 44.5 % / 48.9 % / 58.1 % Container bei 8.6 % Augenbreite).
-  const eyeShift = useTransform([oL, oR], ([l, r]: number[]) => -51 * l + 107 * r);
-  const eyeRY = useTransform(hx, (v) => (wide ? v * 22 : v * 10));
-  const eyeTransform = useMotionTemplate`translate3d(calc(${eyeShift}% + ${gazeX}px), ${gazeY}px, 0) rotateY(${eyeRY}deg)`;
+  // Auge folgt der Linse der Sequenz (cqw/cqh = Anteile des Charakter-
+  // Containers) plus Blick; dazu leichte Neigung mit der Drehung.
+  const eyeRY = useTransform(hx, (v) => (wide ? v * 16 : v * 10));
+  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px), 0) rotateY(${eyeRY}deg)`;
 
   // Glanzpunkt läuft dem Blick entgegen: verkauft die Glasfläche.
   const glintX = useTransform(gazeX, (v) => v * -0.6);
@@ -471,7 +476,7 @@ export function HeroStage() {
       {/* ---------- Der Charakter ---------- */}
       <div
         ref={charRef}
-        className="witch-stage relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:1000px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
+        className="witch-stage @container relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:1000px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
       >
         <div className={`h-full w-full ${live ? "animate-float" : ""}`}>
           {/* Einmalige Ganzkörper-Momente: Aufrichten beim Aufwachen, Rückstoß beim Auslösen */}
@@ -492,7 +497,7 @@ export function HeroStage() {
               className="relative h-full w-full will-change-transform"
               style={live ? { transform: bodyTransform } : undefined}
             >
-              <motion.div className="h-full w-full will-change-[opacity]" style={pointer ? { opacity: oC } : undefined}>
+              <div className="h-full w-full">
                 <picture>
                   <source media="(min-width: 1024px)" type="image/avif" srcSet="/mascot/witch-wide.avif" />
                   <source media="(min-width: 1024px)" srcSet="/mascot/witch-wide.webp" />
@@ -504,21 +509,10 @@ export function HeroStage() {
                     fetchPriority="high"
                   />
                 </picture>
-              </motion.div>
+              </div>
 
-              {/* Seitenansichten: nur Desktop mit Maus, per Kopf-Feder eingeblendet */}
-              {pointer && (
-                <>
-                  <motion.picture className="absolute inset-0 hidden will-change-[opacity] lg:block" style={{ opacity: oL }} aria-hidden="true">
-                    <source type="image/avif" srcSet="/mascot/witch-wide-left.avif" />
-                    <img src="/mascot/witch-wide-left.webp" alt="" className="h-full w-full object-cover" loading="eager" decoding="async" />
-                  </motion.picture>
-                  <motion.picture className="absolute inset-0 hidden will-change-[opacity] lg:block" style={{ opacity: oR }} aria-hidden="true">
-                    <source type="image/avif" srcSet="/mascot/witch-wide-right.avif" />
-                    <img src="/mascot/witch-wide-right.webp" alt="" className="h-full w-full object-cover" loading="eager" decoding="async" />
-                  </motion.picture>
-                </>
-              )}
+              {/* Kopfdrehung: Frame-Sequenz über dem statischen Poster (Desktop mit Maus) */}
+              <HeadTurn manifest={HEAD_TURN} base="/mascot/headturn" value={hx} enabled={headTurn} />
 
               {/* Echtes Logo als leuchtendes Auge: Blick, Fokus, Blinzeln */}
               <motion.div

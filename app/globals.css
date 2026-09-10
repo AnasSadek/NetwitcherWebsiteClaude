@@ -162,11 +162,13 @@
     --eye-y: 39.6%;
     --eye-s: 17.5%;
   }
+  /* Desktop: kalibriert auf den Center-Frame der Kopfdrehungs-Sequenz
+     (scripts/headturn/build.mjs gibt die Linsenmitte aus). */
   @media (min-width: 1024px) {
     .witch-stage {
-      --eye-x: 48.9%;
-      --eye-y: 39.8%;
-      --eye-s: 8.6%;
+      --eye-x: 49.2%;
+      --eye-y: 39.3%;
+      --eye-s: 8.2%;
     }
   }
 

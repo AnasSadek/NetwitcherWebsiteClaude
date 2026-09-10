@@ -1,0 +1,13 @@
+{
+  "name": "netwitcher-headturn-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "Erzeugt aus dem WITCH-Turnaround-Clip die Frame-Sequenz für die Kopfdrehung im Hero (public/mascot/headturn).",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "ffmpeg-static": "5.2.0",
+    "sharp": "0.34.3"
+  }
+}
