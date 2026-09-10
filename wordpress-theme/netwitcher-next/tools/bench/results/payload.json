@@ -1,0 +1,474 @@
+[
+ {
+  "page": "/",
+  "site": "wp",
+  "requests": 70,
+  "totalTransfer": 1723090,
+  "initialTransfer": 122636,
+  "sum": {
+   "html": {
+    "transfer": 15238,
+    "decoded": 80779,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "image": {
+    "transfer": 18238,
+    "decoded": 18703,
+    "n": 2
+   },
+   "css": {
+    "transfer": 13970,
+    "decoded": 75673,
+    "n": 1
+   },
+   "js": {
+    "transfer": 6130,
+    "decoded": 12638,
+    "n": 2
+   },
+   "headturn": {
+    "transfer": 1600454,
+    "decoded": 1582154,
+    "n": 61
+   }
+  },
+  "domNodes": 457,
+  "htmlDecoded": 80779
+ },
+ {
+  "page": "/",
+  "site": "next",
+  "requests": 94,
+  "totalTransfer": 2004712,
+  "initialTransfer": 404258,
+  "sum": {
+   "html": {
+    "transfer": 19027,
+    "decoded": 120034,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "js": {
+    "transfer": 208669,
+    "decoded": 631808,
+    "n": 19
+   },
+   "css": {
+    "transfer": 15604,
+    "decoded": 84010,
+    "n": 1
+   },
+   "image": {
+    "transfer": 19303,
+    "decoded": 18703,
+    "n": 2
+   },
+   "other": {
+    "transfer": 72595,
+    "decoded": 399068,
+    "n": 7
+   },
+   "headturn": {
+    "transfer": 1600454,
+    "decoded": 1582154,
+    "n": 61
+   }
+  },
+  "domNodes": 470,
+  "htmlDecoded": 120034
+ },
+ {
+  "page": "/portfolio/",
+  "site": "wp",
+  "requests": 8,
+  "totalTransfer": 104999,
+  "initialTransfer": 104999,
+  "sum": {
+   "html": {
+    "transfer": 16793,
+    "decoded": 130672,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 13970,
+    "decoded": 75673,
+    "n": 1
+   },
+   "js": {
+    "transfer": 4561,
+    "decoded": 9023,
+    "n": 2
+   },
+   "image": {
+    "transfer": 615,
+    "decoded": 1380,
+    "n": 1
+   }
+  },
+  "domNodes": 755,
+  "htmlDecoded": 130672
+ },
+ {
+  "page": "/portfolio/",
+  "site": "next",
+  "requests": 34,
+  "totalTransfer": 398794,
+  "initialTransfer": 398794,
+  "sum": {
+   "html": {
+    "transfer": 22805,
+    "decoded": 212588,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 15604,
+    "decoded": 84010,
+    "n": 1
+   },
+   "js": {
+    "transfer": 210697,
+    "decoded": 635294,
+    "n": 20
+   },
+   "image": {
+    "transfer": 1680,
+    "decoded": 1380,
+    "n": 1
+   },
+   "other": {
+    "transfer": 78948,
+    "decoded": 399571,
+    "n": 8
+   }
+  },
+  "domNodes": 821,
+  "htmlDecoded": 212588
+ },
+ {
+  "page": "/portfolio/frida-eu/",
+  "site": "wp",
+  "requests": 8,
+  "totalTransfer": 101428,
+  "initialTransfer": 101428,
+  "sum": {
+   "html": {
+    "transfer": 13222,
+    "decoded": 66402,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 13970,
+    "decoded": 75673,
+    "n": 1
+   },
+   "js": {
+    "transfer": 4561,
+    "decoded": 9023,
+    "n": 2
+   },
+   "image": {
+    "transfer": 615,
+    "decoded": 1380,
+    "n": 1
+   }
+  },
+  "domNodes": 392,
+  "htmlDecoded": 66402
+ },
+ {
+  "page": "/portfolio/frida-eu/",
+  "site": "next",
+  "requests": 33,
+  "totalTransfer": 386905,
+  "initialTransfer": 386905,
+  "sum": {
+   "html": {
+    "transfer": 18530,
+    "decoded": 116871,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "js": {
+    "transfer": 210697,
+    "decoded": 635294,
+    "n": 20
+   },
+   "css": {
+    "transfer": 15604,
+    "decoded": 84010,
+    "n": 1
+   },
+   "image": {
+    "transfer": 1680,
+    "decoded": 1380,
+    "n": 1
+   },
+   "other": {
+    "transfer": 71334,
+    "decoded": 393838,
+    "n": 7
+   }
+  },
+  "domNodes": 419,
+  "htmlDecoded": 116871
+ },
+ {
+  "page": "/leistungen/webdesign-ecommerce/",
+  "site": "wp",
+  "requests": 7,
+  "totalTransfer": 99127,
+  "initialTransfer": 99127,
+  "sum": {
+   "html": {
+    "transfer": 14180,
+    "decoded": 68047,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 13970,
+    "decoded": 75673,
+    "n": 1
+   },
+   "js": {
+    "transfer": 1302,
+    "decoded": 2337,
+    "n": 1
+   },
+   "image": {
+    "transfer": 615,
+    "decoded": 1380,
+    "n": 1
+   }
+  },
+  "domNodes": 386,
+  "htmlDecoded": 68047
+ },
+ {
+  "page": "/leistungen/webdesign-ecommerce/",
+  "site": "next",
+  "requests": 29,
+  "totalTransfer": 382163,
+  "initialTransfer": 382163,
+  "sum": {
+   "html": {
+    "transfer": 19557,
+    "decoded": 118151,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "js": {
+    "transfer": 204928,
+    "decoded": 628967,
+    "n": 16
+   },
+   "css": {
+    "transfer": 15604,
+    "decoded": 84010,
+    "n": 1
+   },
+   "image": {
+    "transfer": 1680,
+    "decoded": 1380,
+    "n": 1
+   },
+   "other": {
+    "transfer": 71334,
+    "decoded": 393838,
+    "n": 7
+   }
+  },
+  "domNodes": 404,
+  "htmlDecoded": 118151
+ },
+ {
+  "page": "/kontakt/",
+  "site": "wp",
+  "requests": 8,
+  "totalTransfer": 100066,
+  "initialTransfer": 100066,
+  "sum": {
+   "html": {
+    "transfer": 13464,
+    "decoded": 64021,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 13970,
+    "decoded": 75673,
+    "n": 1
+   },
+   "js": {
+    "transfer": 2957,
+    "decoded": 5337,
+    "n": 2
+   },
+   "image": {
+    "transfer": 615,
+    "decoded": 1380,
+    "n": 1
+   }
+  },
+  "domNodes": 351,
+  "htmlDecoded": 64021
+ },
+ {
+  "page": "/kontakt/",
+  "site": "next",
+  "requests": 31,
+  "totalTransfer": 369906,
+  "initialTransfer": 369906,
+  "sum": {
+   "html": {
+    "transfer": 11301,
+    "decoded": 64087,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 15604,
+    "decoded": 84010,
+    "n": 1
+   },
+   "js": {
+    "transfer": 208669,
+    "decoded": 631808,
+    "n": 19
+   },
+   "image": {
+    "transfer": 1680,
+    "decoded": 1380,
+    "n": 1
+   },
+   "other": {
+    "transfer": 63592,
+    "decoded": 363501,
+    "n": 6
+   }
+  },
+  "domNodes": 298,
+  "htmlDecoded": 64087
+ },
+ {
+  "page": "/blog/",
+  "site": "wp",
+  "requests": 7,
+  "totalTransfer": 95059,
+  "initialTransfer": 95059,
+  "sum": {
+   "html": {
+    "transfer": 10112,
+    "decoded": 50853,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 13970,
+    "decoded": 75673,
+    "n": 1
+   },
+   "js": {
+    "transfer": 1302,
+    "decoded": 2337,
+    "n": 1
+   },
+   "image": {
+    "transfer": 615,
+    "decoded": 1380,
+    "n": 1
+   }
+  },
+  "domNodes": 253,
+  "htmlDecoded": 50853
+ },
+ {
+  "page": "/blog/",
+  "site": "next",
+  "requests": 31,
+  "totalTransfer": 394065,
+  "initialTransfer": 394065,
+  "sum": {
+   "html": {
+    "transfer": 13123,
+    "decoded": 78167,
+    "n": 1
+   },
+   "font": {
+    "transfer": 69060,
+    "decoded": 68160,
+    "n": 3
+   },
+   "css": {
+    "transfer": 15604,
+    "decoded": 84010,
+    "n": 1
+   },
+   "js": {
+    "transfer": 204928,
+    "decoded": 628967,
+    "n": 16
+   },
+   "image": {
+    "transfer": 1680,
+    "decoded": 1380,
+    "n": 1
+   },
+   "other": {
+    "transfer": 89670,
+    "decoded": 470566,
+    "n": 9
+   }
+  },
+  "domNodes": 266,
+  "htmlDecoded": 78167
+ }
+]

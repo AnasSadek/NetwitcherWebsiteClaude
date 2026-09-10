@@ -1,0 +1,51 @@
+{
+ "label": "wp",
+ "url": "http://127.0.0.1:8081/",
+ "mode": "desktop",
+ "loadMs": 122,
+ "nav": {
+  "ttfb": 40,
+  "dcl": 113,
+  "load": 113,
+  "fcp": 192,
+  "transfer": 15238,
+  "domNodes": 457
+ },
+ "initial": {
+  "requests": 70,
+  "bytes": 1838107,
+  "js": 12638,
+  "css": 75673,
+  "img": 17323,
+  "font": 68160,
+  "doc": 80779,
+  "headturnFrames": 61,
+  "headturnBytes": 1582154
+ },
+ "byType": {
+  "document": 80779,
+  "stylesheet": 75673,
+  "font": 68160,
+  "image": 17323,
+  "script": 12638,
+  "fetch": 1582154,
+  "other": 1380
+ },
+ "motion": {
+  "fps": 39.8,
+  "frames": 159,
+  "longFrames": 72,
+  "veryLongFrames": 9,
+  "p95FrameMs": 49.9,
+  "maxFrameMs": 50.1,
+  "eyeUpdatesPerSec": 39.8,
+  "canvas": {
+   "hidden": false,
+   "w": 608,
+   "h": 412,
+   "visible": true
+  },
+  "headturnFramesLoaded": 61,
+  "framesAfterIdle": 61
+ }
+}

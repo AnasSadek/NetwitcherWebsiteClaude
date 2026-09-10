@@ -1,0 +1,40 @@
+{
+ "label": "next",
+ "url": "http://127.0.0.1:3100/",
+ "mode": "mobile",
+ "loadMs": 170,
+ "nav": {
+  "ttfb": 7,
+  "dcl": 78,
+  "load": 166,
+  "fcp": 116,
+  "transfer": 19027,
+  "domNodes": 466
+ },
+ "initial": {
+  "requests": 20,
+  "bytes": 989133,
+  "js": 589562,
+  "css": 84010,
+  "img": 30550,
+  "font": 68160,
+  "doc": 120034,
+  "headturnFrames": 0,
+  "headturnBytes": 0
+ },
+ "byType": {
+  "document": 120034,
+  "font": 68160,
+  "image": 30550,
+  "stylesheet": 84010,
+  "script": 589562,
+  "other": 1380,
+  "fetch": 95437
+ },
+ "motion": {
+  "fps": 60,
+  "longFrames": 0,
+  "headturnFramesLoaded": 0,
+  "canvasPresent": false
+ }
+}

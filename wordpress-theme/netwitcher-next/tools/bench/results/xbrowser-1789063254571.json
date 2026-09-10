@@ -1,0 +1,1886 @@
+[
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1920,
+   "h": 1003
+  },
+  "diff": {
+   "heightWp": 4854,
+   "heightNext": 4854,
+   "diffPixels": 144415,
+   "diffPct": 1.55,
+   "diffPixelsOutsideHero": 141086,
+   "diffPctOutsideHero": 1.908
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5692,
+   "heightNext": 5692,
+   "diffPixels": 7672,
+   "diffPct": 0.07
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5551,
+   "heightNext": 5551,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3384,
+   "heightNext": 3384,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4100,
+   "heightNext": 4100,
+   "diffPixels": 6595,
+   "diffPct": 0.08
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4583,
+   "heightNext": 4583,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1722,
+   "heightNext": 1722,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "desktop-xl",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1948,
+   "heightNext": 1948,
+   "diffPixels": 4,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 893
+  },
+  "diff": {
+   "heightWp": 4714,
+   "heightNext": 4714,
+   "diffPixels": 3485,
+   "diffPct": 0.05,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5497,
+   "heightNext": 5497,
+   "diffPixels": 7992,
+   "diffPct": 0.11
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5297,
+   "heightNext": 5297,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3384,
+   "heightNext": 3384,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4100,
+   "heightNext": 4100,
+   "diffPixels": 6766,
+   "diffPct": 0.12
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4583,
+   "heightNext": 4583,
+   "diffPixels": 4368,
+   "diffPct": 0.07
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1722,
+   "heightNext": 1722,
+   "diffPixels": 4736,
+   "diffPct": 0.2
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "laptop",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1948,
+   "heightNext": 1948,
+   "diffPixels": 2318,
+   "diffPct": 0.09
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 820,
+   "h": 1294
+  },
+  "diff": {
+   "heightWp": 5618,
+   "heightNext": 5618,
+   "diffPixels": 54232,
+   "diffPct": 1.18,
+   "diffPixelsOutsideHero": 54232,
+   "diffPctOutsideHero": 1.53
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6464,
+   "heightNext": 6464,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5442,
+   "heightNext": 5442,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4197,
+   "heightNext": 4197,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4990,
+   "heightNext": 4990,
+   "diffPixels": 12,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7121,
+   "heightNext": 7121,
+   "diffPixels": 4118,
+   "diffPct": 0.07
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 2492,
+   "heightNext": 2492,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "tablet",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 2557,
+   "heightNext": 2557,
+   "diffPixels": 2252,
+   "diffPct": 0.11
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 984
+  },
+  "diff": {
+   "heightWp": 7095,
+   "heightNext": 7095,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7112,
+   "heightNext": 7112,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5457,
+   "heightNext": 5457,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6657,
+   "heightNext": 6657,
+   "diffPixels": 2577,
+   "diffPct": 0.1
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6451,
+   "heightNext": 6451,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7747,
+   "heightNext": 7747,
+   "diffPixels": 4066,
+   "diffPct": 0.13
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3332,
+   "heightNext": 3332,
+   "diffPixels": 4724,
+   "diffPct": 0.36
+  }
+ },
+ {
+  "browser": "chromium",
+  "viewport": "mobile",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3312,
+   "heightNext": 3312,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 448,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1920,
+   "h": 1003
+  },
+  "diff": {
+   "heightWp": 4854,
+   "heightNext": 4854,
+   "diffPixels": 16239,
+   "diffPct": 0.17,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5692,
+   "heightNext": 5692,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5552,
+   "heightNext": 5552,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3384,
+   "heightNext": 3384,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4100,
+   "heightNext": 4100,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4583,
+   "heightNext": 4583,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1722,
+   "heightNext": 1722,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "desktop-xl",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1948,
+   "heightNext": 1948,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 390,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 893
+  },
+  "diff": {
+   "heightWp": 4714,
+   "heightNext": 4714,
+   "diffPixels": 21138,
+   "diffPct": 0.33,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5498,
+   "heightNext": 5498,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5298,
+   "heightNext": 5298,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3384,
+   "heightNext": 3384,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4100,
+   "heightNext": 4100,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4583,
+   "heightNext": 4583,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1722,
+   "heightNext": 1722,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "laptop",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1948,
+   "heightNext": 1948,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 820,
+   "h": 1294
+  },
+  "diff": {
+   "heightWp": 5618,
+   "heightNext": 5618,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6465,
+   "heightNext": 6465,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5442,
+   "heightNext": 5442,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4196,
+   "heightNext": 4196,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4990,
+   "heightNext": 4990,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7121,
+   "heightNext": 7121,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 2494,
+   "heightNext": 2494,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "tablet",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 2556,
+   "heightNext": 2556,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 984
+  },
+  "diff": {
+   "heightWp": 7095,
+   "heightNext": 7095,
+   "diffPixels": 224,
+   "diffPct": 0.01,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7112,
+   "heightNext": 7112,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5473,
+   "heightNext": 5473,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6656,
+   "heightNext": 6656,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6451,
+   "heightNext": 6451,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7748,
+   "heightNext": 7748,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3334,
+   "heightNext": 3334,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "firefox",
+  "viewport": "mobile",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3311,
+   "heightNext": 3311,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 451,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 661,
+     "h": 451,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1920,
+   "h": 1008
+  },
+  "diff": {
+   "heightWp": 4851,
+   "heightNext": 4851,
+   "diffPixels": 522429,
+   "diffPct": 5.61,
+   "diffPixelsOutsideHero": 496256,
+   "diffPctOutsideHero": 6.726
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5687,
+   "heightNext": 5687,
+   "diffPixels": 74636,
+   "diffPct": 0.68
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5545,
+   "heightNext": 5545,
+   "diffPixels": 19,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3353,
+   "heightNext": 3353,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4088,
+   "heightNext": 4088,
+   "diffPixels": 18263,
+   "diffPct": 0.23
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4574,
+   "heightNext": 4574,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1719,
+   "heightNext": 1719,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "desktop-xl",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1942,
+   "heightNext": 1942,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 393,
+     "hidden": false
+    },
+    "headturnReq": 61
+   },
+   "next": {
+    "reacts": true,
+    "canvas": {
+     "w": 576,
+     "h": 393,
+     "hidden": false
+    },
+    "headturnReq": 61
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 898
+  },
+  "diff": {
+   "heightWp": 4711,
+   "heightNext": 4711,
+   "diffPixels": 26116,
+   "diffPct": 0.41,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5493,
+   "heightNext": 5493,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5291,
+   "heightNext": 5291,
+   "diffPixels": 31,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3353,
+   "heightNext": 3353,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4088,
+   "heightNext": 4088,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4574,
+   "heightNext": 4574,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1719,
+   "heightNext": 1719,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "laptop",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 1942,
+   "heightNext": 1942,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 820,
+   "h": 1292
+  },
+  "diff": {
+   "heightWp": 5605,
+   "heightNext": 5605,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6456,
+   "heightNext": 6456,
+   "diffPixels": 6,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5434,
+   "heightNext": 5434,
+   "diffPixels": 31,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4137,
+   "heightNext": 4137,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 4970,
+   "heightNext": 4970,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7106,
+   "heightNext": 7106,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 2488,
+   "heightNext": 2488,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "tablet",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 2546,
+   "heightNext": 2546,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {
+   "wp": {
+    "canvas": false,
+    "headturnReq": 0
+   },
+   "next": {
+    "canvas": false,
+    "headturnReq": 0
+   }
+  },
+  "heroRect": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 981
+  },
+  "diff": {
+   "heightWp": 7079,
+   "heightNext": 7079,
+   "diffPixels": 0,
+   "diffPct": 0,
+   "diffPixelsOutsideHero": 0,
+   "diffPctOutsideHero": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/portfolio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7095,
+   "heightNext": 7095,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/portfolio/frida-eu/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 5549,
+   "heightNext": 5549,
+   "diffPixels": 70,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/leistungen/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6602,
+   "heightNext": 6602,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/leistungen/seo/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 6413,
+   "heightNext": 6413,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/studio/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 7714,
+   "heightNext": 7714,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/kontakt/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3324,
+   "heightNext": 3324,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ },
+ {
+  "browser": "webkit",
+  "viewport": "mobile",
+  "page": "/blog/",
+  "errors": {
+   "wp": [],
+   "next": []
+  },
+  "hero": {},
+  "heroRect": null,
+  "diff": {
+   "heightWp": 3294,
+   "heightNext": 3294,
+   "diffPixels": 0,
+   "diffPct": 0
+  }
+ }
+]

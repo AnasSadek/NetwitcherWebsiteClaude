@@ -1,0 +1,39 @@
+{
+ "label": "wp",
+ "url": "http://127.0.0.1:8081/",
+ "mode": "mobile",
+ "loadMs": 135,
+ "nav": {
+  "ttfb": 43,
+  "dcl": 128,
+  "load": 128,
+  "fcp": 176,
+  "transfer": 15238,
+  "domNodes": 457
+ },
+ "initial": {
+  "requests": 9,
+  "bytes": 269180,
+  "js": 12638,
+  "css": 75673,
+  "img": 30550,
+  "font": 68160,
+  "doc": 80779,
+  "headturnFrames": 0,
+  "headturnBytes": 0
+ },
+ "byType": {
+  "document": 80779,
+  "stylesheet": 75673,
+  "script": 12638,
+  "font": 68160,
+  "image": 30550,
+  "other": 1380
+ },
+ "motion": {
+  "fps": 60,
+  "longFrames": 0,
+  "headturnFramesLoaded": 0,
+  "canvasPresent": false
+ }
+}

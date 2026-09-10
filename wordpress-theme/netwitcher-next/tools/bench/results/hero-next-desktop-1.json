@@ -1,0 +1,51 @@
+{
+ "label": "next",
+ "url": "http://127.0.0.1:3100/",
+ "mode": "desktop",
+ "loadMs": 213,
+ "nav": {
+  "ttfb": 12,
+  "dcl": 61,
+  "load": 208,
+  "fcp": 212,
+  "transfer": 19027,
+  "domNodes": 468
+ },
+ "initial": {
+  "requests": 94,
+  "bytes": 2904382,
+  "js": 631808,
+  "css": 84010,
+  "img": 17323,
+  "font": 68160,
+  "doc": 120034,
+  "headturnFrames": 61,
+  "headturnBytes": 1582154
+ },
+ "byType": {
+  "font": 68160,
+  "document": 120034,
+  "image": 17323,
+  "stylesheet": 84010,
+  "script": 631808,
+  "other": 1380,
+  "fetch": 1981667
+ },
+ "motion": {
+  "fps": 42.8,
+  "frames": 171,
+  "longFrames": 67,
+  "veryLongFrames": 2,
+  "p95FrameMs": 33.4,
+  "maxFrameMs": 50,
+  "eyeUpdatesPerSec": 42.5,
+  "canvas": {
+   "hidden": false,
+   "w": 608,
+   "h": 412,
+   "visible": true
+  },
+  "headturnFramesLoaded": 61,
+  "framesAfterIdle": 61
+ }
+}
