@@ -28,8 +28,10 @@ import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
  *   Niemand  – ruhiges, nicht periodisches Umschauen
  *
  * Drei Reaktionsgeschwindigkeiten (Sekundärbewegung): Auge schnell, Kopf
- * mittel (Ansichten-Überblendung, Neigung), Körper langsam (Versatz,
- * 3D-Kippung, Lehnen). Dazu: Aufwachen beim ersten Erscheinen, Fokus-
+ * mittel (3D-Drehung des Renders, Linsenversatz), Körper langsam (Versatz,
+ * Lehnen). Bewusst EIN Render und nur transform/opacity: kein Überblenden
+ * verschiedener Ansichten, also keine Doppelbilder, keine Sprünge, keine
+ * Repaints pro Frame. Dazu: Aufwachen beim ersten Erscheinen, Fokus-
  * Glanz nahe der Linse und „Magic in Every Click": Klick/Tipp löst den
  * Verschluss aus (Blitz + Sternfunken).
  *
@@ -127,7 +129,6 @@ type Phase = "asleep" | "waking" | "awake";
 export function HeroStage() {
   const reduce = useMediaFlag("(prefers-reduced-motion: reduce)");
   const coarse = useMediaFlag("(pointer: coarse)");
-  const wide = useMediaFlag("(min-width: 1024px)");
   const live = !reduce; // Kopplung an Eingaben aktiv
   const pointer = live && !coarse; // echte Maus vorhanden
 
@@ -145,18 +146,15 @@ export function HeroStage() {
   const vel = useVelocity(hx);
   const lean = useSpring(useTransform(vel, (v) => clamp(v * 0.4, -1.8, 1.8)), SPRING.lean);
 
-  /* ---------------- Körper: Versatz, 3D-Kippung, Lehnen ---------------- */
-  const bodyTX = useTransform(bx, (v) => v * 10);
+  /* ---------------- Körper & Kopf: ein Render, kontinuierliche 3D-Transformation ----------------
+     Versatz folgt dem langsamen Körper, die Drehung um die Hochachse dem
+     schnelleren Kopf: so liest sich die Kippung des Renders als Kopfdrehung,
+     bleibt aber eine einzige, stufenlose Transformation. */
+  const bodyTX = useTransform(bx, (v) => v * 12);
   const bodyTY = useTransform(by, (v) => v * 6);
-  const bodyRX = useTransform(by, (v) => v * -2.5);
-  const bodyRY = useTransform(bx, (v) => v * 5);
+  const bodyRX = useTransform(hy, (v) => v * -3);
+  const bodyRY = useTransform(hx, (v) => v * 7);
   const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateX(${bodyRX}deg) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
-
-  /* ---------------- Kopf: Ansichten-Überblendung ---------------- */
-  // Weiche Fenster statt linearer Mischung: die Drehung „rastet" spürbar.
-  const oL = useTransform(hx, (v) => (wide ? smoothEase((v + 0.18) / -0.5) : 0));
-  const oR = useTransform(hx, (v) => (wide ? smoothEase((v - 0.18) / 0.5) : 0));
-  const oC = useTransform([oL, oR], ([l, r]: number[]) => 1 - Math.max(l, r));
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -173,11 +171,12 @@ export function HeroStage() {
   });
   const gazeX = useTransform(gaze, (g) => g[0] * 9);
   const gazeY = useTransform(gaze, (g) => g[1] * 7);
-  // Linse wandert mit der Kopfansicht: Anteil der eigenen Breite
-  // (Kalibrierung: 44.5 % / 48.9 % / 58.1 % Container bei 8.6 % Augenbreite).
-  const eyeShift = useTransform([oL, oR], ([l, r]: number[]) => -51 * l + 107 * r);
-  const eyeRY = useTransform(hx, (v) => (wide ? v * 22 : v * 10));
-  const eyeTransform = useMotionTemplate`translate3d(calc(${eyeShift}% + ${gazeX}px), ${gazeY}px, 0) rotateY(${eyeRY}deg)`;
+  // Der Stern rutscht mit der Kopfdrehung ein Stück über die Linse und
+  // neigt sich mit: verkauft die Wölbung des Glases.
+  const headShift = useTransform(hx, (v) => v * 8);
+  const eyeX = useTransform([headShift, gazeX], ([h, g]: number[]) => h + g);
+  const eyeRY = useTransform(hx, (v) => v * 18);
+  const eyeTransform = useMotionTemplate`translate3d(${eyeX}px, ${gazeY}px, 0) rotateY(${eyeRY}deg)`;
 
   // Glanzpunkt läuft dem Blick entgegen: verkauft die Glasfläche.
   const glintX = useTransform(gazeX, (v) => v * -0.6);
@@ -201,9 +200,11 @@ export function HeroStage() {
   const c2y = useTransform(by, (v) => v * -20);
   const card1 = useMotionTemplate`translate3d(${c1x}px, ${c1y}px, 0)`;
   const card2 = useMotionTemplate`translate3d(${c2x}px, ${c2y}px, 0)`;
-  const glowX = useTransform(hx, (v) => 50 + v * 9);
-  const glowY = useTransform(hy, (v) => 44 + v * 7);
-  const glow = useMotionTemplate`radial-gradient(52% 46% at ${glowX}% ${glowY}%, rgba(139,92,246,0.6), transparent 70%), radial-gradient(38% 34% at 76% 70%, rgba(15,185,242,0.22), transparent 72%), radial-gradient(34% 30% at 22% 72%, rgba(244,104,168,0.2), transparent 72%)`;
+  // Bühnen-Glow: ein einmal gerastertes, weiches Element, das nur per
+  // transform verschoben wird (Compositor). Kein Gradient-Repaint pro Frame.
+  const glowX = useTransform(hx, (v) => v * 9);
+  const glowY = useTransform(hy, (v) => v * 7);
+  const glowTransform = useMotionTemplate`translate3d(calc(-50% + ${glowX}%), calc(-50% + ${glowY}%), 0)`;
 
   /* ---------------- Gemeinsames: Linsenposition, Blickziel, Idle-Timer ---------------- */
   const charRef = useRef<HTMLDivElement>(null);
@@ -465,8 +466,24 @@ export function HeroStage() {
 
   return (
     <div className="relative overflow-hidden rounded-[32px] bg-deep shadow-lift md:rounded-[40px]">
-      {/* Bühnen-Glow folgt dem Kopf */}
-      <motion.div aria-hidden="true" className="absolute inset-0" style={live ? { background: glow } : undefined} />
+      {/* Bühnen-Glow folgt dem Kopf (transform-only) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute left-1/2 top-[44%] h-[92%] w-[104%] rounded-[50%] will-change-transform"
+          style={{
+            background: "radial-gradient(closest-side, rgba(139,92,246,0.6), rgba(139,92,246,0) 100%)",
+            transform: live ? glowTransform : "translate3d(-50%, -50%, 0)",
+          }}
+        />
+        <div
+          className="absolute left-[76%] top-[70%] h-[68%] w-[76%] -translate-x-1/2 -translate-y-1/2 rounded-[50%]"
+          style={{ background: "radial-gradient(closest-side, rgba(15,185,242,0.22), rgba(15,185,242,0) 100%)" }}
+        />
+        <div
+          className="absolute left-[22%] top-[72%] h-[60%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-[50%]"
+          style={{ background: "radial-gradient(closest-side, rgba(244,104,168,0.2), rgba(244,104,168,0) 100%)" }}
+        />
+      </div>
 
       {/* ---------- Der Charakter ---------- */}
       <div
@@ -489,10 +506,10 @@ export function HeroStage() {
             transition={shot ? { duration: 0.36, ease: easeOut } : phase === "asleep" ? { duration: 0 } : SPRING.wake}
           >
             <motion.div
-              className="relative h-full w-full will-change-transform"
+              className="relative h-full w-full will-change-transform [backface-visibility:hidden]"
               style={live ? { transform: bodyTransform } : undefined}
             >
-              <motion.div className="h-full w-full will-change-[opacity]" style={pointer ? { opacity: oC } : undefined}>
+              <div className="h-full w-full">
                 <picture>
                   <source media="(min-width: 1024px)" type="image/avif" srcSet="/mascot/witch-wide.avif" />
                   <source media="(min-width: 1024px)" srcSet="/mascot/witch-wide.webp" />
@@ -504,21 +521,7 @@ export function HeroStage() {
                     fetchPriority="high"
                   />
                 </picture>
-              </motion.div>
-
-              {/* Seitenansichten: nur Desktop mit Maus, per Kopf-Feder eingeblendet */}
-              {pointer && (
-                <>
-                  <motion.picture className="absolute inset-0 hidden will-change-[opacity] lg:block" style={{ opacity: oL }} aria-hidden="true">
-                    <source type="image/avif" srcSet="/mascot/witch-wide-left.avif" />
-                    <img src="/mascot/witch-wide-left.webp" alt="" className="h-full w-full object-cover" loading="eager" decoding="async" />
-                  </motion.picture>
-                  <motion.picture className="absolute inset-0 hidden will-change-[opacity] lg:block" style={{ opacity: oR }} aria-hidden="true">
-                    <source type="image/avif" srcSet="/mascot/witch-wide-right.avif" />
-                    <img src="/mascot/witch-wide-right.webp" alt="" className="h-full w-full object-cover" loading="eager" decoding="async" />
-                  </motion.picture>
-                </>
-              )}
+              </div>
 
               {/* Echtes Logo als leuchtendes Auge: Blick, Fokus, Blinzeln */}
               <motion.div
