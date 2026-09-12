@@ -12,7 +12,6 @@ import {
   type MotionValue,
 } from "framer-motion";
 import Link from "next/link";
-import { BrandStar } from "@/components/brand/Logo";
 import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
 import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
 import headTurnManifest from "./headturn.manifest.json";
@@ -37,9 +36,9 @@ const HEAD_TURN = headTurnManifest as HeadTurnManifest;
  * Glanz nahe der Linse und „Magic in Every Click": Klick/Tipp löst den
  * Verschluss aus (Blitz + Sternfunken).
  *
- * Der Charakter ist ein Render; das Logo im Objektiv ist immer das echte
- * SVG als Overlay. Reduced Motion: keine Kopplung, kein Schweben, nur ein
- * sanfter Blitz beim Klick.
+ * Die Linse bleibt bewusst leer: dunkles Glas, nur ein wandernder
+ * Glanzpunkt als Glas-Detail — kein aufgesetztes Logo. Reduced Motion:
+ * keine Kopplung, kein Schweben, nur ein sanfter Blitz beim Klick.
  */
 
 const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
@@ -179,25 +178,21 @@ export function HeroStage() {
   });
   const gazeX = useTransform(gaze, (g) => g[0] * 9);
   const gazeY = useTransform(gaze, (g) => g[1] * 7);
-  // Auge folgt der Linse der Sequenz (cqw/cqh = Anteile des Charakter-
-  // Containers) plus Blick; dazu leichte Neigung mit der Drehung.
-  const eyeRY = useTransform(hx, (v) => (wide ? v * 16 : v * 10));
-  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px), 0) rotateY(${eyeRY}deg)`;
+  // Glanzpunkt-Anker folgt der Linse der Sequenz (cqw/cqh = Anteile des
+  // Charakter-Containers) plus Blick.
+  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px), 0)`;
 
   // Glanzpunkt läuft dem Blick entgegen: verkauft die Glasfläche.
   const glintX = useTransform(gazeX, (v) => v * -0.6);
   const glintY = useTransform(gazeY, (v) => v * -0.6);
   const glintTransform = useMotionTemplate`translate3d(${glintX}px, ${glintY}px, 0)`;
 
-  // Fokus: je näher das Ziel an der Linse, desto stärker leuchtet sie.
+  // Fokus: je näher das Ziel an der Linse, desto kräftiger der Glanzpunkt.
   const focus = useTransform([ex, ey], ([x, y]: number[]) => {
     const d = Math.hypot(x, y * 1.3);
     return 1 - clamp((d - 0.08) / 0.3, 0, 1);
   });
-  const focusGlow = useTransform(focus, [0, 1], [0, 0.9]);
-  const focusScale = useTransform(focus, [0, 1], [1, 1.07]);
-  const glintOpacity = useTransform(focus, [0, 1], [0.35, 0.95]);
-  const starTransform = useMotionTemplate`scale(${focusScale})`;
+  const glintOpacity = useTransform(focus, [0, 1], [0.4, 0.85]);
 
   /* ---------------- Karten & Glow (gegenläufig, langsam) ---------------- */
   const c1x = useTransform(bx, (v) => v * -26);
@@ -446,27 +441,6 @@ export function HeroStage() {
   }, []);
 
   const awake = phase === "awake";
-  const waking = phase === "waking";
-
-  // Iris: schlafend gedimmt → Aufwach-Doppelblinzeln → Blinzel-Loop / Verschluss
-  const iris = reduce
-    ? { animate: undefined, transition: undefined }
-    : phase === "asleep"
-      ? { animate: { opacity: 0.35, scale: 0.9 }, transition: { duration: 0 } }
-      : waking
-        ? {
-            animate: { opacity: [0.35, 1, 0.15, 1, 0.2, 1], scale: [0.9, 1.16, 0.85, 1.08, 0.9, 1] },
-            transition: { duration: 1.1, times: [0, 0.22, 0.34, 0.5, 0.62, 1], ease: easeOut },
-          }
-        : shot
-          ? {
-              animate: { opacity: [1, 0.1, 1, 1], scale: [1, 0.55, 1.18, 1] },
-              transition: { duration: 0.5, times: [0, 0.25, 0.6, 1], ease: easeOut },
-            }
-          : {
-              animate: { opacity: [1, 1, 0.15, 1, 1], scale: [1, 1, 0.82, 1, 1] },
-              transition: { duration: 0.7, times: [0, 0.42, 0.5, 0.58, 1], repeat: Infinity, repeatDelay: 3.8, ease: "easeInOut" as const },
-            };
 
   return (
     <div className="relative overflow-hidden rounded-[32px] bg-deep shadow-lift md:rounded-[40px]">
@@ -514,10 +488,13 @@ export function HeroStage() {
               {/* Kopfdrehung: Frame-Sequenz über dem statischen Poster (Desktop mit Maus) */}
               <HeadTurn manifest={HEAD_TURN} base="/mascot/headturn" value={hx} enabled={headTurn} />
 
-              {/* Echtes Logo als leuchtendes Auge: Blick, Fokus, Blinzeln */}
+              {/* Die Linse bleibt leer — dunkles Glas, nur ein wandernder
+                  Glanzpunkt als Glas-Detail. Er folgt der Linse der Sequenz
+                  und läuft dem Blick leicht entgegen. */}
               <motion.div
                 data-witch="eye"
-                className="absolute will-change-transform"
+                aria-hidden="true"
+                className="pointer-events-none absolute aspect-square will-change-transform"
                 style={{
                   left: "var(--eye-x)",
                   top: "var(--eye-y)",
@@ -527,34 +504,8 @@ export function HeroStage() {
                   transform: live ? eyeTransform : undefined,
                 }}
               >
-                {/* Fokus-Leuchten hinter dem Stern */}
                 <motion.div
-                  aria-hidden="true"
-                  className="absolute -inset-[35%] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.85),rgba(139,92,246,0)_65%)]"
-                  style={live && awake ? { opacity: focusGlow } : { opacity: 0 }}
-                />
-                {/* Zündung beim Aufwachen */}
-                {waking && (
-                  <motion.div
-                    aria-hidden="true"
-                    className="absolute -inset-[45%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.7),rgba(139,92,246,0.7)_35%,rgba(139,92,246,0)_65%)]"
-                    initial={{ opacity: 0, scale: 0.6 }}
-                    animate={{ opacity: [0, 0.95, 0.25, 0.7, 0], scale: [0.6, 1.1, 0.95, 1.05, 1.2] }}
-                    transition={{ duration: 1.1, times: [0, 0.22, 0.4, 0.55, 1], ease: easeOut }}
-                  />
-                )}
-                <motion.div data-witch="iris" className="relative" animate={iris.animate} transition={iris.transition}>
-                  <motion.div style={live ? { transform: starTransform } : undefined}>
-                    <BrandStar
-                      size={999}
-                      className="h-auto w-full [filter:drop-shadow(0_0_6px_rgba(255,255,255,0.55))_drop-shadow(0_0_18px_rgba(139,92,246,0.9))]"
-                    />
-                  </motion.div>
-                </motion.div>
-                {/* Glanzpunkt auf der Linse */}
-                <motion.div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute left-[18%] top-[14%] h-[22%] w-[22%] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,255,255,0.95),rgba(255,255,255,0)_70%)]"
+                  className="absolute left-[18%] top-[14%] h-[22%] w-[22%] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,255,255,0.95),rgba(255,255,255,0)_70%)]"
                   style={live ? { transform: glintTransform, opacity: awake ? glintOpacity : 0.25 } : { opacity: 0.4 }}
                 />
               </motion.div>
