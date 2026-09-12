@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useMotionValueEvent, type MotionValue } from "framer-motion";
+import { useMotionValueEvent, type MotionValue } from "framer-motion";
 
 /**
  * Kopfdrehung als Frame-Sequenz auf einem Canvas.
@@ -40,21 +40,12 @@ export function HeadTurn({
   manifest,
   base,
   value,
-  tilt,
-  tiltOrigin,
   enabled,
 }: {
   manifest: HeadTurnManifest;
   /** Ordner der Sequenz, z. B. "/mascot/headturn" */
   base: string;
   value: MotionValue<number>;
-  /** Optionale 3D-Neigung des gezeichneten Kopfes (CSS-Transform-String,
-   *  z. B. kleines rotateX fürs Nicken). Läuft rein im Compositor — kein
-   *  zusätzliches Canvas-Zeichnen. Klein halten: der Matte-Rand muss den
-   *  frontalen Poster-Kopf weiterhin vollständig abdecken. */
-  tilt?: MotionValue<string>;
-  /** Drehpunkt der Neigung (CSS transform-origin), z. B. die Linsenmitte. */
-  tiltOrigin?: string;
   enabled: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -170,17 +161,15 @@ export function HeadTurn({
 
   if (!enabled) return null;
   return (
-    <motion.canvas
+    <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute will-change-transform"
+      className="pointer-events-none absolute"
       style={{
         left: `${manifest.crop.x * 100}%`,
         top: `${manifest.crop.y * 100}%`,
         width: `${manifest.crop.w * 100}%`,
         height: `${manifest.crop.h * 100}%`,
-        transform: tilt,
-        transformOrigin: tiltOrigin,
       }}
     />
   );
