@@ -14,10 +14,12 @@ import {
 import Link from "next/link";
 import { BrandStar } from "@/components/brand/Logo";
 import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
-import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
-import headTurnManifest from "./headturn.manifest.json";
+import { HeadTurn, lensAt2D, type HeadTurn2DManifest } from "./HeadTurn";
+import headTurnManifest from "./headturn2.manifest.json";
 
-const HEAD_TURN = headTurnManifest as HeadTurnManifest;
+const HEAD_TURN = headTurnManifest as unknown as HeadTurn2DManifest;
+// Frontale Linsenmitte (Frame 0 jedes Strips = Mitte)
+const LENS_CENTER = HEAD_TURN.strips.right.lens[0];
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
@@ -156,13 +158,17 @@ export function HeroStage() {
   const bodyRY = useTransform(bx, (v) => v * 5);
   const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateX(${bodyRX}deg) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
 
-  /* ---------------- Kopf: Frame-Sequenz aus dem Turnaround-Clip ---------------- */
-  // Desktop mit Maus: der Kopf-Wert steuert die Sequenz (siehe HeadTurn).
+  /* ---------------- Kopf: Frame-Sequenzen aus den Turnaround-Clips ---------------- */
+  // Desktop mit Maus: beide Kopf-Werte steuern die 2D-Sequenz (siehe HeadTurn).
   const headTurn = pointer && wide;
   // Linsenmitte wandert mit der Drehung; Versatz zur Mitte in Anteilen der
   // Containerbreite bzw. -höhe (die Auge-Position ist auf die Mitte kalibriert).
-  const lensDX = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).x - HEAD_TURN.lens[HEAD_TURN.center].x) * 100 : 0));
-  const lensDY = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).y - HEAD_TURN.lens[HEAD_TURN.center].y) * 100 : 0));
+  const lensDX = useTransform([hx, hy] as const, ([x, y]: number[]) =>
+    headTurn ? (lensAt2D(HEAD_TURN, x, y).x - LENS_CENTER.x) * 100 : 0
+  );
+  const lensDY = useTransform([hx, hy] as const, ([x, y]: number[]) =>
+    headTurn ? (lensAt2D(HEAD_TURN, x, y).y - LENS_CENTER.y) * 100 : 0
+  );
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -182,7 +188,8 @@ export function HeroStage() {
   // Auge folgt der Linse der Sequenz (cqw/cqh = Anteile des Charakter-
   // Containers) plus Blick; dazu leichte Neigung mit der Drehung.
   const eyeRY = useTransform(hx, (v) => (wide ? v * 16 : v * 10));
-  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px), 0) rotateY(${eyeRY}deg)`;
+  const eyeRX = useTransform(hy, (v) => (wide ? v * -12 : v * -8));
+  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px), 0) rotateY(${eyeRY}deg) rotateX(${eyeRX}deg)`;
 
   // Glanzpunkt läuft dem Blick entgegen: verkauft die Glasfläche.
   const glintX = useTransform(gazeX, (v) => v * -0.6);
@@ -511,8 +518,8 @@ export function HeroStage() {
                 </picture>
               </div>
 
-              {/* Kopfdrehung: Frame-Sequenz über dem statischen Poster (Desktop mit Maus) */}
-              <HeadTurn manifest={HEAD_TURN} base="/mascot/headturn" value={hx} enabled={headTurn} />
+              {/* Kopfdrehung: 2D-Frame-Sequenzen über dem statischen Poster (Desktop mit Maus) */}
+              <HeadTurn manifest={HEAD_TURN} base="/mascot/headturn" valueX={hx} valueY={hy} enabled={headTurn} />
 
               {/* Echtes Logo als leuchtendes Auge: Blick, Fokus, Blinzeln */}
               <motion.div
