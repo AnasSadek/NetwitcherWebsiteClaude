@@ -54,27 +54,20 @@ function extract(clip, name) {
   return fs.readdirSync(dir).filter((f) => f.endsWith(".png")).sort().map((f) => path.join(dir, f));
 }
 
-/* 1 + 2: Frames in Reihenfolge links → Mitte → rechts.
-   Strip-Modus (--clip): EIN Clip, Frame 0 = frontale Mitte (Startbild),
-   die Sequenz läuft von der Mitte in eine Richtung (z. B. nach oben). */
+/* 1 + 2: Frames in Reihenfolge links → Mitte → rechts */
 let ordered, centerIdx;
-const STRIP = Boolean(args.clip);
 if (args.left && args.right) {
   const L = extract(path.resolve(args.left), "left");
   const R = extract(path.resolve(args.right), "right");
   ordered = [...L.slice().reverse(), ...R.slice(1)];
   centerIdx = L.length - 1;
   log(`halves: ${L.length} left + ${R.length} right frames`);
-} else if (STRIP) {
-  ordered = extract(path.resolve(args.clip), "strip");
-  centerIdx = 0;
-  log(`strip: ${ordered.length} frames (frame 0 = center)`);
 } else if (args.sweep) {
   ordered = extract(path.resolve(args.sweep), "sweep");
   centerIdx = -1; // wird unten bestimmt
   log(`sweep: ${ordered.length} frames`);
 } else {
-  console.error("Bitte --left/--right, --clip oder --sweep angeben.");
+  console.error("Bitte --left/--right oder --sweep angeben.");
   process.exit(1);
 }
 const meta = await sharp(ordered[0]).metadata();
@@ -119,14 +112,7 @@ crop.h = Math.min(1 - crop.y, (y1 + 1) / AH + pad * 1.4 - crop.y);
 // Optional harte Unterkante (Anteil der Bildhöhe): hält den Crop auf dem Kopf,
 // auch wenn der Clip eine leichte Körperdrift zeigt. Alles darunter bleibt Poster.
 if (args["crop-bottom"]) crop.h = Math.min(crop.h, Number(args["crop-bottom"]) - crop.y);
-// Feste Crop-Box (x,y,w,h als Anteile): alle Strips einer 2D-Sequenz teilen
-// sich EINE Box, damit der Canvas sie ohne Umrechnung übereinanderlegen kann.
-if (args.crop && typeof args.crop === "string") {
-  const [cx, cy, cw, ch] = args.crop.split(",").map(Number);
-  crop.x = cx; crop.y = cy; crop.w = cw; crop.h = ch;
-}
 log(`crop ${JSON.stringify(Object.fromEntries(Object.entries(crop).map(([k, v]) => [k, +v.toFixed(4)])))}`);
-if (args.analyze) { log("analyze only – Ende."); process.exit(0); }
 
 /* 4: Bogenlängen-Resampling, Center exakt in der Mitte */
 const cropIdx = [];
@@ -147,17 +133,10 @@ function resample(indices, n) {
   }
   return out;
 }
-let selected, half;
-if (STRIP) {
-  // Mitte → Richtung: Frame 0 ist die Mitte, danach gleichmäßige Winkelschritte
-  half = 0;
-  selected = [centerIdx, ...resample(Array.from({ length: ordered.length }, (_, i) => i), FRAMES - 1)];
-} else {
-  half = Math.floor((FRAMES - 1) / 2);
-  const leftSel = resample(Array.from({ length: centerIdx + 1 }, (_, i) => centerIdx - i), half).reverse();
-  const rightSel = resample(Array.from({ length: ordered.length - centerIdx }, (_, i) => centerIdx + i), half);
-  selected = [...leftSel, centerIdx, ...rightSel];
-}
+const half = Math.floor((FRAMES - 1) / 2);
+const leftSel = resample(Array.from({ length: centerIdx + 1 }, (_, i) => centerIdx - i), half).reverse();
+const rightSel = resample(Array.from({ length: ordered.length - centerIdx }, (_, i) => centerIdx + i), half);
+const selected = [...leftSel, centerIdx, ...rightSel];
 log(`selected ${selected.length} frames, center at ${half}`);
 
 /* 5: Linsenmitte pro Frame: größter zusammenhängender dunkler Fleck im Crop.
