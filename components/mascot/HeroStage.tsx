@@ -17,10 +17,7 @@ import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
 import headTurnManifest from "./headturn.manifest.json";
 
 const HEAD_TURN = headTurnManifest as HeadTurnManifest;
-// Drehpunkt der Kopf-Neigung: die Linsenmitte, umgerechnet in Anteile des
-// Kopf-Canvas (Linse in Bildanteilen minus Crop-Ursprung, durch Crop-Größe).
 const LENS_C = HEAD_TURN.lens[HEAD_TURN.center];
-const TILT_ORIGIN = `${((LENS_C.x - HEAD_TURN.crop.x) / HEAD_TURN.crop.w) * 100}% ${((LENS_C.y - HEAD_TURN.crop.y) / HEAD_TURN.crop.h) * 100}%`;
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
@@ -38,10 +35,10 @@ const TILT_ORIGIN = `${((LENS_C.x - HEAD_TURN.crop.x) / HEAD_TURN.crop.w) * 100}
  * Kopfbewegung in 2D, ohne Misch-Artefakte:
  *   horizontal – echte Frame-Sequenz aus EINEM Turnaround-Clip (keine
  *                zweite Frame-Quelle, also kein Morphen/Geistern)
- *   vertikal   – kleine perspektivische Neigung des gezeichneten Kopfes
- *                um die Linse (rotateX im Compositor) plus Körper-Kippung
- *                und Blick; komponiert mit jedem Horizontal-Frame zu
- *                glaubwürdigen Diagonalen
+ *   vertikal   – der Kopf FÄHRT dem Cursor positionsgetreu nach (reine
+ *                Y-Translation im Compositor, keine Kippung), der Körper
+ *                folgt langsamer ein Stück mit; komponiert mit jedem
+ *                Horizontal-Frame zu natürlichen Diagonalen
  *
  * Die Linse bleibt bewusst leer: dunkles Glas, nur ein wandernder
  * Glanzpunkt. Dazu: Aufwachen beim ersten Erscheinen und „Magic in Every
@@ -158,13 +155,11 @@ export function HeroStage() {
 
   /* ---------------- Körper: Versatz, 3D-Kippung, Lehnen ---------------- */
   const bodyTX = useTransform(bx, (v) => v * 10);
-  // Vertikal trägt der KÖRPER den größeren Anteil: Poster und Kopf-Canvas
-  // bewegen sich dabei gemeinsam, das kann prinzipbedingt keine Kanten oder
-  // Schatten gegeneinander verschieben.
-  const bodyTY = useTransform(by, (v) => v * 16);
-  const bodyRX = useTransform(by, (v) => v * -3);
+  // Vertikal NUR Position, keine Kippung: der Körper folgt als langsame
+  // Sekundärbewegung ein Stück mit, der Kopf macht den größeren Weg.
+  const bodyTY = useTransform(by, (v) => v * 10);
   const bodyRY = useTransform(bx, (v) => v * 5);
-  const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateX(${bodyRX}deg) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
+  const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
 
   /* ---------------- Kopf: Frame-Sequenz aus dem Turnaround-Clip ---------------- */
   // Desktop mit Maus: der Kopf-Wert steuert die Sequenz (siehe HeadTurn).
@@ -173,22 +168,14 @@ export function HeroStage() {
   // Containerbreite bzw. -höhe (die Auge-Position ist auf die Mitte kalibriert).
   const lensDX = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).x - LENS_C.x) * 100 : 0));
   const lensDY = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).y - LENS_C.y) * 100 : 0));
-  // Vertikal: KEINE zweite Frame-Quelle (die erzeugte Morph-Artefakte),
-  // sondern eine kleine perspektivische Neigung des gezeichneten Kopfes um
-  // die Linse. Bewusst klein gehalten: glaubwürdig statt spektakulär, und
-  // der Matte-Rand deckt den frontalen Poster-Kopf weiterhin ab.
-  // Die Federn erreichen praktisch nur ±0.7 (weiche Sättigung des Ziels),
-  // die Faktoren sind darauf ausgelegt. GEMESSEN: die perspektivische
-  // Verkürzung einer geneigten flachen Kopf-Ebene zieht die Silhouette zum
-  // Drehpunkt und löscht bei größeren Winkeln genau die Bewegung wieder
-  // aus, die die Translation aufbaut (Oberkante Δ ≈ −1 px trotz −14 px
-  // Translation bei 8.5°). Deshalb: die TRANSLATION trägt die vertikale
-  // Bewegung (~±15 px), die Neigung bleibt ein kleiner Orientierungs-
-  // Hinweis (~±5°), der die Verschiebung plausibel macht statt sie zu
-  // fressen.
-  const headRX = useTransform(hy, (v) => (headTurn ? v * -6 : 0));
-  const headTY = useTransform(hy, (v) => (headTurn ? v * 15 : 0));
-  const headTilt = useMotionTemplate`perspective(900px) rotateX(${headRX}deg) translate3d(0, ${headTY}px, 0)`;
+  // Vertikal folgt der Kopf dem Cursor als reine POSITIONSBEWEGUNG — keine
+  // Neigung, kein „Hinschauen": er fährt hoch, wenn die Maus hochgeht, und
+  // runter, wenn sie runtergeht. Der Versatz bleibt innerhalb des breiten
+  // Matte-Rands der Frames (--matte-grow), damit der gezeichnete Kopf den
+  // frontalen Poster-Kopf immer vollständig abdeckt (kein Doppelbild).
+  // Die Federn erreichen praktisch nur ±0.7–0.9 (weiche Sättigung).
+  const headTY = useTransform(hy, (v) => (headTurn ? v * 18 : 0));
+  const headTilt = useMotionTemplate`translate3d(0, ${headTY}px, 0)`;
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -532,7 +519,6 @@ export function HeroStage() {
                 base="/mascot/headturn"
                 value={hx}
                 tilt={headTilt}
-                tiltOrigin={TILT_ORIGIN}
                 enabled={headTurn}
               />
 
