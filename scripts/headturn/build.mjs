@@ -248,11 +248,7 @@ const CLOSE = Number(args["matte-close"] ?? 16);
 const union = new Uint8Array(SW * SH);
 for (const m of perFrame) for (let p = 0; p < union.length; p++) if (m[p] > union[p]) union[p] = m[p];
 const closed = minMax(minMax(union, SW, SH, CLOSE, true), SW, SH, CLOSE, false); // Löcher füllen
-// Rand um die Kopf-Matte: so viel ruhiger Clip-Hintergrund kommt mit auf
-// den Canvas. Muss größer sein als jede Laufzeit-Verschiebung des Kopfes
-// (Nicken!), sonst lugt an der Matte-Kante der frontale Poster-Kopf hervor.
-const GROW = Number(args["matte-grow"] ?? 6);
-const grown = minMax(closed, SW, SH, GROW, true);
+const grown = minMax(closed, SW, SH, 6, true); // Rand
 const softU = boxBlur(boxBlur(grown, SW, SH, 3), SW, SH, 3);
 for (let y = 0; y < SH; y++) {
   const f = y < fadeA ? 1 : y >= fadeB ? 0 : 1 - (y - fadeA) / (fadeB - fadeA);

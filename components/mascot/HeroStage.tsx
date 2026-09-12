@@ -158,11 +158,8 @@ export function HeroStage() {
 
   /* ---------------- Körper: Versatz, 3D-Kippung, Lehnen ---------------- */
   const bodyTX = useTransform(bx, (v) => v * 10);
-  // Vertikal trägt der KÖRPER den größeren Anteil: Poster und Kopf-Canvas
-  // bewegen sich dabei gemeinsam, das kann prinzipbedingt keine Kanten oder
-  // Schatten gegeneinander verschieben.
-  const bodyTY = useTransform(by, (v) => v * 16);
-  const bodyRX = useTransform(by, (v) => v * -3);
+  const bodyTY = useTransform(by, (v) => v * 6);
+  const bodyRX = useTransform(by, (v) => v * -2.5);
   const bodyRY = useTransform(bx, (v) => v * 5);
   const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateX(${bodyRX}deg) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
 
@@ -177,17 +174,8 @@ export function HeroStage() {
   // sondern eine kleine perspektivische Neigung des gezeichneten Kopfes um
   // die Linse. Bewusst klein gehalten: glaubwürdig statt spektakulär, und
   // der Matte-Rand deckt den frontalen Poster-Kopf weiterhin ab.
-  // Die Federn erreichen praktisch nur ±0.7 (weiche Sättigung des Ziels),
-  // die Faktoren sind darauf ausgelegt. GEMESSEN: die perspektivische
-  // Verkürzung einer geneigten flachen Kopf-Ebene zieht die Silhouette zum
-  // Drehpunkt und löscht bei größeren Winkeln genau die Bewegung wieder
-  // aus, die die Translation aufbaut (Oberkante Δ ≈ −1 px trotz −14 px
-  // Translation bei 8.5°). Deshalb: die TRANSLATION trägt die vertikale
-  // Bewegung (~±15 px), die Neigung bleibt ein kleiner Orientierungs-
-  // Hinweis (~±5°), der die Verschiebung plausibel macht statt sie zu
-  // fressen.
-  const headRX = useTransform(hy, (v) => (headTurn ? v * -6 : 0));
-  const headTY = useTransform(hy, (v) => (headTurn ? v * 15 : 0));
+  const headRX = useTransform(hy, (v) => (headTurn ? v * -7 : 0));
+  const headTY = useTransform(hy, (v) => (headTurn ? v * 6 : 0));
   const headTilt = useMotionTemplate`perspective(900px) rotateX(${headRX}deg) translate3d(0, ${headTY}px, 0)`;
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
@@ -204,7 +192,7 @@ export function HeroStage() {
     return [gx, gy] as const;
   });
   const gazeX = useTransform(gaze, (g) => g[0] * 9);
-  const gazeY = useTransform(gaze, (g) => g[1] * 10);
+  const gazeY = useTransform(gaze, (g) => g[1] * 7);
   // Glanzpunkt-Anker folgt der Linse der Sequenz (cqw/cqh = Anteile des
   // Charakter-Containers) plus Blick und Nick-Versatz.
   const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px + ${headTY}px), 0)`;
