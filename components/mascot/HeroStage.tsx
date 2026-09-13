@@ -24,12 +24,11 @@ const TILT_ORIGIN = `${((LENS_CTR.x - HEAD_TURN.crop.x) / HEAD_TURN.crop.w) * 10
 // Bewusster Abstand zwischen Kopf und Körper in Ruhelage (px): der Kopf
 // schwebt sichtbar über dem Kragen — die Trennung ist Absicht, kein Fehler.
 const HEAD_GAP = 8;
-// Hals-Rekomposition: Band mit echten „hinter dem Kinn"-Pixeln (Kapuze +
-// Schatten, aus der Hochschau-Footage, in der das Kinn-Areal frei ist).
-// Es deckt die eingebackene Kinnkante des Posters ab — erst dadurch wird
-// der Schwebe-Spalt sichtbar statt einer zweiten Kinnlinie darunter.
-// Vollbild-Anteile: x/w = Crop-Spanne, y 0.500..0.575.
-const NECK = { top: 50.0, height: 7.5 };
+// Kopfloser Körper: das Poster mit gestaltetem, oben offenem Kragen —
+// die Kapuze ist dort, wo der Kopf abhebt, sauber gerundet und wirft
+// einen natürlichen Innenschatten. Außerhalb der Kopf-Region ist die
+// Datei pixelidentisch mit dem Poster (weich maskiert eingesetzt),
+// darum gibt es beim Einblenden keinen sichtbaren Sprung.
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
@@ -177,6 +176,10 @@ export function HeroStage() {
   // nie zwei Posen übereinander. Sie meldet die Linsenmitte des aktuellen
   // Frames zurück (für den Glanzpunkt), hier weich gefedert.
   const headTurn = pointer && wide;
+  // Erst wenn der Video-Kopf seinen ersten Frame gezeichnet hat, darf der
+  // kopflose Körper das Poster ersetzen — sonst stünde WITCH kurz ohne Kopf.
+  const [headReady, setHeadReady] = useState(false);
+  const onHeadFirstDraw = useCallback(() => setHeadReady(true), []);
   const lensPX = useMotionValue(LENS_CTR.x * 100);
   const lensPY = useMotionValue(LENS_CTR.y * 100);
   const lensSX = useSpring(lensPX, { stiffness: 260, damping: 28 });
@@ -190,6 +193,12 @@ export function HeroStage() {
   const headTX = useTransform(hx, (v) => (headTurn ? v * 14 : 0));
   const headTY = useTransform(hy, (v) => (headTurn ? -HEAD_GAP + v * 14 : 0));
   const headTilt = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, 0) rotate(${lean}deg)`;
+  // Kontaktschatten des schwebenden Kopfs auf dem Kapuzenrand: wandert
+  // mit dem Kopf und wird stärker, je näher der Kopf dem Kragen kommt.
+  const shadowX = useTransform(headTX, (v) => v * 0.45);
+  const shadowScale = useTransform(headTY, (v) => 1 + (v + HEAD_GAP) * 0.006);
+  const shadowOpacity = useTransform(headTY, (v) => 0.26 + (v + HEAD_GAP) * 0.007);
+  const shadowTransform = useMotionTemplate`translate3d(${shadowX}px, 0, 0) scaleX(${shadowScale})`;
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -524,22 +533,34 @@ export function HeroStage() {
                 </picture>
               </div>
 
-              {/* Hals-Rekomposition: echte Kapuzen-/Schatten-Pixel hinter dem
-                  Kinn — deckt die Poster-Kinnkante ab, damit der Spalt unter
-                  dem schwebenden Kopf frei sichtbar ist */}
+              {/* Gestalteter Unterbau des schwebenden Kopfs: das Poster mit
+                  oben offenem, natürlich beschattetem Kragen — der Kopf hebt
+                  sichtbar aus der Kapuze ab, statt aufgesetzt zu wirken */}
               {headTurn && (
-                <img
-                  src="/mascot/headturn/neck-1600.webp"
-                  alt=""
-                  aria-hidden="true"
-                  className="pointer-events-none absolute"
-                  style={{
-                    left: `${HEAD_TURN.crop.x * 100}%`,
-                    width: `${HEAD_TURN.crop.w * 100}%`,
-                    top: `${NECK.top}%`,
-                    height: `${NECK.height}%`,
-                  }}
-                />
+                <>
+                  <img
+                    src="/mascot/witch-body.webp"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                    style={{ opacity: headReady ? 1 : 0 }}
+                  />
+                  {/* Weicher Kontaktschatten des Kopfs auf dem Kapuzenrand */}
+                  {headReady && (
+                    <motion.div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(10,6,26,0.9),rgba(10,6,26,0)_68%)]"
+                      style={{
+                        left: "36%",
+                        width: "25%",
+                        top: "49.5%",
+                        height: "6.5%",
+                        opacity: shadowOpacity,
+                        transform: shadowTransform,
+                      }}
+                    />
+                  )}
+                </>
               )}
 
               {/* Der Kopf: eigene Ebene über dem stabilen Körper — jagt dem
@@ -554,6 +575,7 @@ export function HeroStage() {
                 tilt={headTilt}
                 tiltOrigin={TILT_ORIGIN}
                 enabled={headTurn}
+                onFirstDraw={onHeadFirstDraw}
               />
 
               {/* Die Linse bleibt leer — dunkles Glas, nur ein wandernder

@@ -121,6 +121,7 @@ export function HeadTurn({
   tilt,
   tiltOrigin,
   enabled,
+  onFirstDraw,
 }: {
   manifest: HeadGraphManifest;
   /** Ordner der Sequenzen, z. B. "/mascot/headturn" */
@@ -135,11 +136,15 @@ export function HeadTurn({
   tilt?: MotionValue<string>;
   tiltOrigin?: string;
   enabled: boolean;
+  /** Einmalig nach dem ersten gezeichneten Frame — ab dann deckt der
+      Canvas-Kopf den Poster-Kopf ab und der Unterbau darf wechseln. */
+  onFirstDraw?: () => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frames = useRef<Map<string, (ImageBitmap | null)[]>>(new Map());
   const size = useRef({ w: 0, h: 0 });
   const lastDrawn = useRef("");
+  const announced = useRef(false);
 
   useEffect(() => {
     if (!enabled) return;
@@ -238,6 +243,10 @@ export function HeadTurn({
       const { w, h } = size.current;
       ctx.clearRect(0, 0, w, h);
       ctx.drawImage(list[idx]!, 0, 0, w, h);
+      if (!announced.current) {
+        announced.current = true;
+        onFirstDraw?.();
+      }
       lastDrawn.current = key;
       const l = manifest.strips[e.strip].lens[idx];
       if (l) {
