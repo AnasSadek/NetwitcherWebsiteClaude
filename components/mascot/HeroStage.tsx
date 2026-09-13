@@ -17,24 +17,43 @@ import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
 import headTurnManifest from "./headturn.manifest.json";
 
 const HEAD_TURN = headTurnManifest as HeadTurnManifest;
+// Drehpunkt der Kopf-Neigung: die Linsenmitte, umgerechnet in Anteile des
+// Kopf-Canvas (Linse in Bildanteilen minus Crop-Ursprung, durch Crop-Größe).
+const LENS_CTR = HEAD_TURN.lens[HEAD_TURN.center];
+const TILT_ORIGIN = `${((LENS_CTR.x - HEAD_TURN.crop.x) / HEAD_TURN.crop.w) * 100}% ${((LENS_CTR.y - HEAD_TURN.crop.y) / HEAD_TURN.crop.h) * 100}%`;
+// Bewusster Abstand zwischen Kopf und Körper in Ruhelage (px): der Kopf
+// schwebt sichtbar über dem Kragen — die Trennung ist Absicht, kein Fehler.
+const HEAD_GAP = 5;
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
  * reagiert wie eine Figur, nicht wie ein Parallax-Bild.
  *
  * Eingaben (was die Rolle des „Blickziels" übernimmt):
- *   Maus     – überall im Viewport, Richtung von der echten Linsenposition
+ *   Maus     – im Hero-Bereich; verlässt sie ihn, kehrt der Kopf weich in
+ *              die neutrale Mitte zurück (Federn, kein Schnappen)
  *   Finger   – während einer Berührung, auch beim Scrollen
  *   Scrollen – ohne Maus schaut WITCH dorthin, wo gerade gelesen wird,
  *              und blickt kurz in Scrollrichtung
  *   Neigung  – Gerätesensor, wo ohne Rückfrage verfügbar (Android)
- *   Niemand  – ruhiges, nicht periodisches Umschauen
+ *   Touch ohne Eingabe – ruhiges, nicht periodisches Umschauen
  *
- * Drei Reaktionsgeschwindigkeiten (Sekundärbewegung): Auge schnell, Kopf
- * mittel (Ansichten-Überblendung, Neigung), Körper langsam (Versatz,
- * 3D-Kippung, Lehnen). Dazu: Aufwachen beim ersten Erscheinen, Fokus-
- * Glanz nahe der Linse und „Magic in Every Click": Klick/Tipp löst den
- * Verschluss aus (Blitz + Sternfunken).
+ * KOPF UND KÖRPER SIND GETRENNT: der Körper (Poster) steht stabil, der
+ * Kopf (eigene Canvas-Ebene) schwebt mit ~5 px Abstand über dem Kragen
+ * und jagt dem Cursor in beiden Achsen nach. Damit er dabei
+ * dreidimensional bleibt und nicht flach „rutscht":
+ *   horizontal – Position folgt dem Cursor UND die echte Frame-Sequenz
+ *                dreht den Kopf mit (ein Clip → kein Morphen/Geistern)
+ *   vertikal   – Position folgt dem Cursor, dazu eine kleine Neigung um
+ *                die Linse (Perspektive) als Orientierungs-Hinweis
+ *   Diagonal   – beide Achsen gleichzeitig
+ * Der Versatz bleibt innerhalb des breiten Matte-Rands der Frames
+ * (--matte-grow): der gezeichnete Kopf deckt den frontalen Poster-Kopf
+ * immer vollständig ab — kein Doppelbild, keine gebrochene Ebene.
+ *
+ * Dazu: Aufwachen beim ersten Erscheinen, Fokus-Glanz nahe der Linse und
+ * „Magic in Every Click": Klick/Tipp löst den Verschluss aus (Blitz +
+ * Sternfunken).
  *
  * Die Linse bleibt bewusst leer: dunkles Glas, nur ein wandernder
  * Glanzpunkt als Glas-Detail — kein aufgesetztes Logo. Reduced Motion:
@@ -47,8 +66,8 @@ const smoothEase = (t: number) => smooth(clamp(t, 0, 1));
 // Weiche Sättigung: nahe der Linse fein aufgelöst, am Bildschirmrand ≈ ±0.9.
 const soft = (v: number) => Math.tanh(v * 1.35);
 
-/** Ab wann WITCH sich ohne Eingabe wieder selbst umschaut (ms). */
-const IDLE_AFTER = { mouse: 3200, touch: 1500 };
+/** Ab wann WITCH sich auf Touch-Geräten wieder selbst umschaut (ms). */
+const IDLE_AFTER = { touch: 1500 };
 
 const SPRING = {
   eye: { stiffness: 320, damping: 26, mass: 0.6 },
@@ -148,20 +167,23 @@ export function HeroStage() {
   const vel = useVelocity(hx);
   const lean = useSpring(useTransform(vel, (v) => clamp(v * 0.4, -1.8, 1.8)), SPRING.lean);
 
-  /* ---------------- Körper: Versatz, 3D-Kippung, Lehnen ---------------- */
-  const bodyTX = useTransform(bx, (v) => v * 10);
-  const bodyTY = useTransform(by, (v) => v * 6);
-  const bodyRX = useTransform(by, (v) => v * -2.5);
-  const bodyRY = useTransform(bx, (v) => v * 5);
-  const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateX(${bodyRX}deg) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
-
-  /* ---------------- Kopf: Frame-Sequenz aus dem Turnaround-Clip ---------------- */
-  // Desktop mit Maus: der Kopf-Wert steuert die Sequenz (siehe HeadTurn).
+  /* ---------------- Kopf: getrennte Ebene, jagt dem Cursor nach ---------------- */
+  // Desktop mit Maus: der Kopf-Wert steuert Sequenz UND Position.
   const headTurn = pointer && wide;
   // Linsenmitte wandert mit der Drehung; Versatz zur Mitte in Anteilen der
   // Containerbreite bzw. -höhe (die Auge-Position ist auf die Mitte kalibriert).
-  const lensDX = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).x - HEAD_TURN.lens[HEAD_TURN.center].x) * 100 : 0));
-  const lensDY = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).y - HEAD_TURN.lens[HEAD_TURN.center].y) * 100 : 0));
+  const lensDX = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).x - LENS_CTR.x) * 100 : 0));
+  const lensDY = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).y - LENS_CTR.y) * 100 : 0));
+  // Der Kopf FOLGT dem Cursor positionsgetreu in beiden Achsen; die echte
+  // Frame-Sequenz (horizontal) und eine kleine Neigung um die Linse
+  // (vertikal) halten ihn dabei dreidimensional. In Ruhe schwebt er mit
+  // HEAD_GAP über dem Kragen. Alle Versätze bleiben innerhalb des breiten
+  // Matte-Rands der Frames — kein Doppelbild an der Matte-Kante.
+  // (Die Federn erreichen praktisch nur ±0.7–0.9: weiche Sättigung.)
+  const headTX = useTransform(hx, (v) => (headTurn ? v * 15 : 0));
+  const headTY = useTransform(hy, (v) => (headTurn ? -HEAD_GAP + v * 18 : 0));
+  const headRX = useTransform(hy, (v) => (headTurn ? v * -7 : 0));
+  const headTilt = useMotionTemplate`perspective(900px) translate3d(${headTX}px, ${headTY}px, 0) rotateX(${headRX}deg) rotate(${lean}deg)`;
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -179,8 +201,8 @@ export function HeroStage() {
   const gazeX = useTransform(gaze, (g) => g[0] * 9);
   const gazeY = useTransform(gaze, (g) => g[1] * 7);
   // Glanzpunkt-Anker folgt der Linse der Sequenz (cqw/cqh = Anteile des
-  // Charakter-Containers) plus Blick.
-  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px), 0)`;
+  // Charakter-Containers) plus Kopf-Position und Blick.
+  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px + ${headTX}px), calc(${lensDY}cqh + ${gazeY}px + ${headTY}px), 0)`;
 
   // Glanzpunkt läuft dem Blick entgegen: verkauft die Glasfläche.
   const glintX = useTransform(gazeX, (v) => v * -0.6);
@@ -259,43 +281,56 @@ export function HeroStage() {
     if (!pointer) setIdle(true);
   }, [live, pointer]);
 
-  /* ---------------- Maus: WITCH schaut dem Cursor überall hin nach ---------------- */
+  /* ---------------- Maus: Kopf jagt dem Cursor im Hero-Bereich nach ---------------- */
+  // Innerhalb der Bühne (plus etwas Rand) folgt der Kopf dem Cursor;
+  // verlässt er sie — oder scrollt sie aus dem Bild — kehrt der Kopf über
+  // die Federn weich in die neutrale Mitte zurück. Kein Idle-Wandern am
+  // Desktop: die Mitte IST der Ruhezustand.
   useEffect(() => {
     if (!pointer) return;
     const el = charRef.current;
     if (!el) return;
     const cursor = { x: NaN, y: NaN };
+    const PAD = 48;
     measureLens();
+    const aim = () => {
+      if (Number.isNaN(cursor.x)) return;
+      const r = el.getBoundingClientRect();
+      const inside =
+        cursor.x > r.left - PAD &&
+        cursor.x < r.right + PAD &&
+        cursor.y > r.top - PAD &&
+        cursor.y < r.bottom + PAD;
+      if (inside) {
+        lookAt(cursor.x, cursor.y);
+      } else {
+        tx.set(0);
+        ty.set(0);
+        lastRef.current = { x: 0, y: 0 };
+      }
+    };
     const onMove = (e: PointerEvent) => {
       if (e.pointerType && e.pointerType !== "mouse") return;
       cursor.x = e.clientX;
       cursor.y = e.clientY;
-      lookAt(e.clientX, e.clientY);
-      wake(IDLE_AFTER.mouse);
+      aim();
     };
-    // Beim Scrollen wandert die Linse unter dem stehenden Cursor weg:
-    // Blick aus der letzten Cursorposition nachführen.
+    // Beim Scrollen wandert die Bühne unter dem stehenden Cursor weg:
+    // Innen/Außen und Blick aus der letzten Cursorposition nachführen.
     const onScroll = () => {
       measureLens();
-      if (!Number.isNaN(cursor.x)) lookAt(cursor.x, cursor.y);
-    };
-    // Cursor verlässt das Fenster: bald umschauen
-    const onOut = (e: MouseEvent) => {
-      if (!e.relatedTarget) armIdle(IDLE_AFTER.mouse);
+      aim();
     };
     const ro = new ResizeObserver(measureLens);
     ro.observe(el);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onMove, { passive: true });
-    document.addEventListener("mouseout", onOut);
-    armIdle(IDLE_AFTER.mouse);
     return () => {
       ro.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);
-      document.removeEventListener("mouseout", onOut);
     };
-  }, [pointer, measureLens, lookAt, wake, armIdle]);
+  }, [pointer, measureLens, lookAt, tx, ty]);
 
   /* ---------------- Finger: während der Berührung, auch beim Scrollen ---------------- */
   const touching = useRef(false);
@@ -467,10 +502,8 @@ export function HeroStage() {
             }
             transition={shot ? { duration: 0.36, ease: easeOut } : phase === "asleep" ? { duration: 0 } : SPRING.wake}
           >
-            <motion.div
-              className="relative h-full w-full will-change-transform"
-              style={live ? { transform: bodyTransform } : undefined}
-            >
+            {/* Der Körper steht stabil — nur der Kopf bewegt sich */}
+            <div className="relative h-full w-full">
               <div className="h-full w-full">
                 <picture>
                   <source media="(min-width: 1024px)" type="image/avif" srcSet="/mascot/witch-wide.avif" />
@@ -485,8 +518,16 @@ export function HeroStage() {
                 </picture>
               </div>
 
-              {/* Kopfdrehung: Frame-Sequenz über dem statischen Poster (Desktop mit Maus) */}
-              <HeadTurn manifest={HEAD_TURN} base="/mascot/headturn" value={hx} enabled={headTurn} />
+              {/* Der Kopf: eigene Ebene über dem stabilen Körper — jagt dem
+                  Cursor nach (Position) und dreht dabei echt (Frames) */}
+              <HeadTurn
+                manifest={HEAD_TURN}
+                base="/mascot/headturn"
+                value={hx}
+                tilt={headTilt}
+                tiltOrigin={TILT_ORIGIN}
+                enabled={headTurn}
+              />
 
               {/* Die Linse bleibt leer — dunkles Glas, nur ein wandernder
                   Glanzpunkt als Glas-Detail. Er folgt der Linse der Sequenz
@@ -545,7 +586,7 @@ export function HeroStage() {
                 aria-label="WITCH macht ein Foto"
                 className="absolute inset-0 z-10 cursor-pointer rounded-[32px] focus-visible:outline-offset-[-6px] md:rounded-[40px]"
               />
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
