@@ -79,8 +79,10 @@ const small = [];
 for (const f of ordered) small.push(await gray(f));
 
 if (centerIdx < 0) {
-  // Sweep: der Frame, der dem frontalen Referenz-Render am nächsten kommt
-  const ref = await gray(path.resolve("../../public/mascot/witch-wide.webp"));
+  // Sweep: der Frame, der dem Referenz-Render am nächsten kommt.
+  // Standard: das frontale Poster; für geneigte Zeilen (--sweep-ref) die
+  // jeweilige Mittelpose (z. B. „schaut senkrecht nach oben").
+  const ref = await gray(path.resolve(args["sweep-ref"] ?? "../../public/mascot/witch-wide.webp"));
   let best = Infinity;
   small.forEach((s, i) => {
     let d = 0;
@@ -112,7 +114,14 @@ crop.h = Math.min(1 - crop.y, (y1 + 1) / AH + pad * 1.4 - crop.y);
 // Optional harte Unterkante (Anteil der Bildhöhe): hält den Crop auf dem Kopf,
 // auch wenn der Clip eine leichte Körperdrift zeigt. Alles darunter bleibt Poster.
 if (args["crop-bottom"]) crop.h = Math.min(crop.h, Number(args["crop-bottom"]) - crop.y);
+// Feste Crop-Box (x,y,w,h als Anteile): alle Zeilen einer 2D-Sequenz teilen
+// sich EINE Box, damit ein Canvas sie deckungsgleich zeichnen kann.
+if (args.crop && typeof args.crop === "string") {
+  const [cx, cy, cw, ch] = args.crop.split(",").map(Number);
+  crop.x = cx; crop.y = cy; crop.w = cw; crop.h = ch;
+}
 log(`crop ${JSON.stringify(Object.fromEntries(Object.entries(crop).map(([k, v]) => [k, +v.toFixed(4)])))}`);
+if (args.analyze) { log("analyze only – Ende."); process.exit(0); }
 
 /* 4: Bogenlängen-Resampling, Center exakt in der Mitte */
 const cropIdx = [];
@@ -206,7 +215,13 @@ lens.forEach((l, i) => { l.x -= shX[i] / SW; l.y -= shY[i] / SH; });
    dem Clip; feine Kanten-Splitter durch Kapuzenbewegung werden per Öffnung
    entfernt. So bleibt der Körper das Poster, selbst direkt unter dem Kopf. */
 const MATTE_TH = Number(args["matte-threshold"] ?? 32);
-const refStab = refImg; // Poster in 640x360
+// Matte-Referenz: normalerweise der Center-Frame der Sequenz (= Poster).
+// Für geneigte Zeilen (--matte-ref pfad/zum/poster) MUSS gegen das Poster
+// gerechnet werden, damit die Matte auch den frontalen Poster-Kopf abdeckt —
+// sonst lugt er neben den geneigten Köpfen hervor.
+const refStab = args["matte-ref"]
+  ? await gray(path.resolve(args["matte-ref"]), SW, SH)
+  : refImg;
 function minMax(src, w, h, r, useMax) {
   const tmp = new Uint8Array(w * h), out = new Uint8Array(w * h);
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {

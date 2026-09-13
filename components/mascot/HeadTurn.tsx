@@ -4,103 +4,149 @@ import { useEffect, useRef } from "react";
 import { motion, useMotionValueEvent, type MotionValue } from "framer-motion";
 
 /**
- * Kopfdrehung als Frame-Sequenz auf einem Canvas.
+ * Kopfdrehung in 2D (Yaw × Pitch) als Frame-Zeilen auf einem Canvas.
  *
- * Statt drei Ansichten zu überblenden (Doppelbilder) wird eine aus dem
- * Turnaround-Clip extrahierte Sequenz von Kopf-Crops gezeichnet, gesteuert
- * vom Kopf-Wert -1..1 (links..rechts). Zwischen zwei Nachbarframes wird
- * subframe-genau überblendet; da sich Nachbarn nur minimal unterscheiden,
- * entsteht kein Geisterbild, nur weichere Bewegung.
+ * Drei ZEILEN aus echten Turnaround-Clips, alle mit derselben Crop-Box:
+ *   up     – Kopf nach OBEN geneigt, dreht links ↔ rechts (41 Frames)
+ *   center – Kopf waagerecht, dreht links ↔ rechts (61 Frames)
+ *   down   – Kopf nach UNTEN geneigt, dreht links ↔ rechts (41 Frames)
  *
- *  - Nur der Kopfbereich (Crop mit weicher Kante) liegt auf dem Canvas,
- *    Körper und Hintergrund bleiben das statische Poster darunter.
+ * Maus-X (Yaw) wählt den Frame INNERHALB der Zeile: echte Zwischenframes,
+ * subframe-genau überblendet — horizontal nie zwei verschiedene Posen
+ * gleichzeitig. Maus-Y (Pitch, mit Commit-Rampe + Feder geformt) blendet
+ * zwischen Center-Zeile und Up- bzw. Down-Zeile: gehaltene Positionen
+ * liegen praktisch immer auf EINER Zeile (echtes Hoch-/Runterschauen),
+ * die kurze Überblendung dazwischen ist ein Durchgangszustand der Feder.
+ *
  *  - Frames werden als ImageBitmap vorab dekodiert (off-main-thread),
- *    von der Mitte nach außen, damit die erste Bewegung sofort flüssig ist.
+ *    Center-Zeile zuerst, dann Up/Down, jeweils von der Mitte nach außen.
  *  - Pro Frame höchstens ein Draw (rAF-gedrosselt), nur bei Änderung.
+ *  - Fehlt ein Frame noch, fällt das Zeichnen auf den nächsten geladenen
+ *    Richtung Zeilenmitte zurück (weicher reduzierter Radius statt Sprung).
  */
-export type HeadTurnManifest = {
+
+export type RowName = "up" | "center" | "down";
+
+export type HeadRow = {
+  /** Unterordner der Zeile ("" = Wurzel für die Center-Zeile) */
+  dir: string;
   frames: number;
   center: number;
+  lens: { x: number; y: number }[];
+};
+
+export type HeadTurn2DManifest = {
   widths: number[];
   frame: { w: number; h: number };
   crop: { x: number; y: number; w: number; h: number };
-  lens: { x: number; y: number }[];
   lensR: number;
+  rows: Record<RowName, HeadRow>;
 };
 
-/** Linsenmitte (Anteile des Gesamtbilds) für einen Kopf-Wert -1..1. */
-export function lensAt(m: HeadTurnManifest, v: number) {
-  const f = m.center + Math.max(-1, Math.min(1, v)) * m.center;
-  const i0 = Math.floor(f), i1 = Math.min(m.frames - 1, i0 + 1), t = f - i0;
-  const a = m.lens[i0], b = m.lens[i1];
+const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
+
+function rowLens(r: HeadRow, yaw: number) {
+  const f = r.center + clamp(yaw) * r.center;
+  const i0 = Math.floor(f), i1 = Math.min(r.frames - 1, i0 + 1), t = f - i0;
+  const a = r.lens[i0], b = r.lens[i1];
   return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+}
+
+/** Linsenmitte (Anteile des Gesamtbilds) für Yaw ∈ [-1,1], Pitch ∈ [-1,1]. */
+export function lensAt2D(man: HeadTurn2DManifest, yaw: number, pitch: number) {
+  const p = clamp(pitch);
+  const c = rowLens(man.rows.center, yaw);
+  if (Math.abs(p) < 1e-4) return c;
+  const r = rowLens(p < 0 ? man.rows.up : man.rows.down, yaw);
+  const w = Math.abs(p);
+  return { x: c.x + (r.x - c.x) * w, y: c.y + (r.y - c.y) * w };
 }
 
 export function HeadTurn({
   manifest,
   base,
-  value,
+  yaw,
+  pitch,
   tilt,
   tiltOrigin,
   enabled,
 }: {
-  manifest: HeadTurnManifest;
-  /** Ordner der Sequenz, z. B. "/mascot/headturn" */
+  manifest: HeadTurn2DManifest;
+  /** Ordner der Sequenzen, z. B. "/mascot/headturn" */
   base: string;
-  value: MotionValue<number>;
-  /** Optionale 3D-Neigung des gezeichneten Kopfes (CSS-Transform-String,
-   *  z. B. kleines rotateX fürs Nicken). Läuft rein im Compositor — kein
-   *  zusätzliches Canvas-Zeichnen. Klein halten: der Matte-Rand muss den
-   *  frontalen Poster-Kopf weiterhin vollständig abdecken. */
+  yaw: MotionValue<number>;
+  /** Geformter Pitch (-1 = oben … 1 = unten), Commit + Feder in HeroStage. */
+  pitch: MotionValue<number>;
+  /** Optionale Zusatz-Transformation des Kopf-Canvas (Chase-Translation).
+   *  Klein halten: der Matte-Rand muss den Poster-Kopf weiter abdecken. */
   tilt?: MotionValue<string>;
-  /** Drehpunkt der Neigung (CSS transform-origin), z. B. die Linsenmitte. */
   tiltOrigin?: string;
   enabled: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const frames = useRef<(ImageBitmap | null)[]>([]);
+  const frames = useRef<Map<RowName, (ImageBitmap | null)[]>>(new Map());
   const raf = useRef(0);
-  const last = useRef(NaN);
-  const size = useRef({ w: 0, h: 0, dpr: 1 });
+  const last = useRef("");
+  const size = useRef({ w: 0, h: 0 });
 
-  // Zeichnen: Frame-Index aus dem Wert, Nachbarn überblenden
   const draw = () => {
     raf.current = 0;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
-    const v = Math.max(-1, Math.min(1, value.get()));
-    const f = manifest.center + v * manifest.center;
-    if (Math.abs(f - last.current) < 0.003) return;
-    const i0 = Math.floor(f);
-    const i1 = Math.min(manifest.frames - 1, i0 + 1);
-    const t = f - i0;
-    const list = frames.current;
-    // nächster geladener Frame Richtung Mitte, falls der gewünschte noch fehlt
-    const nearest = (i: number) => {
-      if (list[i]) return i;
-      const dir = i < manifest.center ? 1 : -1;
-      for (let j = i; j >= 0 && j < manifest.frames; j += dir) if (list[j]) return j;
-      return -1;
-    };
-    const a = nearest(i0), b = nearest(i1);
-    if (a < 0) return;
+    const y = clamp(yaw.get());
+    const p = clamp(pitch.get());
+    const pitched: RowName | null = p < -0.001 ? "up" : p > 0.001 ? "down" : null;
+    const wP = Math.abs(p);
     const { w, h } = size.current;
+
+    // Zeichenplan einer Zeile: gewünschte Frames, nächste geladene als Ersatz
+    const plan = (name: RowName) => {
+      const r = manifest.rows[name];
+      const list = frames.current.get(name);
+      if (!list) return null;
+      const f = r.center + y * r.center;
+      const want0 = Math.floor(f), want1 = Math.min(r.frames - 1, want0 + 1), t = f - want0;
+      const nearest = (i: number) => {
+        if (list[i]) return i;
+        const dir = i < r.center ? 1 : -1;
+        for (let j = i; j >= 0 && j < r.frames; j += dir) if (list[j]) return j;
+        return -1;
+      };
+      const i0 = nearest(want0), i1 = nearest(want1);
+      if (i0 < 0) return null;
+      return { list, i0, i1, t, complete: i0 === want0 && i1 === want1 };
+    };
+    const baseP = plan("center");
+    const topP = pitched ? plan(pitched) : null;
+    if (!baseP && !topP) return;
+    const sig = `${baseP ? `${baseP.i0}:${baseP.i1}:${baseP.t.toFixed(3)}` : ""}|${pitched ?? ""}:${wP.toFixed(3)}|${topP ? `${topP.i0}:${topP.i1}:${topP.t.toFixed(3)}` : ""}`;
+    if (sig === last.current) return;
+
     ctx.clearRect(0, 0, w, h);
-    ctx.globalAlpha = 1;
-    ctx.drawImage(list[a]!, 0, 0, w, h);
-    if (b >= 0 && b !== a && t > 0.001) {
-      ctx.globalAlpha = t;
-      ctx.drawImage(list[b]!, 0, 0, w, h);
+    const paint = (pl: NonNullable<ReturnType<typeof plan>>, alpha: number) => {
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(pl.list[pl.i0]!, 0, 0, w, h);
+      if (pl.i1 !== pl.i0 && pl.i1 >= 0 && pl.t > 0.001) {
+        ctx.globalAlpha = alpha * pl.t;
+        ctx.drawImage(pl.list[pl.i1]!, 0, 0, w, h);
+      }
       ctx.globalAlpha = 1;
-    }
-    last.current = a === i0 && b === i1 ? f : NaN; // unvollständig gezeichnet → später erneut
+    };
+    // Center als Basis, geneigte Zeile mit ihrem Gewicht darüber:
+    // Ergebnis = wP·Zeile + (1−wP)·Center — exakt, kein Durchscheinen.
+    if (baseP) paint(baseP, 1);
+    if (topP && wP > 0.001) paint(topP, baseP ? wP : 1);
+    last.current = (baseP?.complete ?? true) && (topP?.complete ?? true) ? sig : "";
   };
   const schedule = () => {
     if (!raf.current) raf.current = requestAnimationFrame(draw);
   };
 
-  useMotionValueEvent(value, "change", () => {
+  useMotionValueEvent(yaw, "change", () => {
+    if (enabled) schedule();
+  });
+  useMotionValueEvent(pitch, "change", () => {
     if (enabled) schedule();
   });
 
@@ -118,8 +164,8 @@ export function HeadTurn({
       if (w !== size.current.w || h !== size.current.h) {
         canvas.width = w;
         canvas.height = h;
-        size.current = { w, h, dpr };
-        last.current = NaN;
+        size.current = { w, h };
+        last.current = "";
         schedule();
       }
     };
@@ -127,25 +173,51 @@ export function HeadTurn({
     const ro = new ResizeObserver(fit);
     ro.observe(canvas);
 
-    // Passende Breite wählen, Frames von der Mitte nach außen dekodieren
+    // Passende Breite wählen; Center-Zeile zuerst laden (häufigster Fall),
+    // dann Up/Down verschränkt — jeweils von der Zeilenmitte nach außen.
     const need = size.current.w;
-    const width = manifest.widths.slice().sort((a, b) => a - b).find((wd) => (wd * manifest.crop.w) >= need) ?? Math.max(...manifest.widths);
-    const order: number[] = [manifest.center];
-    for (let d = 1; d <= manifest.center; d++) order.push(manifest.center - d, manifest.center + d);
-    frames.current = new Array(manifest.frames).fill(null);
+    const width =
+      manifest.widths.slice().sort((a, b) => a - b).find((wd) => wd * manifest.crop.w >= need) ??
+      Math.max(...manifest.widths);
+    frames.current = new Map();
+    const queue: { name: RowName; i: number; url: string }[] = [];
+    const enqueue = (name: RowName) => {
+      const r = manifest.rows[name];
+      frames.current.set(name, new Array(r.frames).fill(null));
+      const order: number[] = [r.center];
+      for (let d = 1; d <= r.center; d++) order.push(r.center - d, r.center + d);
+      for (const i of order) {
+        if (i < 0 || i >= r.frames) continue;
+        const dir = r.dir ? `${r.dir}/` : "";
+        queue.push({ name, i, url: `${base}/${dir}${width}/${String(i).padStart(2, "0")}.webp` });
+      }
+    };
+    enqueue("center");
+    // up/down verschränkt hinter der Center-Zeile
+    {
+      const r0 = queue.length;
+      enqueue("up");
+      const upPart = queue.splice(r0);
+      enqueue("down");
+      const downPart = queue.splice(r0);
+      for (let i = 0; i < Math.max(upPart.length, downPart.length); i++) {
+        if (upPart[i]) queue.push(upPart[i]);
+        if (downPart[i]) queue.push(downPart[i]);
+      }
+    }
     let active = 0;
-    const queue = order.filter((i) => i >= 0 && i < manifest.frames);
     const pump = () => {
       while (active < 4 && queue.length && !cancelled) {
-        const i = queue.shift()!;
+        const job = queue.shift()!;
         active++;
-        fetch(`${base}/${width}/${String(i).padStart(2, "0")}.webp`)
+        fetch(job.url)
           .then((r) => r.blob())
           .then((blob) => createImageBitmap(blob))
           .then((bmp) => {
             if (cancelled) return bmp.close();
-            frames.current[i] = bmp;
-            last.current = NaN;
+            const list = frames.current.get(job.name);
+            if (list) list[job.i] = bmp;
+            last.current = "";
             schedule();
           })
           .catch(() => undefined)
@@ -162,8 +234,8 @@ export function HeadTurn({
       ro.disconnect();
       cancelAnimationFrame(raf.current);
       raf.current = 0;
-      frames.current.forEach((b) => b?.close());
-      frames.current = [];
+      for (const list of frames.current.values()) list.forEach((b) => b?.close());
+      frames.current = new Map();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, base, manifest]);

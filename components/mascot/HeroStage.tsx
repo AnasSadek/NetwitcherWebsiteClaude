@@ -13,17 +13,25 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
-import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
-import headTurnManifest from "./headturn.manifest.json";
+import { HeadTurn, lensAt2D, type HeadTurn2DManifest } from "./HeadTurn";
+import headTurnManifest from "./headturn2d.manifest.json";
 
-const HEAD_TURN = headTurnManifest as HeadTurnManifest;
-// Drehpunkt der Kopf-Neigung: die Linsenmitte, umgerechnet in Anteile des
-// Kopf-Canvas (Linse in Bildanteilen minus Crop-Ursprung, durch Crop-Größe).
-const LENS_CTR = HEAD_TURN.lens[HEAD_TURN.center];
+const HEAD_TURN = headTurnManifest as unknown as HeadTurn2DManifest;
+// Frontale Linsenmitte (Center-Zeile, Center-Frame)
+const LENS_CTR = HEAD_TURN.rows.center.lens[HEAD_TURN.rows.center.center];
 const TILT_ORIGIN = `${((LENS_CTR.x - HEAD_TURN.crop.x) / HEAD_TURN.crop.w) * 100}% ${((LENS_CTR.y - HEAD_TURN.crop.y) / HEAD_TURN.crop.h) * 100}%`;
 // Bewusster Abstand zwischen Kopf und Körper in Ruhelage (px): der Kopf
 // schwebt sichtbar über dem Kragen — die Trennung ist Absicht, kein Fehler.
 const HEAD_GAP = 5;
+// Pitch-Commit: kleine Auslenkungen bleiben auf der Center-Zeile, ab ~50%
+// ist die geneigte Zeile voll eingeblendet — gehaltene Positionen liegen
+// so praktisch immer auf EINER echten Pose (kein stehendes Mischbild).
+const pitchShape = (v: number) => {
+  const a = Math.abs(v);
+  if (a <= 0.12) return 0;
+  const t = Math.min(1, (a - 0.12) / 0.38);
+  return Math.sign(v) * t * t * (3 - 2 * t);
+};
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
@@ -40,14 +48,13 @@ const HEAD_GAP = 5;
  *
  * KOPF UND KÖRPER SIND GETRENNT: der Körper (Poster) steht stabil, der
  * Kopf (eigene Canvas-Ebene) schwebt mit ~5 px Abstand über dem Kragen
- * und jagt dem Cursor in beiden Achsen nach. Damit er dabei
- * dreidimensional bleibt und nicht flach „rutscht":
- *   horizontal – Position folgt dem Cursor UND die echte Frame-Sequenz
- *                dreht den Kopf mit (ein Clip → kein Morphen/Geistern)
- *   vertikal   – Position folgt dem Cursor, dazu eine kleine Neigung um
- *                die Linse (Perspektive) als Orientierungs-Hinweis
- *   Diagonal   – beide Achsen gleichzeitig
- * Der Versatz bleibt innerhalb des breiten Matte-Rands der Frames
+ * und jagt dem Cursor in beiden Achsen nach — und SCHAUT dabei wirklich
+ * hin, mit echten Frames in beiden Achsen (Yaw × Pitch, siehe HeadTurn):
+ *   Maus-X  – Yaw: Frame innerhalb der Zeile (echte Drehung) + Position
+ *   Maus-Y  – Pitch: Zeilen-Auswahl up/center/down (echtes Hoch-/Runter-
+ *             schauen aus eigenen Clips) + Position
+ *   Diagonal – geneigte Zeile an gedrehtem Frame: kombinierte Blickrichtung
+ * Der Chase-Versatz bleibt innerhalb des breiten Matte-Rands der Frames
  * (--matte-grow): der gezeichnete Kopf deckt den frontalen Poster-Kopf
  * immer vollständig ab — kein Doppelbild, keine gebrochene Ebene.
  *
@@ -168,22 +175,27 @@ export function HeroStage() {
   const lean = useSpring(useTransform(vel, (v) => clamp(v * 0.4, -1.8, 1.8)), SPRING.lean);
 
   /* ---------------- Kopf: getrennte Ebene, jagt dem Cursor nach ---------------- */
-  // Desktop mit Maus: der Kopf-Wert steuert Sequenz UND Position.
+  // Desktop mit Maus: Maus-X steuert Yaw (Frame in der Zeile), Maus-Y den
+  // Pitch (Zeilen-Auswahl) — beides ECHTE Frames, kein CSS-Fake.
   const headTurn = pointer && wide;
-  // Linsenmitte wandert mit der Drehung; Versatz zur Mitte in Anteilen der
-  // Containerbreite bzw. -höhe (die Auge-Position ist auf die Mitte kalibriert).
-  const lensDX = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).x - LENS_CTR.x) * 100 : 0));
-  const lensDY = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).y - LENS_CTR.y) * 100 : 0));
-  // Der Kopf FOLGT dem Cursor positionsgetreu in beiden Achsen; die echte
-  // Frame-Sequenz (horizontal) und eine kleine Neigung um die Linse
-  // (vertikal) halten ihn dabei dreidimensional. In Ruhe schwebt er mit
-  // HEAD_GAP über dem Kragen. Alle Versätze bleiben innerhalb des breiten
-  // Matte-Rands der Frames — kein Doppelbild an der Matte-Kante.
+  // Pitch: Commit-geformtes Ziel, dann Feder — Übergänge sind flüssig,
+  // gehaltene Positionen liegen auf einer echten Zeile.
+  const pitchTarget = useTransform(ty, pitchShape);
+  const pitch = useSpring(pitchTarget, SPRING.head);
+  // Linsenmitte wandert mit Drehung UND Neigung (2D-Linsenbahn).
+  const lensDX = useTransform([hx, pitch] as const, ([x, p]: number[]) =>
+    headTurn ? (lensAt2D(HEAD_TURN, x, p).x - LENS_CTR.x) * 100 : 0
+  );
+  const lensDY = useTransform([hx, pitch] as const, ([x, p]: number[]) =>
+    headTurn ? (lensAt2D(HEAD_TURN, x, p).y - LENS_CTR.y) * 100 : 0
+  );
+  // Zusätzlich FOLGT der Kopf dem Cursor positionsgetreu (Chase) und
+  // schwebt in Ruhe mit HEAD_GAP über dem Kragen. Alle Versätze bleiben
+  // innerhalb des breiten Matte-Rands der Frames — kein Doppelbild.
   // (Die Federn erreichen praktisch nur ±0.7–0.9: weiche Sättigung.)
-  const headTX = useTransform(hx, (v) => (headTurn ? v * 15 : 0));
-  const headTY = useTransform(hy, (v) => (headTurn ? -HEAD_GAP + v * 18 : 0));
-  const headRX = useTransform(hy, (v) => (headTurn ? v * -7 : 0));
-  const headTilt = useMotionTemplate`perspective(900px) translate3d(${headTX}px, ${headTY}px, 0) rotateX(${headRX}deg) rotate(${lean}deg)`;
+  const headTX = useTransform(hx, (v) => (headTurn ? v * 14 : 0));
+  const headTY = useTransform(hy, (v) => (headTurn ? -HEAD_GAP + v * 14 : 0));
+  const headTilt = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, 0) rotate(${lean}deg)`;
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -523,7 +535,8 @@ export function HeroStage() {
               <HeadTurn
                 manifest={HEAD_TURN}
                 base="/mascot/headturn"
-                value={hx}
+                yaw={hx}
+                pitch={pitch}
                 tilt={headTilt}
                 tiltOrigin={TILT_ORIGIN}
                 enabled={headTurn}
