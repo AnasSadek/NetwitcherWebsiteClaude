@@ -23,7 +23,13 @@ const LENS_CTR = ROW.lens[ROW.center];
 const TILT_ORIGIN = `${((LENS_CTR.x - HEAD_TURN.crop.x) / HEAD_TURN.crop.w) * 100}% ${((LENS_CTR.y - HEAD_TURN.crop.y) / HEAD_TURN.crop.h) * 100}%`;
 // Bewusster Abstand zwischen Kopf und Körper in Ruhelage (px): der Kopf
 // schwebt sichtbar über dem Kragen — die Trennung ist Absicht, kein Fehler.
-const HEAD_GAP = 5;
+const HEAD_GAP = 8;
+// Hals-Rekomposition: Band mit echten „hinter dem Kinn"-Pixeln (Kapuze +
+// Schatten, aus der Hochschau-Footage, in der das Kinn-Areal frei ist).
+// Es deckt die eingebackene Kinnkante des Posters ab — erst dadurch wird
+// der Schwebe-Spalt sichtbar statt einer zweiten Kinnlinie darunter.
+// Vollbild-Anteile: x/w = Crop-Spanne, y 0.500..0.575.
+const NECK = { top: 50.0, height: 7.5 };
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
@@ -517,6 +523,24 @@ export function HeroStage() {
                   />
                 </picture>
               </div>
+
+              {/* Hals-Rekomposition: echte Kapuzen-/Schatten-Pixel hinter dem
+                  Kinn — deckt die Poster-Kinnkante ab, damit der Spalt unter
+                  dem schwebenden Kopf frei sichtbar ist */}
+              {headTurn && (
+                <img
+                  src="/mascot/headturn/neck-1600.webp"
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute"
+                  style={{
+                    left: `${HEAD_TURN.crop.x * 100}%`,
+                    width: `${HEAD_TURN.crop.w * 100}%`,
+                    top: `${NECK.top}%`,
+                    height: `${NECK.height}%`,
+                  }}
+                />
+              )}
 
               {/* Der Kopf: eigene Ebene über dem stabilen Körper — jagt dem
                   Cursor nach (Position) und dreht dabei echt (Frames) */}
