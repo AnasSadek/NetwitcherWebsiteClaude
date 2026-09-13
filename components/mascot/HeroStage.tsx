@@ -23,7 +23,7 @@ const LENS_CTR = ROW.lens[ROW.center];
 const TILT_ORIGIN = `${((LENS_CTR.x - HEAD_TURN.crop.x) / HEAD_TURN.crop.w) * 100}% ${((LENS_CTR.y - HEAD_TURN.crop.y) / HEAD_TURN.crop.h) * 100}%`;
 // Bewusster Abstand zwischen Kopf und Körper in Ruhelage (px): der Kopf
 // schwebt sichtbar über dem Kragen — die Trennung ist Absicht, kein Fehler.
-const HEAD_GAP = 8;
+const HEAD_GAP = 12;
 // Kopfloser Körper: das Poster mit gestaltetem, oben offenem Kragen —
 // die Kapuze ist dort, wo der Kopf abhebt, sauber gerundet und wirft
 // einen natürlichen Innenschatten. Außerhalb der Kopf-Region ist die
