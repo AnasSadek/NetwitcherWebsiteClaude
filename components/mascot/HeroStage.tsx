@@ -502,12 +502,17 @@ export function HeroStage() {
         ref={charRef}
         className="witch-stage @container relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:1000px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
       >
-        <div className={`h-full w-full ${live ? "animate-float" : ""}`}>
+        {/* Im HeadTurn-Modus ist der Körper KOMPLETT statisch: kein Schweben,
+            kein Aufwachen, kein Rückstoß auf dieser Ebene — all das lebt dann
+            ausschließlich auf der Kopf-Ebene weiter unten. Ohne HeadTurn
+            (Touch/schmal, eine einzige Figur ohne Kopf-Trennung) animiert
+            weiterhin die ganze Figur. */}
+        <div className={`h-full w-full ${live && !headTurn ? "animate-float" : ""}`}>
           {/* Einmalige Ganzkörper-Momente: Aufrichten beim Aufwachen, Rückstoß beim Auslösen */}
           <motion.div
             className="h-full w-full"
             animate={
-              reduce
+              reduce || headTurn
                 ? { scale: 1, rotate: 0 }
                 : phase === "asleep"
                   ? { scale: 0.975, rotate: -1.5 }
@@ -537,16 +542,33 @@ export function HeroStage() {
                   oben offenem, natürlich beschattetem Kragen — der Kopf hebt
                   sichtbar aus der Kapuze ab, statt aufgesetzt zu wirken */}
               {headTurn && (
-                <>
-                  <img
-                    src="/mascot/witch-body.webp"
-                    alt=""
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-                    style={{ opacity: headReady ? 1 : 0 }}
-                  />
-                  {/* Weicher Kontaktschatten des Kopfs auf dem Kapuzenrand */}
-                  {headReady && (
+                <img
+                  src="/mascot/witch-body.webp"
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                  style={{ opacity: headReady ? 1 : 0 }}
+                />
+              )}
+
+              {/* Die KOPF-EBENE: alles, was sich bewegt, lebt hier — Schweben,
+                  Rückstoß beim Auslösen, Cursor-Verfolgung, Blick und Funken.
+                  Der Körper darunter (Poster/Platte) bleibt pixelstabil.
+                  Ohne HeadTurn animiert stattdessen die Ganzfigur-Hülle oben. */}
+              <div
+                className={`pointer-events-none absolute inset-0 ${live && headTurn ? "animate-float" : ""}`}
+              >
+                <motion.div
+                  className="h-full w-full"
+                  style={{ transformOrigin: `${LENS_CTR.x * 100}% ${LENS_CTR.y * 100}%` }}
+                  animate={
+                    headTurn && shot && !reduce ? { scale: [1, 0.992, 1.004, 1] } : { scale: 1 }
+                  }
+                  transition={shot ? { duration: 0.36, ease: easeOut } : undefined}
+                >
+                  {/* Weicher Kontaktschatten des Kopfs auf dem Kapuzenrand —
+                      er gehört zum Kopf und wandert/schwebt mit ihm */}
+                  {headTurn && headReady && (
                     <motion.div
                       aria-hidden="true"
                       className="pointer-events-none absolute rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(10,6,26,0.9),rgba(10,6,26,0)_68%)]"
@@ -560,23 +582,21 @@ export function HeroStage() {
                       }}
                     />
                   )}
-                </>
-              )}
 
-              {/* Der Kopf: eigene Ebene über dem stabilen Körper — jagt dem
-                  Cursor nach (Position) und dreht dabei echt (Frames) */}
-              <HeadTurn
-                manifest={HEAD_TURN}
-                base="/mascot/headturn"
-                x={tx}
-                y={ty}
-                lensX={lensPX}
-                lensY={lensPY}
-                tilt={headTilt}
-                tiltOrigin={TILT_ORIGIN}
-                enabled={headTurn}
-                onFirstDraw={onHeadFirstDraw}
-              />
+                  {/* Der Kopf: jagt dem Cursor nach (Position) und dreht dabei
+                      echt (Frames) */}
+                  <HeadTurn
+                    manifest={HEAD_TURN}
+                    base="/mascot/headturn"
+                    x={tx}
+                    y={ty}
+                    lensX={lensPX}
+                    lensY={lensPY}
+                    tilt={headTilt}
+                    tiltOrigin={TILT_ORIGIN}
+                    enabled={headTurn}
+                    onFirstDraw={onHeadFirstDraw}
+                  />
 
               {/* Die Linse bleibt leer — dunkles Glas, nur ein wandernder
                   Glanzpunkt als Glas-Detail. Er folgt der Linse der Sequenz
@@ -627,6 +647,8 @@ export function HeroStage() {
                   })}
                 </div>
               )}
+                </motion.div>
+              </div>
 
               {/* Auslöser: die ganze Figur ist der Knopf */}
               <button
