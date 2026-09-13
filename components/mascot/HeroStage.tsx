@@ -502,10 +502,12 @@ export function HeroStage() {
         ref={charRef}
         className="witch-stage @container relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:1000px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
       >
-        {/* Im HeadTurn-Modus ist der Körper KOMPLETT statisch: kein Schweben,
-            kein Aufwachen, kein Rückstoß auf dieser Ebene — all das lebt dann
-            ausschließlich auf der Kopf-Ebene weiter unten. Ohne HeadTurn
-            (Touch/schmal, eine einzige Figur ohne Kopf-Trennung) animiert
+        {/* GESPERRTE INVARIANTE (siehe CLAUDE.md): Im HeadTurn-Modus ist der
+            Körper KOMPLETT statisch — die Körper-Kette (Poster + Platte) darf
+            keine animierten/transformierten Vorfahren bekommen: kein Float,
+            kein Scale/Rotate, kein Parallax, keine Cursor-Bewegung. Alles,
+            was sich bewegt, gehört ausschließlich auf die Kopf-Ebene unten.
+            Ohne HeadTurn (Touch/schmal, eine ungeteilte Figur) animiert
             weiterhin die ganze Figur. */}
         <div className={`h-full w-full ${live && !headTurn ? "animate-float" : ""}`}>
           {/* Einmalige Ganzkörper-Momente: Aufrichten beim Aufwachen, Rückstoß beim Auslösen */}
