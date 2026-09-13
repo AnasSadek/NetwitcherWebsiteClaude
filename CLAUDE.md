@@ -13,8 +13,16 @@ und **gesperrt**:
   Eltern-Container.
 - **Alle Bewegung lebt ausschließlich auf der Kopf-Ebene** (der absolute
   Overlay-Wrapper um `<HeadTurn>`): Schwebe-Bob, Auslöser-Rückstoß,
-  Cursor-Verfolgung, Linsen-Glanz, Sternfunken und der Kontaktschatten.
-  Zukünftige Animationsänderungen dürfen nur diese Ebene betreffen.
+  Cursor-Verfolgung, Linsen-Glanz und Sternfunken. Zukünftige
+  Animationsänderungen dürfen nur diese Ebene betreffen.
+- **Der Kontaktschatten ist statisch** (feste Position, feste Deckkraft,
+  Teil der ruhenden Komposition): er darf die Kapuze in keiner Pose
+  umzeichnen und nicht animiert werden.
+- **Die Kopf-Frames enthalten NUR die Kamera** — keine Kapuzen-,
+  Schulter- oder Brust-Pixel. Nach jedem Strip-Neubau (build.mjs)
+  zwingend `scripts/headturn/head-only-guard.mjs` ausführen; ohne den
+  Guard „verformen" Footage-Körperpixel den statischen Körper beim
+  Posenwechsel.
 - Der 12-px-Ruheabstand (`HEAD_GAP`), die kopflose Körper-Platte
   (`public/mascot/witch-body.webp` + `scripts/headturn/make-plate.mjs`)
   und die Hood-Komposition sind ebenfalls abgenommen — nicht neu bauen.

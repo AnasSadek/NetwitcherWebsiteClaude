@@ -193,12 +193,9 @@ export function HeroStage() {
   const headTX = useTransform(hx, (v) => (headTurn ? v * 14 : 0));
   const headTY = useTransform(hy, (v) => (headTurn ? -HEAD_GAP + v * 14 : 0));
   const headTilt = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, 0) rotate(${lean}deg)`;
-  // Kontaktschatten des schwebenden Kopfs auf dem Kapuzenrand: wandert
-  // mit dem Kopf und wird stärker, je näher der Kopf dem Kragen kommt.
-  const shadowX = useTransform(headTX, (v) => v * 0.45);
-  const shadowScale = useTransform(headTY, (v) => 1 + (v + HEAD_GAP) * 0.006);
-  const shadowOpacity = useTransform(headTY, (v) => 0.26 + (v + HEAD_GAP) * 0.007);
-  const shadowTransform = useMotionTemplate`translate3d(${shadowX}px, 0, 0) scaleX(${shadowScale})`;
+  // Der Kontaktschatten unter dem Kopf ist bewusst STATISCH (Teil der
+  // ruhenden Komposition): er darf die Kapuze niemals umzeichnen oder
+  // ihre Form je nach Pose verändern — nur der Kopf selbst bewegt sich.
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
@@ -544,13 +541,31 @@ export function HeroStage() {
                   oben offenem, natürlich beschattetem Kragen — der Kopf hebt
                   sichtbar aus der Kapuze ab, statt aufgesetzt zu wirken */}
               {headTurn && (
-                <img
-                  src="/mascot/witch-body.webp"
-                  alt=""
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-                  style={{ opacity: headReady ? 1 : 0 }}
-                />
+                <>
+                  <img
+                    src="/mascot/witch-body.webp"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                    style={{ opacity: headReady ? 1 : 0 }}
+                  />
+                  {/* Statischer, subtiler Kontaktschatten im Kapuzenrand —
+                      fest positioniert, feste Deckkraft: er verändert die
+                      Kapuze in keiner Pose (siehe CLAUDE.md) */}
+                  {headReady && (
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(10,6,26,0.9),rgba(10,6,26,0)_68%)]"
+                      style={{
+                        left: "36%",
+                        width: "25%",
+                        top: "49.5%",
+                        height: "6.5%",
+                        opacity: 0.2,
+                      }}
+                    />
+                  )}
+                </>
               )}
 
               {/* Die KOPF-EBENE: alles, was sich bewegt, lebt hier — Schweben,
@@ -568,23 +583,6 @@ export function HeroStage() {
                   }
                   transition={shot ? { duration: 0.36, ease: easeOut } : undefined}
                 >
-                  {/* Weicher Kontaktschatten des Kopfs auf dem Kapuzenrand —
-                      er gehört zum Kopf und wandert/schwebt mit ihm */}
-                  {headTurn && headReady && (
-                    <motion.div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(10,6,26,0.9),rgba(10,6,26,0)_68%)]"
-                      style={{
-                        left: "36%",
-                        width: "25%",
-                        top: "49.5%",
-                        height: "6.5%",
-                        opacity: shadowOpacity,
-                        transform: shadowTransform,
-                      }}
-                    />
-                  )}
-
                   {/* Der Kopf: jagt dem Cursor nach (Position) und dreht dabei
                       echt (Frames) */}
                   <HeadTurn
