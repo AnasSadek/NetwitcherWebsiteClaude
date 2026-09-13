@@ -66,8 +66,14 @@ if (args.left && args.right) {
   ordered = extract(path.resolve(args.sweep), "sweep");
   centerIdx = -1; // wird unten bestimmt
   log(`sweep: ${ordered.length} frames`);
+} else if (args.clip) {
+  // Speiche: EIN Clip, Frame 0 = frontale Mitte (Startbild), die Sequenz
+  // läuft von der Mitte in eine Richtung (z. B. nach unten-rechts).
+  ordered = extract(path.resolve(args.clip), "strip");
+  centerIdx = 0;
+  log(`strip: ${ordered.length} frames (frame 0 = center)`);
 } else {
-  console.error("Bitte --left/--right oder --sweep angeben.");
+  console.error("Bitte --left/--right, --sweep oder --clip angeben.");
   process.exit(1);
 }
 const meta = await sharp(ordered[0]).metadata();
@@ -142,10 +148,17 @@ function resample(indices, n) {
   }
   return out;
 }
-const half = Math.floor((FRAMES - 1) / 2);
-const leftSel = resample(Array.from({ length: centerIdx + 1 }, (_, i) => centerIdx - i), half).reverse();
-const rightSel = resample(Array.from({ length: ordered.length - centerIdx }, (_, i) => centerIdx + i), half);
-const selected = [...leftSel, centerIdx, ...rightSel];
+let selected, half;
+if (args.clip) {
+  // Speiche: Mitte → Richtung, gleichmäßige Bewegungs-Schritte ab Frame 0
+  half = 0;
+  selected = [centerIdx, ...resample(Array.from({ length: ordered.length }, (_, i) => i), FRAMES - 1)];
+} else {
+  half = Math.floor((FRAMES - 1) / 2);
+  const leftSel = resample(Array.from({ length: centerIdx + 1 }, (_, i) => centerIdx - i), half).reverse();
+  const rightSel = resample(Array.from({ length: ordered.length - centerIdx }, (_, i) => centerIdx + i), half);
+  selected = [...leftSel, centerIdx, ...rightSel];
+}
 log(`selected ${selected.length} frames, center at ${half}`);
 
 /* 5: Linsenmitte pro Frame: größter zusammenhängender dunkler Fleck im Crop.

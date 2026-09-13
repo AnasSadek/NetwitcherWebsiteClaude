@@ -1,160 +1,152 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useMotionValueEvent, type MotionValue } from "framer-motion";
+import { motion, type MotionValue } from "framer-motion";
 
 /**
- * Kopfdrehung in 2D (Yaw × Pitch) als Frame-Zeilen auf einem Canvas.
+ * Kopf als VIDEO-ZUSTANDSMASCHINE auf einem Pose-Graphen.
  *
- * Drei ZEILEN aus echten Turnaround-Clips, alle mit derselben Crop-Box:
- *   up     – Kopf nach OBEN geneigt, dreht links ↔ rechts (41 Frames)
- *   center – Kopf waagerecht, dreht links ↔ rechts (61 Frames)
- *   down   – Kopf nach UNTEN geneigt, dreht links ↔ rechts (41 Frames)
+ * Es wird zu JEDEM ZeitPUNKT GENAU EIN echter Video-Frame gezeichnet —
+ * niemals zwei Posen übereinander, keine Alpha-Mischung, kein Subframe-
+ * Blending. Bewegung entsteht, indem der Kopf entlang echter Footage-
+ * Bahnen scrubbt (wie ein Video, das vor- und zurückgespult wird).
  *
- * Maus-X (Yaw) wählt den Frame INNERHALB der Zeile: echte Zwischenframes,
- * subframe-genau überblendet — horizontal nie zwei verschiedene Posen
- * gleichzeitig. Maus-Y (Pitch, mit Commit-Rampe + Feder geformt) blendet
- * zwischen Center-Zeile und Up- bzw. Down-Zeile: gehaltene Positionen
- * liegen praktisch immer auf EINER Zeile (echtes Hoch-/Runterschauen),
- * die kurze Überblendung dazwischen ist ein Durchgangszustand der Feder.
+ * Der Pose-Graph (alle Kanten sind eigene Clips mit gemeinsamer Crop-Box):
  *
- *  - Frames werden als ImageBitmap vorab dekodiert (off-main-thread),
- *    Center-Zeile zuerst, dann Up/Down, jeweils von der Mitte nach außen.
- *  - Pro Frame höchstens ein Draw (rAF-gedrosselt), nur bei Änderung.
- *  - Fehlt ein Frame noch, fällt das Zeichnen auf den nächsten geladenen
- *    Richtung Zeilenmitte zurück (weicher reduzierter Radius statt Sprung).
+ *        UL ———— U ———— UR          Zeile „up"    (41 Frames)
+ *          \     |     /            Speichen      (je 17 Frames)
+ *           \    |    /
+ *   L ————————— C ————————— R      Zeile „row"   (61 Frames)
+ *           /    |    \
+ *          /     |     \
+ *        DL ———— D ———— DR          Zeile „down"  (41 Frames)
+ *
+ * Maus-Ziel → nächster Punkt auf dem Graphen; der Kopf fährt mit begrenzter
+ * Geschwindigkeit über die Kanten dorthin (kürzester Weg über die Knoten).
+ * Kursor unten → er scrubbt die echte Runterschau-Footage; Diagonale →
+ * die echte Diagonal-Footage; volle Auslenkung → die geneigten Zeilen.
  */
 
-export type RowName = "up" | "center" | "down";
-
-export type HeadRow = {
-  /** Unterordner der Zeile ("" = Wurzel für die Center-Zeile) */
+export type HeadStrip = {
   dir: string;
   frames: number;
   center: number;
   lens: { x: number; y: number }[];
 };
 
-export type HeadTurn2DManifest = {
+export type HeadGraphManifest = {
   widths: number[];
   frame: { w: number; h: number };
   crop: { x: number; y: number; w: number; h: number };
   lensR: number;
-  rows: Record<RowName, HeadRow>;
+  strips: Record<string, HeadStrip>;
 };
 
-const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
+type NodeName = "C" | "L" | "R" | "U" | "D" | "UL" | "UR" | "DL" | "DR";
+type EdgeDef = { a: NodeName; b: NodeName; strip: string; from: number; to: number };
 
-function rowLens(r: HeadRow, yaw: number) {
-  const f = r.center + clamp(yaw) * r.center;
-  const i0 = Math.floor(f), i1 = Math.min(r.frames - 1, i0 + 1), t = f - i0;
-  const a = r.lens[i0], b = r.lens[i1];
-  return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+const EDGES = {
+  "C-L": { a: "C", b: "L", strip: "row", from: 30, to: 0 },
+  "C-R": { a: "C", b: "R", strip: "row", from: 30, to: 60 },
+  "C-U": { a: "C", b: "U", strip: "sp-u", from: 0, to: 16 },
+  "C-D": { a: "C", b: "D", strip: "sp-d", from: 0, to: 16 },
+  "C-UL": { a: "C", b: "UL", strip: "sp-ul", from: 0, to: 16 },
+  "C-UR": { a: "C", b: "UR", strip: "sp-ur", from: 0, to: 16 },
+  "C-DL": { a: "C", b: "DL", strip: "sp-dl", from: 0, to: 16 },
+  "C-DR": { a: "C", b: "DR", strip: "sp-dr", from: 0, to: 16 },
+  "U-UL": { a: "U", b: "UL", strip: "up", from: 20, to: 0 },
+  "U-UR": { a: "U", b: "UR", strip: "up", from: 20, to: 40 },
+  "D-DL": { a: "D", b: "DL", strip: "down", from: 20, to: 0 },
+  "D-DR": { a: "D", b: "DR", strip: "down", from: 20, to: 40 },
+} as const satisfies Record<string, EdgeDef>;
+type EdgeName = keyof typeof EDGES;
+
+const NODES: NodeName[] = ["C", "L", "R", "U", "D", "UL", "UR", "DL", "DR"];
+const edgeLen = (e: EdgeName) => Math.abs(EDGES[e].to - EDGES[e].from);
+
+// Kürzeste Knoten-Distanzen (in Frames) + erster Kantenschritt (Floyd-Warshall,
+// einmalig auf dem winzigen Graphen)
+const nodeDist: Record<string, number> = {};
+const nextEdge: Record<string, EdgeName> = {};
+{
+  for (const x of NODES) for (const y of NODES) nodeDist[`${x}:${y}`] = x === y ? 0 : Infinity;
+  for (const name of Object.keys(EDGES) as EdgeName[]) {
+    const { a, b } = EDGES[name];
+    const l = edgeLen(name);
+    if (l < nodeDist[`${a}:${b}`]) {
+      nodeDist[`${a}:${b}`] = l;
+      nodeDist[`${b}:${a}`] = l;
+      nextEdge[`${a}:${b}`] = name;
+      nextEdge[`${b}:${a}`] = name;
+    }
+  }
+  for (const k of NODES)
+    for (const i of NODES)
+      for (const j of NODES) {
+        const alt = nodeDist[`${i}:${k}`] + nodeDist[`${k}:${j}`];
+        if (alt < nodeDist[`${i}:${j}`]) {
+          nodeDist[`${i}:${j}`] = alt;
+          nextEdge[`${i}:${j}`] = nextEdge[`${i}:${k}`];
+        }
+      }
 }
 
-/** Linsenmitte (Anteile des Gesamtbilds) für Yaw ∈ [-1,1], Pitch ∈ [-1,1]. */
-export function lensAt2D(man: HeadTurn2DManifest, yaw: number, pitch: number) {
-  const p = clamp(pitch);
-  const c = rowLens(man.rows.center, yaw);
-  if (Math.abs(p) < 1e-4) return c;
-  const r = rowLens(p < 0 ? man.rows.up : man.rows.down, yaw);
-  const w = Math.abs(p);
-  return { x: c.x + (r.x - c.x) * w, y: c.y + (r.y - c.y) * w };
+type Loc = { edge: EdgeName; t: number }; // t: 0 = Knoten a, 1 = Knoten b
+
+/** Maus-Ziel (x, y ∈ [-1,1], y>0 = unten) → nächster Punkt auf dem Graphen. */
+function targetLoc(x: number, y: number): Loc {
+  const ax = Math.abs(x), ay = Math.abs(y);
+  const m = Math.min(1, Math.hypot(x, y));
+  if (ay < 0.32 || m < 0.15) return { edge: x < 0 ? "C-L" : "C-R", t: Math.min(1, ax) };
+  const v = y < 0 ? "U" : "D";
+  if (ax < 0.28) return { edge: `C-${v}` as EdgeName, t: Math.min(1, ay) };
+  const d = `${v}${x < 0 ? "L" : "R"}`;
+  if (m < 0.85) return { edge: `C-${d}` as EdgeName, t: m };
+  return { edge: `${v}-${d}` as EdgeName, t: Math.min(1, ax) };
 }
+
+/** Frame-Index (Datei) an einer Graph-Position. */
+const frameAt = (loc: Loc) => {
+  const e = EDGES[loc.edge];
+  return Math.round(e.from + Math.min(1, Math.max(0, loc.t)) * (e.to - e.from));
+};
 
 export function HeadTurn({
   manifest,
   base,
-  yaw,
-  pitch,
+  x,
+  y,
+  lensX,
+  lensY,
   tilt,
   tiltOrigin,
   enabled,
 }: {
-  manifest: HeadTurn2DManifest;
+  manifest: HeadGraphManifest;
   /** Ordner der Sequenzen, z. B. "/mascot/headturn" */
   base: string;
-  yaw: MotionValue<number>;
-  /** Geformter Pitch (-1 = oben … 1 = unten), Commit + Feder in HeroStage. */
-  pitch: MotionValue<number>;
-  /** Optionale Zusatz-Transformation des Kopf-Canvas (Chase-Translation).
-   *  Klein halten: der Matte-Rand muss den Poster-Kopf weiter abdecken. */
+  /** Maus-Ziel (ungefedert): x ∈ [-1,1] links..rechts, y ∈ [-1,1] oben..unten */
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+  /** Ausgang: Linsenmitte des aktuellen Frames in % des Gesamtbilds */
+  lensX: MotionValue<number>;
+  lensY: MotionValue<number>;
+  /** Chase-Translation des Kopf-Canvas (klein; Matte-Rand deckt weiter ab) */
   tilt?: MotionValue<string>;
   tiltOrigin?: string;
   enabled: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const frames = useRef<Map<RowName, (ImageBitmap | null)[]>>(new Map());
-  const raf = useRef(0);
-  const last = useRef("");
+  const frames = useRef<Map<string, (ImageBitmap | null)[]>>(new Map());
   const size = useRef({ w: 0, h: 0 });
-
-  const draw = () => {
-    raf.current = 0;
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
-    const y = clamp(yaw.get());
-    const p = clamp(pitch.get());
-    const pitched: RowName | null = p < -0.001 ? "up" : p > 0.001 ? "down" : null;
-    const wP = Math.abs(p);
-    const { w, h } = size.current;
-
-    // Zeichenplan einer Zeile: gewünschte Frames, nächste geladene als Ersatz
-    const plan = (name: RowName) => {
-      const r = manifest.rows[name];
-      const list = frames.current.get(name);
-      if (!list) return null;
-      const f = r.center + y * r.center;
-      const want0 = Math.floor(f), want1 = Math.min(r.frames - 1, want0 + 1), t = f - want0;
-      const nearest = (i: number) => {
-        if (list[i]) return i;
-        const dir = i < r.center ? 1 : -1;
-        for (let j = i; j >= 0 && j < r.frames; j += dir) if (list[j]) return j;
-        return -1;
-      };
-      const i0 = nearest(want0), i1 = nearest(want1);
-      if (i0 < 0) return null;
-      return { list, i0, i1, t, complete: i0 === want0 && i1 === want1 };
-    };
-    const baseP = plan("center");
-    const topP = pitched ? plan(pitched) : null;
-    if (!baseP && !topP) return;
-    const sig = `${baseP ? `${baseP.i0}:${baseP.i1}:${baseP.t.toFixed(3)}` : ""}|${pitched ?? ""}:${wP.toFixed(3)}|${topP ? `${topP.i0}:${topP.i1}:${topP.t.toFixed(3)}` : ""}`;
-    if (sig === last.current) return;
-
-    ctx.clearRect(0, 0, w, h);
-    const paint = (pl: NonNullable<ReturnType<typeof plan>>, alpha: number) => {
-      ctx.globalAlpha = alpha;
-      ctx.drawImage(pl.list[pl.i0]!, 0, 0, w, h);
-      if (pl.i1 !== pl.i0 && pl.i1 >= 0 && pl.t > 0.001) {
-        ctx.globalAlpha = alpha * pl.t;
-        ctx.drawImage(pl.list[pl.i1]!, 0, 0, w, h);
-      }
-      ctx.globalAlpha = 1;
-    };
-    // Center als Basis, geneigte Zeile mit ihrem Gewicht darüber:
-    // Ergebnis = wP·Zeile + (1−wP)·Center — exakt, kein Durchscheinen.
-    if (baseP) paint(baseP, 1);
-    if (topP && wP > 0.001) paint(topP, baseP ? wP : 1);
-    last.current = (baseP?.complete ?? true) && (topP?.complete ?? true) ? sig : "";
-  };
-  const schedule = () => {
-    if (!raf.current) raf.current = requestAnimationFrame(draw);
-  };
-
-  useMotionValueEvent(yaw, "change", () => {
-    if (enabled) schedule();
-  });
-  useMotionValueEvent(pitch, "change", () => {
-    if (enabled) schedule();
-  });
+  const lastDrawn = useRef("");
 
   useEffect(() => {
     if (!enabled) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     let cancelled = false;
+    let raf = 0;
 
     // Canvas-Größe an den Container koppeln (DPR-gekappt)
     const fit = () => {
@@ -165,60 +157,53 @@ export function HeadTurn({
         canvas.width = w;
         canvas.height = h;
         size.current = { w, h };
-        last.current = "";
-        schedule();
+        lastDrawn.current = "";
       }
     };
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(canvas);
 
-    // Passende Breite wählen; Center-Zeile zuerst laden (häufigster Fall),
-    // dann Up/Down verschränkt — jeweils von der Zeilenmitte nach außen.
+    // ---------- Frames dekodieren: Center-Zeile zuerst, dann Speichen, Zeilen ----------
     const need = size.current.w;
     const width =
       manifest.widths.slice().sort((a, b) => a - b).find((wd) => wd * manifest.crop.w >= need) ??
       Math.max(...manifest.widths);
     frames.current = new Map();
-    const queue: { name: RowName; i: number; url: string }[] = [];
-    const enqueue = (name: RowName) => {
-      const r = manifest.rows[name];
-      frames.current.set(name, new Array(r.frames).fill(null));
-      const order: number[] = [r.center];
-      for (let d = 1; d <= r.center; d++) order.push(r.center - d, r.center + d);
-      for (const i of order) {
-        if (i < 0 || i >= r.frames) continue;
-        const dir = r.dir ? `${r.dir}/` : "";
-        queue.push({ name, i, url: `${base}/${dir}${width}/${String(i).padStart(2, "0")}.webp` });
+    const queue: { strip: string; i: number }[] = [];
+    const centerOut = (strip: string) => {
+      const s = manifest.strips[strip];
+      frames.current.set(strip, new Array(s.frames).fill(null));
+      const order = [s.center];
+      for (let d2 = 1; d2 <= Math.max(s.center, s.frames - 1 - s.center); d2++) {
+        if (s.center - d2 >= 0) order.push(s.center - d2);
+        if (s.center + d2 < s.frames) order.push(s.center + d2);
       }
+      for (const i of order) queue.push({ strip, i });
     };
-    enqueue("center");
-    // up/down verschränkt hinter der Center-Zeile
-    {
-      const r0 = queue.length;
-      enqueue("up");
-      const upPart = queue.splice(r0);
-      enqueue("down");
-      const downPart = queue.splice(r0);
-      for (let i = 0; i < Math.max(upPart.length, downPart.length); i++) {
-        if (upPart[i]) queue.push(upPart[i]);
-        if (downPart[i]) queue.push(downPart[i]);
-      }
-    }
+    centerOut("row");
+    centerOut("sp-u");
+    centerOut("sp-d");
+    centerOut("sp-ul");
+    centerOut("sp-ur");
+    centerOut("sp-dl");
+    centerOut("sp-dr");
+    centerOut("up");
+    centerOut("down");
     let active = 0;
     const pump = () => {
       while (active < 4 && queue.length && !cancelled) {
         const job = queue.shift()!;
         active++;
-        fetch(job.url)
+        const dir = manifest.strips[job.strip].dir;
+        fetch(`${base}/${dir ? `${dir}/` : ""}${width}/${String(job.i).padStart(2, "0")}.webp`)
           .then((r) => r.blob())
           .then((blob) => createImageBitmap(blob))
           .then((bmp) => {
             if (cancelled) return bmp.close();
-            const list = frames.current.get(job.name);
+            const list = frames.current.get(job.strip);
             if (list) list[job.i] = bmp;
-            last.current = "";
-            schedule();
+            lastDrawn.current = ""; // ggf. besseren Frame nachzeichnen
           })
           .catch(() => undefined)
           .finally(() => {
@@ -229,11 +214,117 @@ export function HeadTurn({
     };
     pump();
 
+    // ---------- Zeichnen: GENAU EIN Frame, nie zwei ----------
+    const draw = (loc: Loc) => {
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      const e = EDGES[loc.edge];
+      const list = frames.current.get(e.strip);
+      if (!list) return;
+      let idx = frameAt(loc);
+      if (!list[idx]) {
+        // nächster geladener Frame Richtung Kanten-Anfang (Mitte)
+        const dir2 = e.to > e.from ? -1 : 1;
+        let j = idx;
+        while (j >= 0 && j < list.length && !list[j]) j += dir2;
+        if (j < 0 || j >= list.length || !list[j]) {
+          for (j = 0; j < list.length && !list[j]; j++);
+          if (j >= list.length) return;
+        }
+        idx = j;
+      }
+      const key = `${e.strip}:${idx}:${size.current.w}`;
+      if (key === lastDrawn.current) return;
+      const { w, h } = size.current;
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(list[idx]!, 0, 0, w, h);
+      lastDrawn.current = key;
+      const l = manifest.strips[e.strip].lens[idx];
+      if (l) {
+        lensX.set(l.x * 100);
+        lensY.set(l.y * 100);
+      }
+    };
+
+    // ---------- Mover: über die Kanten zum Ziel fahren ----------
+    const cur: Loc = { edge: "C-R", t: 0 }; // Start: frontale Mitte
+    let last = performance.now();
+    const nodeAt = (loc: Loc): NodeName | null =>
+      loc.t <= 0.0001 ? EDGES[loc.edge].a : loc.t >= 0.9999 ? EDGES[loc.edge].b : null;
+
+    const step = (now: number) => {
+      raf = requestAnimationFrame(step);
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      const tgt = targetLoc(
+        Math.max(-1, Math.min(1, x.get())),
+        Math.max(-1, Math.min(1, y.get()))
+      );
+
+      // Restdistanz (in Frames) und nächster Fahrschritt bestimmen
+      let moveTowardT: number; // Ziel-t auf der AKTUELLEN Kante
+      let dist: number;
+      if (tgt.edge === cur.edge) {
+        moveTowardT = tgt.t;
+        dist = Math.abs(tgt.t - cur.t) * edgeLen(cur.edge);
+      } else {
+        const { a, b } = EDGES[cur.edge];
+        const { a: ta, b: tb } = EDGES[tgt.edge];
+        const enter = (n: NodeName) =>
+          n === ta ? tgt.t * edgeLen(tgt.edge) : n === tb ? (1 - tgt.t) * edgeLen(tgt.edge) : Infinity;
+        const via = (exitNode: NodeName, exitT: number) => {
+          let best = Infinity;
+          for (const entry of [ta, tb]) {
+            const c = exitT * edgeLen(cur.edge) + nodeDist[`${exitNode}:${entry}`] + enter(entry);
+            if (c < best) best = c;
+          }
+          return best;
+        };
+        const costA = via(a, cur.t);
+        const costB = via(b, 1 - cur.t);
+        moveTowardT = costA <= costB ? 0 : 1;
+        dist = Math.min(costA, costB);
+      }
+
+      if (dist > 0.01) {
+        // Geschwindigkeit: zügig bei großer Distanz, weich auslaufend
+        const v = Math.min(130, Math.max(26, dist * 7)); // Frames/s
+        const dT = (v * dt) / Math.max(1, edgeLen(cur.edge));
+        if (cur.t < moveTowardT) cur.t = Math.min(moveTowardT, cur.t + dT);
+        else cur.t = Math.max(moveTowardT, cur.t - dT);
+
+        // Knoten erreicht → auf die nächste Kante des Weges wechseln
+        const n = nodeAt(cur);
+        if (n && tgt.edge !== cur.edge) {
+          const { a: ta2, b: tb2 } = EDGES[tgt.edge];
+          const entry = (["C", ta2, tb2] as NodeName[])
+            .filter((e2) => e2 === ta2 || e2 === tb2)
+            .sort(
+              (p, q) =>
+                nodeDist[`${n}:${p}`] +
+                (p === ta2 ? tgt.t : 1 - tgt.t) * edgeLen(tgt.edge) -
+                (nodeDist[`${n}:${q}`] + (q === ta2 ? tgt.t : 1 - tgt.t) * edgeLen(tgt.edge))
+            )[0];
+          if (n === entry) {
+            cur.edge = tgt.edge;
+            cur.t = EDGES[tgt.edge].a === n ? 0 : 1;
+          } else {
+            const hop = nextEdge[`${n}:${entry}`];
+            if (hop) {
+              cur.edge = hop;
+              cur.t = EDGES[hop].a === n ? 0 : 1;
+            }
+          }
+        }
+      }
+      draw(cur);
+    };
+    raf = requestAnimationFrame(step);
+
     return () => {
       cancelled = true;
       ro.disconnect();
-      cancelAnimationFrame(raf.current);
-      raf.current = 0;
+      cancelAnimationFrame(raf);
       for (const list of frames.current.values()) list.forEach((b) => b?.close());
       frames.current = new Map();
     };
