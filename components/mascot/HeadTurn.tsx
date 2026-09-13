@@ -11,20 +11,26 @@ import { motion, type MotionValue } from "framer-motion";
  * Blending. Bewegung entsteht, indem der Kopf entlang echter Footage-
  * Bahnen scrubbt (wie ein Video, das vor- und zurückgespult wird).
  *
- * Der Pose-Graph (alle Kanten sind eigene Clips mit gemeinsamer Crop-Box):
+ * Der Pose-Graph ist ein STERN (alle Kanten sind eigene Clips mit
+ * gemeinsamer Crop-Box):
  *
- *        UL ———— U ———— UR          Zeile „up"    (41 Frames)
- *          \     |     /            Speichen      (je 17 Frames)
+ *        UL      U      UR          Speichen      (je 17 Frames)
+ *          \     |     /
  *           \    |    /
  *   L ————————— C ————————— R      Zeile „row"   (61 Frames)
  *           /    |    \
  *          /     |     \
- *        DL ———— D ———— DR          Zeile „down"  (41 Frames)
+ *        DL      D      DR
+ *
+ * Alle Bahnen treffen sich NUR in der frontalen Mitte C — und dort zeigen
+ * alle Clips nachweislich dieselbe Pose (Frame-Diff ≈ 3–4/255). Jeder
+ * Übergang zwischen zwei Posen läuft deshalb durch identische Frames:
+ * kein Pose-Sprung, kein „zweiter Kopf", nirgends. (Die früheren
+ * Rand-Bögen UL–U–UR / DL–D–DR sind bewusst entfernt: ihre Bogen-Clips
+ * zeigten am Knoten U/D sichtbar andere Posen als die Speichen.)
  *
  * Maus-Ziel → nächster Punkt auf dem Graphen; der Kopf fährt mit begrenzter
  * Geschwindigkeit über die Kanten dorthin (kürzester Weg über die Knoten).
- * Kursor unten → er scrubbt die echte Runterschau-Footage; Diagonale →
- * die echte Diagonal-Footage; volle Auslenkung → die geneigten Zeilen.
  */
 
 export type HeadStrip = {
@@ -54,10 +60,6 @@ const EDGES = {
   "C-UR": { a: "C", b: "UR", strip: "sp-ur", from: 0, to: 16 },
   "C-DL": { a: "C", b: "DL", strip: "sp-dl", from: 0, to: 16 },
   "C-DR": { a: "C", b: "DR", strip: "sp-dr", from: 0, to: 16 },
-  "U-UL": { a: "U", b: "UL", strip: "up", from: 20, to: 0 },
-  "U-UR": { a: "U", b: "UR", strip: "up", from: 20, to: 40 },
-  "D-DL": { a: "D", b: "DL", strip: "down", from: 20, to: 0 },
-  "D-DR": { a: "D", b: "DR", strip: "down", from: 20, to: 40 },
 } as const satisfies Record<string, EdgeDef>;
 type EdgeName = keyof typeof EDGES;
 
@@ -101,8 +103,7 @@ function targetLoc(x: number, y: number): Loc {
   const v = y < 0 ? "U" : "D";
   if (ax < 0.28) return { edge: `C-${v}` as EdgeName, t: Math.min(1, ay) };
   const d = `${v}${x < 0 ? "L" : "R"}`;
-  if (m < 0.85) return { edge: `C-${d}` as EdgeName, t: m };
-  return { edge: `${v}-${d}` as EdgeName, t: Math.min(1, ax) };
+  return { edge: `C-${d}` as EdgeName, t: m };
 }
 
 /** Frame-Index (Datei) an einer Graph-Position. */
@@ -193,8 +194,6 @@ export function HeadTurn({
     centerOut("sp-ur");
     centerOut("sp-dl");
     centerOut("sp-dr");
-    centerOut("up");
-    centerOut("down");
     let active = 0;
     const pump = () => {
       while (active < 4 && queue.length && !cancelled) {

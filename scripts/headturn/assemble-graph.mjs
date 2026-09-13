@@ -3,9 +3,11 @@
  * zusammen. Strips (alle mit derselben --crop-Box gebaut):
  *
  *   public/mascot/headturn/manifest.json        → "row"   (Center-Zeile, 61)
- *   public/mascot/headturn/up/manifest.json     → "up"    (Up-Zeile, 41)
- *   public/mascot/headturn/down/manifest.json   → "down"  (Down-Zeile, 41)
  *   public/mascot/headturn/sp-… manifest.json   → Speichen (Mitte → außen, 17)
+ *
+ * Der Graph ist ein Stern: alle Bahnen treffen sich nur in der frontalen
+ * Mitte, wo alle Clips dieselbe Pose zeigen. (Die früheren up/down-Bögen
+ * sind entfernt — ihre Mitte passte sichtbar nicht zu den Speichen-Enden.)
  *
  * → components/mascot/headturn-graph.manifest.json
  * Die Kanten des Pose-Graphen (welcher Strip welchen Knoten verbindet)
@@ -21,7 +23,7 @@ const read = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
 const C = read(path.join(PUB, "manifest.json"));
 
 const strips = { row: { dir: "", frames: C.frames, center: C.center, lens: C.lens } };
-for (const name of ["up", "down", "sp-u", "sp-d", "sp-ul", "sp-ur", "sp-dl", "sp-dr"]) {
+for (const name of ["sp-u", "sp-d", "sp-ul", "sp-ur", "sp-dl", "sp-dr"]) {
   const m = read(path.join(PUB, name, "manifest.json"));
   for (const k of ["x", "y", "w", "h"]) {
     if (Math.abs(m.crop[k] - C.crop[k]) > 1e-6)
