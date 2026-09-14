@@ -20,7 +20,7 @@ import { Head3D } from "./Head3D";
 const LENS_CTR = { x: 0.4923, y: 0.3936 };
 // Geometrische Mitte des Kamera-Kopfs im Poster (Bühnen-Anteile, lg):
 // Kopf-BBox x 0.322–0.666, y 0.144–0.530 → Drehpunkt der 3D-Ebene.
-const HEAD_BOX = { cx: 0.494, cy: 0.337, w: 0.36 };
+const HEAD_BOX = { cx: 0.494, cy: 0.337, w: 0.285 };
 // Bewusster Abstand zwischen Kopf und Körper in Ruhelage (px): der Kopf
 // schwebt sichtbar über dem Kragen — die Trennung ist Absicht, kein Fehler.
 const HEAD_GAP = 12;
