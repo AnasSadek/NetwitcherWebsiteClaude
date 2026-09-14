@@ -43,11 +43,14 @@ const LENS = { x: 619 / SRC_W, y: 404 / HEAD_H };
 // Maximale Kopf-Auslenkung bei voller Feder. Die 3D-ROTATION ist der
 // dominante Effekt (der Kopf SCHAUT zum Cursor); die Translation ist
 // sekundär und dezent (schwebender Versatz).
-const TRAVEL = { x: 18, y: 12, rotY: 14, rotX: 10 };
+// (Die Feder-Sättigung soft() erreicht am Bühnenrand ≈ 0.92 — die
+// effektiven Maxima liegen damit bei ≈ ±22°/±16° Rotation und
+// ≈ ±30/±22 px Translation.)
+const TRAVEL = { x: 32, y: 24, rotY: 24, rotX: 17 };
 
 const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
 // Weiche Sättigung: volle Auslenkung erst nahe des Bühnenrands
-const soft = (v: number) => Math.tanh(v * 1.35);
+const soft = (v: number) => Math.tanh(v * 1.6);
 
 const SPRING = {
   head: { stiffness: 120, damping: 16, mass: 0.9 },
@@ -144,12 +147,17 @@ export function HeroStage() {
   const headTY = useTransform(hy, (v) => (pointer ? v * TRAVEL.y : 0));
   const rotY = useTransform(hx, (v) => (pointer ? v * TRAVEL.rotY : 0));
   const rotX = useTransform(hy, (v) => (pointer ? v * -TRAVEL.rotX : 0));
-  const headTransform = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, 0) rotateX(${rotX}deg) rotateY(${rotY}deg) rotate(${lean}deg)`;
+  // Winziger Z-Schub bei Auslenkung: der Kopf kommt beim Umschauen einen
+  // Hauch näher — verstärkt zusammen mit der Perspektive den 3D-Eindruck.
+  const headTZ = useTransform([hx, hy], ([x, y]: number[]) =>
+    pointer ? Math.min(1, Math.hypot(x, y)) * 14 : 0
+  );
+  const headTransform = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, ${headTZ}px) rotateX(${rotX}deg) rotateY(${rotY}deg) rotate(${lean}deg)`;
   // Spekular-Glanz auf dem Objektivglas: läuft der Drehung leicht
   // entgegen — verkauft die Wölbung des Glases. Bewegt sich NUR mit dem
   // Kopf (liegt in der rotierenden Ebene), berührt den Körper nie.
-  const glintX = useTransform(hx, (v) => (pointer ? v * -7 : 0));
-  const glintY = useTransform(hy, (v) => (pointer ? v * -6 : 0));
+  const glintX = useTransform(hx, (v) => (pointer ? v * -11 : 0));
+  const glintY = useTransform(hy, (v) => (pointer ? v * -9 : 0));
   const glintTransform = useMotionTemplate`translate3d(${glintX}px, ${glintY}px, 0)`;
 
   /* ---------------- Karten & Glow (gegenläufig, langsam) ---------------- */
@@ -290,7 +298,7 @@ export function HeroStage() {
               Overscan im Asset + keine überschneidenden Clipping-Container
               → der Kopf bleibt in jeder Richtung vollständig sichtbar. */}
           <div
-            className="pointer-events-none absolute left-0 top-0 w-full [perspective:750px] [transform-style:preserve-3d]"
+            className="pointer-events-none absolute left-0 top-0 w-full [perspective:650px] [transform-style:preserve-3d]"
             style={{ height: `${(HEAD_H / SRC_W) * 100}%` }}
           >
             <div

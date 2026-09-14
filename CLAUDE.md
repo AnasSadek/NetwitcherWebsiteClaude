@@ -20,14 +20,14 @@ Regeln (abgenommen und **gesperrt**):
   Charakter-Box und alle Eltern-Container dürfen KEINE Transforms,
   Animationen, Parallaxe oder cursorgesteuerte Bewegung tragen.
 - **Nur die Kopf-Ebene bewegt sich**: Feder-geglättete 3D-Blickführung
-  zur Maus — die ROTATION ist der dominante Effekt (rotateY ±14°,
-  rotateX ±10°, Drehpunkt = Linsenmitte, perspective 750px,
-  preserve-3d), die Translation sekundär (±18/±12 px). Dazu ein
-  kopflokaler Spekular-Glanz auf dem Objektiv (läuft der Drehung
-  entgegen), weiches Zurückkehren in die Mitte beim Verlassen des
-  Hero-Bereichs, dezentes Schweben (`animate-float-head`). Genau EIN
-  Kopf-Bild — kein Canvas, keine Frames, kein Blending, keine
-  Überblendungen.
+  zur Maus — die ROTATION ist der dominante Effekt (effektiv ≈ rotateY
+  ±22°, rotateX ±16°; Drehpunkt = Linsenmitte, perspective 650px,
+  preserve-3d, kleiner Z-Schub bei Auslenkung), die Translation
+  sekundär (≈ ±30/±22 px). Dazu ein kopflokaler Spekular-Glanz auf dem
+  Objektiv (läuft der Drehung entgegen), weiches Zurückkehren in die
+  Mitte beim Verlassen des Hero-Bereichs, dezentes Schweben
+  (`animate-float-head`). Genau EIN Kopf-Bild — kein Canvas, keine
+  Frames, kein Blending, keine Überblendungen.
 - **Mobil/Touch und prefers-reduced-motion:** der Charakter steht
   komplett still (keine Verfolgung, kein Schweben).
 - Hintergrund: `public/mascot/backdrop-wide.webp` — die charakterfreie
