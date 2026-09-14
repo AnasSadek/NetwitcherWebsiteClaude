@@ -155,20 +155,36 @@
     display: none;
   }
 
-  /* Position des echten Logo-Auges über der Objektiv-Linse des Renders.
-     Werte sind auf die jeweilige Bilddatei kalibriert (Portrait / Wide). */
+  /* Ruheposition der Kamera-Linse in Bühnen-Anteilen (kalibriert auf die
+     Charakter-Box aus dem gelieferten Maskottchen-Asset). Dient der
+     Maus-Zielberechnung (measureLens in HeroStage). */
   .witch-stage {
-    --eye-x: 49.2%;
-    --eye-y: 39.6%;
-    --eye-s: 17.5%;
+    --eye-x: 49.4%;
+    --eye-y: 45.8%;
   }
-  /* Desktop: kalibriert auf den Center-Frame der Kopfdrehungs-Sequenz
-     (scripts/headturn/build.mjs gibt die Linsenmitte aus). */
   @media (min-width: 1024px) {
     .witch-stage {
-      --eye-x: 49.2%;
-      --eye-y: 39.3%;
-      --eye-s: 8.2%;
+      --eye-x: 48.9%;
+      --eye-y: 39%;
+    }
+  }
+
+  /* Dezentes Schweben NUR für die Kopf-Ebene des Maskottchens */
+  @keyframes float-head {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  .animate-float-head {
+    animation: float-head 6.5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float-head {
+      animation: none;
     }
   }
 
