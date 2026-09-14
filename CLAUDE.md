@@ -20,12 +20,17 @@ Regeln (abgenommen und **gesperrt**):
   Charakter-Box und alle Eltern-Container dürfen KEINE Transforms,
   Animationen, Parallaxe oder cursorgesteuerte Bewegung tragen.
 - **Nur die Kopf-Ebene bewegt sich — und der Kopf ist ECHTES 3D:**
-  `public/mascot/witch-head.glb` (Draco-komprimiert; Decoder unter
-  `public/draco/gltf/`), per Higgsfield MULTI-VIEW image-to-3D aus dem gelieferten
-  Kopf-Asset erzeugt (Original-Frontbild als erste Referenz + drei
-  daraus generierte Seiten-/Obenansichten; der Gurt-Artefakt unter der
-  Kamera wurde aus dem Mesh geschnitten) und in `components/mascot/Head3D.tsx` mit three.js
-  gerendert (lazy Import, Render nur bei Wertänderung). Feder-geglättete
+  `public/mascot/witch-head.glb` ist das GELIEFERTE Modell
+  `netwitcher_camera_head_v1.glb` (vertex-colorierte Low-Poly-Teile +
+  zwei "exact art"-Decals mit dem Original-Artwork) und wird in
+  `components/mascot/Head3D.tsx` mit three.js gerendert (lazy Import,
+  Render nur bei Wertänderung; DRACOLoader konfiguriert, Decoder unter
+  `public/draco/gltf/`). Eigenheiten der Datei, die Head3D behandelt:
+  Z-oben/−Y-vorn (Basisrotation −90° X), Front-Decal vertikal
+  gespiegelt (scale.z = −1), Vertex-Farben sRGB→Linear. Das
+  Front-Decal ist in Ruhe voll sichtbar (Frontansicht = pixelgenaues
+  Original) und blendet über die ersten Grad der Drehung aus; das
+  Linsen-Decal (Neon-Stern) bleibt immer an. Feder-geglättete
   Blickführung: yaw/pitch effektiv ≈ ±25°/±18° (echte Geometrie dreht um
   die Objektmitte — Seitenflächen/Ober-/Unterseite werden real
   sichtbar), Translation sekundär ≈ ±20/±14 px, weiches Zurückkehren in
