@@ -21,8 +21,10 @@ Regeln (abgenommen und **gesperrt**):
   Animationen, Parallaxe oder cursorgesteuerte Bewegung tragen.
 - **Nur die Kopf-Ebene bewegt sich — und der Kopf ist ECHTES 3D:**
   `public/mascot/witch-head.glb` (Draco-komprimiert; Decoder unter
-  `public/draco/gltf/`), per Higgsfield image-to-3D aus dem gelieferten
-  Kopf-Asset erzeugt und in `components/mascot/Head3D.tsx` mit three.js
+  `public/draco/gltf/`), per Higgsfield MULTI-VIEW image-to-3D aus dem gelieferten
+  Kopf-Asset erzeugt (Original-Frontbild als erste Referenz + drei
+  daraus generierte Seiten-/Obenansichten; der Gurt-Artefakt unter der
+  Kamera wurde aus dem Mesh geschnitten) und in `components/mascot/Head3D.tsx` mit three.js
   gerendert (lazy Import, Render nur bei Wertänderung). Feder-geglättete
   Blickführung: yaw/pitch effektiv ≈ ±25°/±18° (echte Geometrie dreht um
   die Objektmitte — Seitenflächen/Ober-/Unterseite werden real

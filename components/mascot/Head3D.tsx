@@ -54,14 +54,14 @@ export function Head3D({
         renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(30, 1, 0.01, 50);
-        camera.position.set(0, 0, 4.2);
+        const camera = new THREE.PerspectiveCamera(22, 1, 0.01, 50);
+        camera.position.set(0, 0, 5.8);
         camera.lookAt(0, 0, 0);
 
         // Licht auf den weichen Plush-Look des Assets abgestimmt
         scene.add(new THREE.AmbientLight(0xffffff, 1.4));
-        const key = new THREE.DirectionalLight(0xffffff, 1.6);
-        key.position.set(1, 2, 3);
+        const key = new THREE.DirectionalLight(0xffffff, 1.5);
+        key.position.set(-1.2, 2.4, 3);
         scene.add(key);
         const fill = new THREE.DirectionalLight(0xb9a4ff, 0.7);
         fill.position.set(-2, -1, 2);
