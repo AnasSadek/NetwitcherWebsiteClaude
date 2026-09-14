@@ -13,6 +13,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
+import { Head3D } from "./Head3D";
 
 /**
  * Die WITCH-Bühne — Charakter aus EINEM gelieferten Design-Asset
@@ -40,13 +41,13 @@ const HEAD_H = 634; // Kopf-Slice-Höhe (Inhalt endet bei y 629)
 const TORSO_H = 620; // Körper-Slice-Höhe (Inhalt beginnt bei y 641)
 // Linsenmitte innerhalb des Kopf-Slices (für Drehpunkt + Sternfunken)
 const LENS = { x: 619 / SRC_W, y: 404 / HEAD_H };
-// Maximale Kopf-Auslenkung bei voller Feder. Die 3D-ROTATION ist der
-// dominante Effekt (der Kopf SCHAUT zum Cursor); die Translation ist
+// Maximale Kopf-Auslenkung bei voller Feder. Die ECHTE 3D-ROTATION des
+// GLB-Modells (Head3D) ist der dominante Effekt; die Translation ist
 // sekundär und dezent (schwebender Versatz).
 // (Die Feder-Sättigung soft() erreicht am Bühnenrand ≈ 0.92 — die
-// effektiven Maxima liegen damit bei ≈ ±22°/±16° Rotation und
-// ≈ ±30/±22 px Translation.)
-const TRAVEL = { x: 32, y: 24, rotY: 24, rotX: 17 };
+// effektiven Maxima liegen damit bei ≈ ±25°/±18° Rotation und
+// ≈ ±20/±14 px Translation.)
+const TRAVEL = { x: 22, y: 15, rotY: 27, rotX: 20 };
 
 const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
 // Weiche Sättigung: volle Auslenkung erst nahe des Bühnenrands
@@ -142,23 +143,17 @@ export function HeroStage() {
   const vel = useVelocity(hx);
   const lean = useSpring(useTransform(vel, (v) => clamp(v * 0.35, -1.6, 1.6)), SPRING.lean);
 
-  /* ---------------- Kopf-Transform: Translation + dezentes 3D-Kippen ---------------- */
+  /* ---------------- Kopf: Translation (CSS) + ECHTE 3D-Rotation (GLB) ---------------- */
+  // Die Rotation passiert im 3D-Modell (Head3D dreht echte Geometrie um
+  // die Objektmitte); die Ebene selbst wird nur dezent verschoben.
   const headTX = useTransform(hx, (v) => (pointer ? v * TRAVEL.x : 0));
   const headTY = useTransform(hy, (v) => (pointer ? v * TRAVEL.y : 0));
-  const rotY = useTransform(hx, (v) => (pointer ? v * TRAVEL.rotY : 0));
-  const rotX = useTransform(hy, (v) => (pointer ? v * -TRAVEL.rotX : 0));
-  // Winziger Z-Schub bei Auslenkung: der Kopf kommt beim Umschauen einen
-  // Hauch näher — verstärkt zusammen mit der Perspektive den 3D-Eindruck.
-  const headTZ = useTransform([hx, hy], ([x, y]: number[]) =>
-    pointer ? Math.min(1, Math.hypot(x, y)) * 14 : 0
-  );
-  const headTransform = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, ${headTZ}px) rotateX(${rotX}deg) rotateY(${rotY}deg) rotate(${lean}deg)`;
-  // Spekular-Glanz auf dem Objektivglas: läuft der Drehung leicht
-  // entgegen — verkauft die Wölbung des Glases. Bewegt sich NUR mit dem
-  // Kopf (liegt in der rotierenden Ebene), berührt den Körper nie.
-  const glintX = useTransform(hx, (v) => (pointer ? v * -11 : 0));
-  const glintY = useTransform(hy, (v) => (pointer ? v * -9 : 0));
-  const glintTransform = useMotionTemplate`translate3d(${glintX}px, ${glintY}px, 0)`;
+  const headTransform = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, 0) rotate(${lean}deg)`;
+  // Grad-Werte für das 3D-Modell: Cursor rechts → Kopf schaut nach
+  // rechts (yaw positiv), Cursor oben → Kopf schaut nach oben.
+  const yawDeg = useTransform(hx, (v) => (pointer ? v * TRAVEL.rotY : 0));
+  const pitchDeg = useTransform(hy, (v) => (pointer ? v * -TRAVEL.rotX : 0));
+  const [head3d, setHead3d] = useState(false);
 
   /* ---------------- Karten & Glow (gegenläufig, langsam) ---------------- */
   const c1x = useTransform(bx, (v) => v * -26);
@@ -298,19 +293,17 @@ export function HeroStage() {
               Overscan im Asset + keine überschneidenden Clipping-Container
               → der Kopf bleibt in jeder Richtung vollständig sichtbar. */}
           <div
-            className="pointer-events-none absolute left-0 top-0 w-full [perspective:650px] [transform-style:preserve-3d]"
+            className="pointer-events-none absolute left-0 top-0 w-full"
             style={{ height: `${(HEAD_H / SRC_W) * 100}%` }}
           >
-            <div
-              className={`h-full w-full [transform-style:preserve-3d] ${pointer ? "animate-float-head" : ""}`}
-            >
+            <div className={`h-full w-full ${pointer ? "animate-float-head" : ""}`}>
               <motion.div
-                className="h-full w-full will-change-transform [transform-style:preserve-3d]"
-                style={{
-                  transform: headTransform,
-                  transformOrigin: `${LENS.x * 100}% ${LENS.y * 100}%`,
-                }}
+                className="h-full w-full will-change-transform"
+                style={{ transform: headTransform }}
               >
+                {/* Statisches Kopf-Bild: Mobil, reduced-motion und als
+                    Fallback, bis das 3D-Modell den ersten Frame gerendert
+                    hat (kein Sprung, kein leerer Kopf) */}
                 <img
                   src="/mascot/witch-head.webp"
                   alt=""
@@ -318,20 +311,24 @@ export function HeroStage() {
                   className="h-full w-full select-none"
                   draggable={false}
                   fetchPriority="high"
+                  style={{ opacity: head3d ? 0 : 1 }}
                 />
 
-                {/* Spekular-Glanz auf dem Objektivglas (kopflokal) */}
-                <motion.div
-                  aria-hidden="true"
-                  className="absolute rounded-full bg-[radial-gradient(circle_at_38%_35%,rgba(255,255,255,0.32),rgba(255,255,255,0)_62%)]"
-                  style={{
-                    left: `${(LENS.x - 0.075) * 100}%`,
-                    top: `${(LENS.y - 0.145) * 100}%`,
-                    width: "15%",
-                    height: `${((0.075 * SRC_W * 2) / HEAD_H) * 100}%`,
-                    transform: glintTransform,
-                  }}
-                />
+                {/* ECHTES 3D-Modell des Kopfs (GLB + three.js): dreht
+                    reale Geometrie zum Cursor — Seitenflächen, Ober- und
+                    Unterseite werden beim Drehen wirklich sichtbar.
+                    Der Canvas ist größer als die Ebene (Overscan), damit
+                    die rotierte Silhouette nie beschnitten wird. */}
+                {pointer && (
+                  <div className="absolute -inset-[16%]">
+                    <Head3D
+                      yaw={yawDeg}
+                      pitch={pitchDeg}
+                      enabled={pointer}
+                      onReady={() => setHead3d(true)}
+                    />
+                  </div>
+                )}
 
                 {/* Sternfunken beim Auslösen: fliegen aus der Linse und
                     wandern mit dem Kopf */}

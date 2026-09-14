@@ -19,15 +19,19 @@ Regeln (abgenommen und **gesperrt**):
 - **Der Körper ist zu 100 % statisch.** `witch-torso.webp`, seine
   Charakter-Box und alle Eltern-Container dürfen KEINE Transforms,
   Animationen, Parallaxe oder cursorgesteuerte Bewegung tragen.
-- **Nur die Kopf-Ebene bewegt sich**: Feder-geglättete 3D-Blickführung
-  zur Maus — die ROTATION ist der dominante Effekt (effektiv ≈ rotateY
-  ±22°, rotateX ±16°; Drehpunkt = Linsenmitte, perspective 650px,
-  preserve-3d, kleiner Z-Schub bei Auslenkung), die Translation
-  sekundär (≈ ±30/±22 px). Dazu ein kopflokaler Spekular-Glanz auf dem
-  Objektiv (läuft der Drehung entgegen), weiches Zurückkehren in die
-  Mitte beim Verlassen des Hero-Bereichs, dezentes Schweben
-  (`animate-float-head`). Genau EIN Kopf-Bild — kein Canvas, keine
-  Frames, kein Blending, keine Überblendungen.
+- **Nur die Kopf-Ebene bewegt sich — und der Kopf ist ECHTES 3D:**
+  `public/mascot/witch-head.glb` (Draco-komprimiert; Decoder unter
+  `public/draco/gltf/`), per Higgsfield image-to-3D aus dem gelieferten
+  Kopf-Asset erzeugt und in `components/mascot/Head3D.tsx` mit three.js
+  gerendert (lazy Import, Render nur bei Wertänderung). Feder-geglättete
+  Blickführung: yaw/pitch effektiv ≈ ±25°/±18° (echte Geometrie dreht um
+  die Objektmitte — Seitenflächen/Ober-/Unterseite werden real
+  sichtbar), Translation sekundär ≈ ±20/±14 px, weiches Zurückkehren in
+  die Mitte, dezentes Schweben (`animate-float-head`). Der Canvas hat
+  Overscan (−16 %), damit die rotierte Silhouette nie beschnitten wird.
+  `witch-head.webp` bleibt als statischer Fallback (Mobil, reduced
+  motion, bis zum ersten 3D-Frame, WebGL-Fehler). Kein Blending, keine
+  Überblendungen — zu jedem Zeitpunkt genau EIN Kopf.
 - **Mobil/Touch und prefers-reduced-motion:** der Charakter steht
   komplett still (keine Verfolgung, kein Schweben).
 - Hintergrund: `public/mascot/backdrop-wide.webp` — die charakterfreie
