@@ -172,6 +172,25 @@
     }
   }
 
+  /* Dezentes Schweben NUR für die Kopf-Ebene des Maskottchens */
+  @keyframes float-head {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  .animate-float-head {
+    animation: float-head 6.5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float-head {
+      animation: none;
+    }
+  }
+
   /* Der Marken-Verlauf, exakt in der Reihenfolge der Logo-Arme. */
   .brand-sweep {
     background-image: linear-gradient(
