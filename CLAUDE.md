@@ -19,12 +19,15 @@ Regeln (abgenommen und **gesperrt**):
 - **Der Körper ist zu 100 % statisch.** `witch-torso.webp`, seine
   Charakter-Box und alle Eltern-Container dürfen KEINE Transforms,
   Animationen, Parallaxe oder cursorgesteuerte Bewegung tragen.
-- **Nur die Kopf-Ebene bewegt sich**: Feder-geglättete 2D-Verfolgung
-  der Maus (translate ±26/±18 px) mit dezentem 3D-Kippen
-  (rotateX/rotateY um die Linsenmitte, ±7–10°), weiches Zurückkehren
-  in die Mitte beim Verlassen des Hero-Bereichs, dezentes Schweben
-  (`animate-float-head`). Genau EIN Kopf-Bild — kein Canvas, keine
-  Frames, kein Blending, keine Überblendungen.
+- **Nur die Kopf-Ebene bewegt sich**: Feder-geglättete 3D-Blickführung
+  zur Maus — die ROTATION ist der dominante Effekt (rotateY ±14°,
+  rotateX ±10°, Drehpunkt = Linsenmitte, perspective 750px,
+  preserve-3d), die Translation sekundär (±18/±12 px). Dazu ein
+  kopflokaler Spekular-Glanz auf dem Objektiv (läuft der Drehung
+  entgegen), weiches Zurückkehren in die Mitte beim Verlassen des
+  Hero-Bereichs, dezentes Schweben (`animate-float-head`). Genau EIN
+  Kopf-Bild — kein Canvas, keine Frames, kein Blending, keine
+  Überblendungen.
 - **Mobil/Touch und prefers-reduced-motion:** der Charakter steht
   komplett still (keine Verfolgung, kein Schweben).
 - Hintergrund: `public/mascot/backdrop-wide.webp` — die charakterfreie

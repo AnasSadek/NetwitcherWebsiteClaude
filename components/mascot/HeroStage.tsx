@@ -40,8 +40,10 @@ const HEAD_H = 634; // Kopf-Slice-Höhe (Inhalt endet bei y 629)
 const TORSO_H = 620; // Körper-Slice-Höhe (Inhalt beginnt bei y 641)
 // Linsenmitte innerhalb des Kopf-Slices (für Drehpunkt + Sternfunken)
 const LENS = { x: 619 / SRC_W, y: 404 / HEAD_H };
-// Maximale Kopf-Auslenkung (px) und 3D-Kippwinkel (deg) bei voller Feder
-const TRAVEL = { x: 26, y: 18, rotY: 10, rotX: 7 };
+// Maximale Kopf-Auslenkung bei voller Feder. Die 3D-ROTATION ist der
+// dominante Effekt (der Kopf SCHAUT zum Cursor); die Translation ist
+// sekundär und dezent (schwebender Versatz).
+const TRAVEL = { x: 18, y: 12, rotY: 14, rotX: 10 };
 
 const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
 // Weiche Sättigung: volle Auslenkung erst nahe des Bühnenrands
@@ -143,6 +145,12 @@ export function HeroStage() {
   const rotY = useTransform(hx, (v) => (pointer ? v * TRAVEL.rotY : 0));
   const rotX = useTransform(hy, (v) => (pointer ? v * -TRAVEL.rotX : 0));
   const headTransform = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, 0) rotateX(${rotX}deg) rotateY(${rotY}deg) rotate(${lean}deg)`;
+  // Spekular-Glanz auf dem Objektivglas: läuft der Drehung leicht
+  // entgegen — verkauft die Wölbung des Glases. Bewegt sich NUR mit dem
+  // Kopf (liegt in der rotierenden Ebene), berührt den Körper nie.
+  const glintX = useTransform(hx, (v) => (pointer ? v * -7 : 0));
+  const glintY = useTransform(hy, (v) => (pointer ? v * -6 : 0));
+  const glintTransform = useMotionTemplate`translate3d(${glintX}px, ${glintY}px, 0)`;
 
   /* ---------------- Karten & Glow (gegenläufig, langsam) ---------------- */
   const c1x = useTransform(bx, (v) => v * -26);
@@ -282,12 +290,14 @@ export function HeroStage() {
               Overscan im Asset + keine überschneidenden Clipping-Container
               → der Kopf bleibt in jeder Richtung vollständig sichtbar. */}
           <div
-            className="pointer-events-none absolute left-0 top-0 w-full [perspective:900px]"
+            className="pointer-events-none absolute left-0 top-0 w-full [perspective:750px] [transform-style:preserve-3d]"
             style={{ height: `${(HEAD_H / SRC_W) * 100}%` }}
           >
-            <div className={`h-full w-full ${pointer ? "animate-float-head" : ""}`}>
+            <div
+              className={`h-full w-full [transform-style:preserve-3d] ${pointer ? "animate-float-head" : ""}`}
+            >
               <motion.div
-                className="h-full w-full will-change-transform"
+                className="h-full w-full will-change-transform [transform-style:preserve-3d]"
                 style={{
                   transform: headTransform,
                   transformOrigin: `${LENS.x * 100}% ${LENS.y * 100}%`,
@@ -300,6 +310,19 @@ export function HeroStage() {
                   className="h-full w-full select-none"
                   draggable={false}
                   fetchPriority="high"
+                />
+
+                {/* Spekular-Glanz auf dem Objektivglas (kopflokal) */}
+                <motion.div
+                  aria-hidden="true"
+                  className="absolute rounded-full bg-[radial-gradient(circle_at_38%_35%,rgba(255,255,255,0.32),rgba(255,255,255,0)_62%)]"
+                  style={{
+                    left: `${(LENS.x - 0.075) * 100}%`,
+                    top: `${(LENS.y - 0.145) * 100}%`,
+                    width: "15%",
+                    height: `${((0.075 * SRC_W * 2) / HEAD_H) * 100}%`,
+                    transform: glintTransform,
+                  }}
                 />
 
                 {/* Sternfunken beim Auslösen: fliegen aus der Linse und
