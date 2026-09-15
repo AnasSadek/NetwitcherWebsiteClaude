@@ -86,10 +86,11 @@ export type PortfolioProject = {
   socialPosts?: MediaImage[];
   /** Software / Plattformen / Dashboards. */
   screens?: MediaImage[];
-  /** Software mit vielen Screens: kuratierte Kapitel statt einer flachen
-   *  Galerie. Ist dies gesetzt, ersetzt es den Screens-Abschnitt der
-   *  Detailseite; `screens` dient dann nur noch den Kompositionen. */
-  screenSections?: { title: string; screens: MediaImage[] }[];
+  /** Kuratierte Erzähl-Kapitel der Case Study: Titel, optionaler Text und
+   *  Bilder (auch reine Text-Kapitel sind erlaubt, `screens: []`). Ist dies
+   *  gesetzt, ersetzt es den Screens-Abschnitt der Detailseite; `screens`
+   *  dient dann nur noch den Kompositionen. */
+  screenSections?: { title: string; body?: string | string[]; screens: MediaImage[] }[];
   /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
   industry?: string;
   /** Kurze Story in Kapiteln, z. B. Ausgangslage · Ansatz · Umsetzung. */
@@ -221,37 +222,99 @@ export const portfolioProjects: PortfolioProject[] = [
   },
   {
     slug: "frida-eu",
-    client: "FRIDA EU",
-    title: "Digitaler Markenauftritt",
+    client: "FridaEU",
+    title: "E-Commerce-Erlebnis für eine moderne Home-Fragrance-Marke",
     description:
-      "Projektbeschreibung folgt: In ein bis zwei Sätzen, was für FRIDA EU entstanden ist und welches Ziel es hatte.",
+      "Ein conversion-orientiertes E-Commerce-Erlebnis für FridaEU, das Raumdüfte, duftende Reinigungsprodukte und individuell zusammenstellbare Duft-Bundles in einem modernen und ansprechenden Online-Shop vereint.",
     year: 2025,
-    categories: ["web", "design"],
-    services: ["Webdesign", "Branding", "Content"],
-    color: "mint",
+    categories: ["ecommerce", "web", "design"],
+    services: ["E-Commerce", "Markenerlebnis", "Webdesign"],
+    color: "sky",
     featured: true,
-    placeholder: true,
-    cover: { alt: "FRIDA EU, Titelmotiv des Projekts", ratio: "16/10" },
-    website: {
-      // url: "https://…",
-      desktop: { alt: "FRIDA EU, Website auf dem Desktop", ratio: "16/10" },
-      mobile: { alt: "FRIDA EU, Website auf dem Smartphone", ratio: "9/16" },
+    logo: "/portfolio/frida-eu/logo.webp",
+    cover: {
+      src: "/portfolio/frida-eu/hero.webp",
+      alt: "FridaEU, Produktwelt der Home-Fragrance-Marke",
+      ratio: "1/1",
     },
-    images: [
-      { alt: "FRIDA EU, Markenanwendung", ratio: "4/5" },
-      { alt: "FRIDA EU, Detail des Designsystems", ratio: "1/1" },
-      { alt: "FRIDA EU, Bildwelt", ratio: "16/10" },
+    screenSections: [
+      {
+        title: "Düfte entdecken",
+        body: [
+          "Anstatt jeden Duft lediglich als einzelnes Produkt zu präsentieren, werden die verschiedenen Düfte in unterschiedliche Duftwelten eingeordnet: Orientalisch – warme, intensive und ausdrucksstarke Düfte · Fruchtig – lebendige und energiegeladene Duftprofile · Frisch & Sauber – leichte Düfte, die das Gefühl eines frisch gereinigten Zuhauses vermitteln · Blumig – sanfte und harmonische Dufterlebnisse.",
+          "Diese Struktur macht ein umfangreiches Duftsortiment leichter verständlich und ermöglicht es Kunden, Produkte passend zu ihrer Stimmung und ihren persönlichen Vorlieben zu entdecken.",
+        ],
+        screens: [
+          { src: "/portfolio/frida-eu/duftwelten.webp", alt: "FridaEU, Duftvarianten in verschiedenen Duftwelten", ratio: "1/1" },
+        ],
+      },
+      {
+        title: "Produktorientiertes Shopping-Erlebnis",
+        body: [
+          "Der Online-Shop wurde so aufgebaut, dass die wichtigsten kaufrelevanten Informationen sofort zugänglich sind. Kunden können schnell verschiedene Produktbereiche entdecken: Lufterfrischer · Duftende Reinigungsprodukte · Duft-Bundles · Verschiedene Duftvarianten · Bestseller · Sonderangebote.",
+          "Direkte Produktinteraktionen und klare Call-to-Actions verkürzen den Weg von der Produktentdeckung bis zum Kauf.",
+        ],
+        screens: [
+          { src: "/portfolio/frida-eu/shop-01.webp", alt: "FridaEU, Lufterfrischer und Raumdüfte im Sortiment", ratio: "1/1" },
+          { src: "/portfolio/frida-eu/shop-02.webp", alt: "FridaEU, duftende Reinigungsprodukte", ratio: "1/1" },
+        ],
+      },
+      {
+        title: "Individuell zusammenstellbare Bundles",
+        body: [
+          "Bundles spielen eine wichtige Rolle innerhalb des Einkaufserlebnisses. Anstatt Kunden ausschließlich vorgefertigte Kombinationen anzubieten, können sie ihre eigenen Duftsets entsprechend ihren persönlichen Vorlieben zusammenstellen.",
+          "Dadurch wird aus einem klassischen Produkt-Bundle ein persönlicheres Einkaufserlebnis, das gleichzeitig dazu motiviert, mehrere Düfte der Marke zu entdecken und auszuprobieren.",
+        ],
+        screens: [
+          { src: "/portfolio/frida-eu/bundle.webp", alt: "FridaEU, individuell zusammenstellbares Duft-Bundle", ratio: "1/1" },
+        ],
+      },
+      {
+        title: "Brand Storytelling",
+        body: [
+          "Bei FridaEU geht es um mehr als nur Reinigung. Das Markenerlebnis verbindet Düfte mit dem Gefühl, in ein frisches und einladendes Zuhause zurückzukehren.",
+          "Produktvorteile, Duftbeschreibungen, Lifestyle-Inhalte, Anwendungshinweise und Kundenerfahrungen arbeiten gemeinsam daran, diese Markenidee entlang der gesamten Customer Journey zu vermitteln.",
+        ],
+        screens: [
+          { src: "/portfolio/frida-eu/storytelling.webp", alt: "FridaEU, Bildwelt der Marke mit Früchten und Blüten", ratio: "1/1" },
+        ],
+      },
+      {
+        title: "Social Proof & Community",
+        body: "Bewertungen, Kundenstimmen, Community-Inhalte und reale Produkterfahrungen stärken das Vertrauen potenzieller Kunden. Durch die Integration von Social Content in das Einkaufserlebnis wird der Online-Shop mit der Frida-Community verbunden und die Marke wirkt authentischer und nahbarer.",
+        screens: [],
+      },
+      {
+        title: "Mehrsprachiges Erlebnis",
+        body: "Mit Kunden in Deutschland und auf dem europäischen Markt spielt die sprachliche Zugänglichkeit eine wichtige Rolle für das digitale Markenerlebnis. Die Plattform unterstützt mehrere Sprachen und ermöglicht FridaEU dadurch, Kunden mit unterschiedlichen sprachlichen Hintergründen ein stärker lokalisiertes Einkaufserlebnis zu bieten.",
+        screens: [],
+      },
+      {
+        title: "Mobile-First Commerce",
+        body: "Für eine Consumer Brand, bei der Produktentdeckung und Social Content eine zentrale Rolle spielen, ist die mobile Nutzererfahrung besonders wichtig. Der Online-Shop wurde daher auf eine schnelle Produktentdeckung, klare Call-to-Actions und einfache Interaktionen ausgerichtet, damit Kunden auch über ihr Smartphone problemlos Produkte entdecken und kaufen können.",
+        screens: [],
+      },
+      {
+        title: "Das Ergebnis",
+        body: "FridaEU hat sich zu mehr als einem klassischen Online-Produktkatalog entwickelt. Das digitale Erlebnis verbindet Brand Storytelling, Duftentdeckung, Produktinformationen, Social Proof und E-Commerce zu einer durchgängigen Customer Journey. Das Ergebnis ist eine E-Commerce-Plattform, die nicht nur Produkte verkauft, sondern gleichzeitig eine wiedererkennbare Consumer Brand rund um das Gefühl eines frischen und einladenden Zuhauses aufbaut.",
+        screens: [],
+      },
     ],
     story: [
       {
-        heading: "Ausgangslage",
-        body: "Platzhalter: Wo stand die Marke, was hat gefehlt, was war das Ziel?",
+        heading: "Überblick",
+        body: "FridaEU ist eine Marke für Raumdüfte und Reinigungsprodukte mit einem stetig wachsenden Sortiment aus Lufterfrischern, duftenden Reinigungsprodukten und Duft-Bundles. Unser Ziel war es, ein E-Commerce-Erlebnis zu schaffen, das über die reine Präsentation von Produkten hinausgeht und die Entdeckung verschiedener Düfte zu einer ansprechenden digitalen Shopping Journey macht.",
       },
       {
-        heading: "Umsetzung",
-        body: "Platzhalter: Was genau wurde entwickelt, gestaltet oder produziert, und warum so?",
+        heading: "Die Herausforderung",
+        body: "Düfte sind emotional und sprechen die Sinne an. Beim Online-Verkauf entsteht dadurch eine besondere Herausforderung: Kunden können einen Duft vor dem Kauf nicht selbst riechen. Die digitale Erfahrung musste daher den Charakter jedes Duftes vermitteln, ein wachsendes Produktsortiment leicht zugänglich machen und Kunden genügend Sicherheit geben, um den passenden Duft für ihr Zuhause auszuwählen. Gleichzeitig sollte der gesamte Einkaufsprozess schnell, übersichtlich und conversion-orientiert bleiben.",
+      },
+      {
+        heading: "Die Lösung",
+        body: "Wir haben ein produktorientiertes E-Commerce-Erlebnis entwickelt, das starkes visuelles Storytelling mit einem einfachen und intuitiven Einkaufsprozess verbindet. Die Produkte sind nach klar erkennbaren Duftwelten und Anwendungsbereichen strukturiert. Dadurch werden Kunden von der ersten Begegnung mit der Marke über die Auswahl eines Duftes bis hin zum Kauf mit möglichst wenig Reibung durch die Customer Journey geführt.",
       },
     ],
+    links: [{ label: "Website besuchen", href: "https://fridaeu.com" }],
   },
   {
     slug: "abziel",

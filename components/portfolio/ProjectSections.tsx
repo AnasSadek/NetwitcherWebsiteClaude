@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
 import type { MediaImage, MediaVideo, PortfolioProject } from "@/lib/portfolio";
-import { getCategory } from "@/lib/portfolio";
+import { getCategory, projectKind } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
 import { BrowserFrame, PhoneFrame } from "./Frames";
 import { SmartImage } from "./SmartImage";
@@ -62,10 +62,10 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                 <Image
                   src={project.logo}
                   alt={`${project.client}, Logo`}
-                  width={112}
+                  width={224}
                   height={112}
                   priority
-                  className="mb-6 h-14 w-14 rounded-2xl border border-white/10 object-contain md:h-16 md:w-16"
+                  className="mb-6 h-14 w-auto max-w-[220px] object-contain object-left md:h-16"
                 />
               )}
               <p className="flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.25em] text-white/60">
@@ -119,15 +119,29 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                   </svg>
                 </a>
               ) : project.links?.[0] ? (
-                <Link
-                  href={project.links[0].href}
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
-                >
-                  {project.links[0].label}
-                  <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                    <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
-                  </svg>
-                </Link>
+                project.links[0].href.startsWith("http") ? (
+                  <a
+                    href={project.links[0].href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+                  >
+                    {project.links[0].label}
+                    <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                      <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
+                    </svg>
+                  </a>
+                ) : (
+                  <Link
+                    href={project.links[0].href}
+                    className="group inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+                  >
+                    {project.links[0].label}
+                    <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                      <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
+                    </svg>
+                  </Link>
+                )
               ) : null}
             </div>
           </dl>
@@ -331,53 +345,103 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
   );
 }
 
-/** Software mit vielen Screens: kuratierte Kapitel statt einer flachen
- *  Galerie. Gleiche Bildsprache wie ScreensShowcase — pro Kapitel ein
- *  grosses Auftaktbild, dann Paare, ein ungerader Rest wieder gross. */
+/** Kuratierte Erzähl-Kapitel: Titel, optionaler Text und Bilder in der
+ *  Bildsprache von ScreensShowcase. Reine Text-Kapitel (ohne Bilder)
+ *  laufen — wie die Story — gebündelt in einem zweispaltigen Raster. */
 export function ScreenChapters({ project }: { project: PortfolioProject }) {
   const sections = project.screenSections!;
   const m = project.client.charAt(0);
+  const software = projectKind(project) === "software";
+  const paras = (b?: string | string[]) => (b == null ? [] : Array.isArray(b) ? b : [b]);
+
+  // Aufeinanderfolgende Text-Kapitel zu einem Raster zusammenfassen
+  type Numbered = { sec: (typeof sections)[number]; num: string };
+  const blocks: ({ kind: "chapter" } & Numbered | { kind: "textgrid"; items: Numbered[] })[] = [];
+  sections.forEach((sec, i) => {
+    const num = String(i + 1).padStart(2, "0");
+    if (sec.screens.length === 0) {
+      const lastBlock = blocks[blocks.length - 1];
+      if (lastBlock?.kind === "textgrid") lastBlock.items.push({ sec, num });
+      else blocks.push({ kind: "textgrid", items: [{ sec, num }] });
+    } else {
+      blocks.push({ kind: "chapter", sec, num });
+    }
+  });
+
   return (
     <Wrap id="produkt">
-      <SectionTitle id="produkt" title="DAS PRODUKT." kicker={project.tech?.length ? project.tech.join(" · ") : undefined} />
-      {sections.map((sec, si) => (
-        <div key={sec.title} className={si === 0 ? undefined : "mt-16 md:mt-24"}>
-          <Reveal>
-            <div className="mb-6 flex items-baseline gap-4 md:mb-8">
-              <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
-                {String(si + 1).padStart(2, "0")}
-              </p>
-              <h3 className="font-boxi text-xl leading-none text-white md:text-2xl">{sec.title}</h3>
-            </div>
-          </Reveal>
-          <div className="grid gap-6 md:grid-cols-12 md:gap-8">
-            {sec.screens.map((s, i) => {
-              const last = i === sec.screens.length - 1;
-              const full = i === 0 || (last && sec.screens.length % 2 === 0);
-              return (
-                <Reveal key={i} delay={Math.min(i * 0.06, 0.2)} className={full ? "md:col-span-12" : "md:col-span-6"}>
-                  <figure>
-                    <div className="overflow-hidden rounded-2xl border border-white/10 md:rounded-3xl">
-                      <SmartImage
-                        image={s}
-                        color={project.color}
-                        ratio="16/10"
-                        sizes={full ? "(min-width: 1500px) 1400px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
-                        monogram={m}
-                        label={s.caption ? `${s.caption} · Screenshot folgt` : "Screenshot folgt"}
-                        rounded="rounded-none"
-                      />
-                    </div>
-                    {s.caption && (
-                      <figcaption className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">{s.caption}</figcaption>
-                    )}
-                  </figure>
+      <SectionTitle
+        id="produkt"
+        title={software ? "DAS PRODUKT." : "DAS ERLEBNIS."}
+        kicker={project.tech?.length ? project.tech.join(" · ") : undefined}
+      />
+      {blocks.map((block, bi) => {
+        const spacing = bi === 0 ? undefined : "mt-16 md:mt-24";
+        if (block.kind === "textgrid") {
+          return (
+            <div key={`t${bi}`} className={`grid gap-10 md:grid-cols-2 ${spacing ?? ""}`}>
+              {block.items.map(({ sec, num }, i) => (
+                <Reveal key={sec.title} delay={Math.min(i * 0.08, 0.24)}>
+                  <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
+                    {num} · {sec.title}
+                  </p>
+                  {paras(sec.body).map((p, pi) => (
+                    <p key={pi} className="mt-4 text-lg leading-relaxed text-white/80">
+                      {p}
+                    </p>
+                  ))}
                 </Reveal>
-              );
-            })}
+              ))}
+            </div>
+          );
+        }
+        const { sec, num } = block;
+        const n = sec.screens.length;
+        return (
+          <div key={sec.title} className={spacing}>
+            <Reveal>
+              <div className="mb-6 flex items-baseline gap-4 md:mb-8">
+                <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">{num}</p>
+                <h3 className="font-boxi text-xl leading-none text-white md:text-2xl">{sec.title}</h3>
+              </div>
+              {paras(sec.body).map((p, pi) => (
+                <p key={pi} className="mb-4 max-w-3xl text-lg leading-relaxed text-white/75 last-of-type:mb-8">
+                  {p}
+                </p>
+              ))}
+            </Reveal>
+            <div className="grid gap-6 md:grid-cols-12 md:gap-8">
+              {sec.screens.map((s, i) => {
+                const last = i === n - 1;
+                const full = n === 1 || (n > 2 && (i === 0 || (last && n % 2 === 0)));
+                const r = s.ratio ?? "16/10";
+                const narrow = full && (r === "1/1" || r === "4/5" || r === "3/4" || r === "2/3");
+                const cols = !full ? "md:col-span-6" : narrow ? "md:col-span-8 md:col-start-3" : "md:col-span-12";
+                return (
+                  <Reveal key={i} delay={Math.min(i * 0.06, 0.2)} className={cols}>
+                    <figure>
+                      <div className="overflow-hidden rounded-2xl border border-white/10 md:rounded-3xl">
+                        <SmartImage
+                          image={s}
+                          color={project.color}
+                          ratio={r}
+                          sizes={full ? (narrow ? "(min-width: 1500px) 930px, (min-width: 768px) 66vw, 100vw" : "(min-width: 1500px) 1400px, 100vw") : "(min-width: 768px) 50vw, 100vw"}
+                          monogram={m}
+                          label={s.caption ? `${s.caption} · Screenshot folgt` : "Screenshot folgt"}
+                          rounded="rounded-none"
+                        />
+                      </div>
+                      {s.caption && (
+                        <figcaption className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">{s.caption}</figcaption>
+                      )}
+                    </figure>
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </Wrap>
   );
 }
