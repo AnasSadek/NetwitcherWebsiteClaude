@@ -12,6 +12,7 @@ import {
   ProjectResults,
   ProjectStory,
   ProjectTestimonial,
+  ScreenChapters,
   ScreensShowcase,
   SocialGallery,
   VideoShowcase,
@@ -92,7 +93,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.story?.length ? <ProjectStory story={project.story} /> : null}
           {kind === "website" && project.website ? <WebsiteShowcase project={project} /> : null}
           {project.videos?.length ? <VideoShowcase project={project} /> : null}
-          {project.screens?.length ? <ScreensShowcase project={project} /> : null}
+          {project.screenSections?.length ? (
+            <ScreenChapters project={project} />
+          ) : project.screens?.length ? (
+            <ScreensShowcase project={project} />
+          ) : null}
           {project.images?.length ? <ImageGallery project={project} /> : null}
           {project.socialPosts?.length ? <SocialGallery project={project} /> : null}
           {project.posters?.length ? <PosterGallery project={project} /> : null}

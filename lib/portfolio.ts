@@ -86,6 +86,12 @@ export type PortfolioProject = {
   socialPosts?: MediaImage[];
   /** Software / Plattformen / Dashboards. */
   screens?: MediaImage[];
+  /** Software mit vielen Screens: kuratierte Kapitel statt einer flachen
+   *  Galerie. Ist dies gesetzt, ersetzt es den Screens-Abschnitt der
+   *  Detailseite; `screens` dient dann nur noch den Kompositionen. */
+  screenSections?: { title: string; screens: MediaImage[] }[];
+  /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
+  industry?: string;
   /** Kurze Story in Kapiteln, z. B. Ausgangslage · Ansatz · Umsetzung. */
   story?: { heading: string; body: string }[];
   /** Nur echte, freigegebene Zahlen eintragen. */
@@ -107,6 +113,112 @@ export type PortfolioProject = {
    ------------------------------------------------------------------------ */
 
 export const portfolioProjects: PortfolioProject[] = [
+  {
+    slug: "fekrahub",
+    client: "FekraHub",
+    title: "Schulmanagement-Plattform",
+    description:
+      "Ein cloudbasiertes Schulmanagement-System, das speziell für arabischsprachige Schulen in Europa entwickelt wurde und Verwaltung, Lehrkräfte, Schüler und Eltern in einem zentralen digitalen Ökosystem miteinander verbindet.",
+    year: "seit 2023",
+    categories: ["software"],
+    services: ["UI/UX Design", "Webanwendung", "SaaS-Entwicklung", "Produktdesign"],
+    industry: "EdTech",
+    color: "violet",
+    featured: true,
+    logo: "/portfolio/fekrahub/logo.png",
+    cover: {
+      src: "/portfolio/fekrahub/features-01.webp",
+      alt: "FekraHub, Übersicht der Schulmanagement-Plattform",
+      ratio: "16/10",
+    },
+    /* Kompositionen (Auftaktbild, Featured-Bühne, Filmstreifen) */
+    screens: [
+      { src: "/portfolio/fekrahub/features-01.webp", alt: "FekraHub, Dashboard der Plattform", ratio: "16/10" },
+      { src: "/portfolio/fekrahub/dashboard-01.webp", alt: "FekraHub, personalisiertes Dashboard für Schüler und Eltern", ratio: "16/10" },
+    ],
+    /* Kuratierte Bild-Kapitel der Case Study */
+    screenSections: [
+      {
+        title: "Funktionen im Überblick",
+        screens: [
+          { src: "/portfolio/fekrahub/features-01.webp", alt: "FekraHub, zentrale Funktionen im Überblick", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/features-02.webp", alt: "FekraHub, Funktionsübersicht der Plattform", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/features-03.webp", alt: "FekraHub, Module der Schulverwaltung", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/features-04.webp", alt: "FekraHub, Plattform-Übersicht", ratio: "16/10" },
+        ],
+      },
+      {
+        title: "Nahtlose Kommunikation",
+        screens: [
+          { src: "/portfolio/fekrahub/communication-01.webp", alt: "FekraHub, Kommunikation über alle Kanäle", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/communication-02.webp", alt: "FekraHub, Schulmitteilungen", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/communication-03.webp", alt: "FekraHub, Nachrichten zwischen Schule und Eltern", ratio: "16/10" },
+        ],
+      },
+      {
+        title: "Anwesenheit & Noten",
+        screens: [
+          { src: "/portfolio/fekrahub/attendance-01.webp", alt: "FekraHub, Anwesenheitserfassung", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/attendance-02.webp", alt: "FekraHub, Notenverwaltung", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/attendance-03.webp", alt: "FekraHub, Leistungsübersicht", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/attendance-04.webp", alt: "FekraHub, Bewertung im Detail", ratio: "16/10" },
+        ],
+      },
+      {
+        title: "Dashboards für Schüler & Eltern",
+        screens: [
+          { src: "/portfolio/fekrahub/dashboard-01.webp", alt: "FekraHub, personalisiertes Schüler-Dashboard", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/dashboard-02.webp", alt: "FekraHub, Elternansicht", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/dashboard-03.webp", alt: "FekraHub, Schülerprofil", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/dashboard-04.webp", alt: "FekraHub, Übersicht für Familien", ratio: "16/10" },
+        ],
+      },
+      {
+        title: "Unterricht & Hausaufgaben",
+        screens: [
+          { src: "/portfolio/fekrahub/lessons-01.webp", alt: "FekraHub, Unterrichtsplanung", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/lessons-02.webp", alt: "FekraHub, Hausaufgabenverwaltung", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/lessons-03.webp", alt: "FekraHub, Aufgaben im Überblick", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/lessons-04.webp", alt: "FekraHub, Stundenplan und Unterricht", ratio: "16/10" },
+        ],
+      },
+      {
+        title: "Berichte & Auswertungen",
+        screens: [
+          { src: "/portfolio/fekrahub/reports-01.webp", alt: "FekraHub, Berichte in Echtzeit", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/reports-02.webp", alt: "FekraHub, Auswertungen und Statistiken", ratio: "16/10" },
+          { src: "/portfolio/fekrahub/reports-03.webp", alt: "FekraHub, Analyse der Schuldaten", ratio: "16/10" },
+        ],
+      },
+    ],
+    story: [
+      {
+        heading: "Überblick",
+        body: "FekraHub ist eine cloudbasierte Schulmanagement-Plattform, die entwickelt wurde, um Verwaltung, Unterricht, Schülerorganisation und die Kommunikation mit Eltern einfacher und effizienter zu gestalten. Die Plattform vereinfacht den Schulalltag und bündelt zentrale Prozesse wie Schülerverwaltung, Anwesenheit, Noten, Hausaufgaben, Stundenpläne, Kommunikation und Berichterstattung an einem Ort.",
+      },
+      {
+        heading: "Die Herausforderung",
+        body: "Schulen arbeiten häufig mit voneinander getrennten Lösungen für Anwesenheit, Noten, Hausaufgaben, Stundenpläne, Kommunikation und Schülerverwaltung. Dadurch werden tägliche Abläufe unnötig komplex und wichtige Informationen sind oft nur schwer oder über mehrere Systeme hinweg zugänglich.",
+      },
+      {
+        heading: "Die Lösung",
+        body: "Wir haben eine zentrale digitale Plattform entwickelt, die die gesamte Schulgemeinschaft in einem vernetzten System zusammenführt. Die Verwaltung kann schulische Abläufe zentral steuern, Lehrkräfte können Anwesenheiten, Unterricht, Aufgaben und Noten verwalten, während Schüler und Eltern einen eigenen Zugang zu den für sie relevanten Informationen erhalten.",
+      },
+      {
+        heading: "Zentrale Funktionen",
+        body: "Schüler- und Personalverwaltung · Anwesenheitserfassung · Noten und Leistungsübersicht · Hausaufgaben- und Unterrichtsverwaltung · Eltern- und Schüler-Dashboards · Schulmitteilungen und Kommunikation · Berichte und Auswertungen",
+      },
+      {
+        heading: "Die Nutzererfahrung",
+        body: "Die Plattform wurde auf Basis rollenbasierter Workflows entwickelt. Dadurch sieht jeder Nutzer gezielt die Funktionen und Informationen, die für seine jeweilige Rolle relevant sind, während alle Beteiligten weiterhin Teil desselben zentralen digitalen Systems bleiben.",
+      },
+      {
+        heading: "Das Ergebnis",
+        body: "Eine strukturiertere, zugänglichere und stärker vernetzte Schulerfahrung, die fragmentierte Verwaltungsprozesse durch eine einheitliche digitale Plattform ersetzt.",
+      },
+    ],
+    links: [{ label: "Mehr zu FekraHub", href: "/produkte/fekrahub" }],
+  },
   {
     slug: "frida-eu",
     client: "FRIDA EU",
@@ -189,37 +301,6 @@ export const portfolioProjects: PortfolioProject[] = [
       { alt: "Rushdia Care, Fotografie", ratio: "4/5" },
       { alt: "Rushdia Care, Fotografie", ratio: "3/2" },
     ],
-  },
-  {
-    slug: "fekrahub",
-    client: "FekraHub",
-    title: "Plattform für Schulen",
-    description:
-      "Unsere eigene Verwaltungsplattform für Schulen: Anmeldungen, Kurse, Kommunikation und Berichte an einem Ort. Entwickelt und betrieben von Netwitcher.",
-    year: "seit 2023",
-    categories: ["software"],
-    services: ["Produktdesign", "Webanwendung", "Plattform", "Betrieb"],
-    color: "violet",
-    featured: true,
-    placeholder: true,
-    cover: { alt: "FekraHub, Übersicht der Plattform", ratio: "16/10" },
-    screens: [
-      { alt: "FekraHub, Dashboard der Verwaltung", ratio: "16/10", caption: "Dashboard" },
-      { alt: "FekraHub, Kursverwaltung", ratio: "16/10", caption: "Kurse & Klassen" },
-      { alt: "FekraHub, Elternansicht auf dem Smartphone", ratio: "9/16", caption: "Elternansicht" },
-      { alt: "FekraHub, Berichte und Zeugnisse", ratio: "16/10", caption: "Berichte" },
-    ],
-    story: [
-      {
-        heading: "Warum",
-        body: "Zettelwirtschaft und Excel-Listen kosten Zeit, die in den Unterricht gehört. FekraHub bündelt den Alltag einer Bildungseinrichtung, von der ersten Anmeldung bis zum Zeugnis.",
-      },
-      {
-        heading: "Was",
-        body: "Digitale Anmeldung, Kurs- und Klassenverwaltung, mehrsprachige Kommunikation mit Eltern, Berichte und Zeugnisse, dazu ein Rollen- und Rechtemodell für Verwaltung, Lehrkräfte und Familien.",
-      },
-    ],
-    links: [{ label: "Mehr zu FekraHub", href: "/produkte/fekrahub" }],
   },
 ];
 

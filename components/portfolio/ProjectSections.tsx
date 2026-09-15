@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
@@ -57,6 +58,16 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
 
           <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:items-end">
             <div className="min-w-0 lg:col-span-8">
+              {project.logo && (
+                <Image
+                  src={project.logo}
+                  alt={`${project.client}, Logo`}
+                  width={112}
+                  height={112}
+                  priority
+                  className="mb-6 h-14 w-14 rounded-2xl border border-white/10 object-contain md:h-16 md:w-16"
+                />
+              )}
               <p className="flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.25em] text-white/60">
                 <span className="h-2 w-2 rounded-full" style={{ backgroundColor: hex }} />
                 {project.client}
@@ -85,7 +96,9 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
             <div>
               <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Bereich</dt>
               <dd className="mt-2 text-sm font-semibold text-white/85">
-                {project.categories.map((c) => getCategory(c).label).join(", ")}
+                {[project.industry, ...project.categories.map((c) => getCategory(c).label)]
+                  .filter(Boolean)
+                  .join(" · ")}
               </dd>
             </div>
             <div>
@@ -314,6 +327,57 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
           </div>
         )}
       </div>
+    </Wrap>
+  );
+}
+
+/** Software mit vielen Screens: kuratierte Kapitel statt einer flachen
+ *  Galerie. Gleiche Bildsprache wie ScreensShowcase — pro Kapitel ein
+ *  grosses Auftaktbild, dann Paare, ein ungerader Rest wieder gross. */
+export function ScreenChapters({ project }: { project: PortfolioProject }) {
+  const sections = project.screenSections!;
+  const m = project.client.charAt(0);
+  return (
+    <Wrap id="produkt">
+      <SectionTitle id="produkt" title="DAS PRODUKT." kicker={project.tech?.length ? project.tech.join(" · ") : undefined} />
+      {sections.map((sec, si) => (
+        <div key={sec.title} className={si === 0 ? undefined : "mt-16 md:mt-24"}>
+          <Reveal>
+            <div className="mb-6 flex items-baseline gap-4 md:mb-8">
+              <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
+                {String(si + 1).padStart(2, "0")}
+              </p>
+              <h3 className="font-boxi text-xl leading-none text-white md:text-2xl">{sec.title}</h3>
+            </div>
+          </Reveal>
+          <div className="grid gap-6 md:grid-cols-12 md:gap-8">
+            {sec.screens.map((s, i) => {
+              const last = i === sec.screens.length - 1;
+              const full = i === 0 || (last && sec.screens.length % 2 === 0);
+              return (
+                <Reveal key={i} delay={Math.min(i * 0.06, 0.2)} className={full ? "md:col-span-12" : "md:col-span-6"}>
+                  <figure>
+                    <div className="overflow-hidden rounded-2xl border border-white/10 md:rounded-3xl">
+                      <SmartImage
+                        image={s}
+                        color={project.color}
+                        ratio="16/10"
+                        sizes={full ? "(min-width: 1500px) 1400px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
+                        monogram={m}
+                        label={s.caption ? `${s.caption} · Screenshot folgt` : "Screenshot folgt"}
+                        rounded="rounded-none"
+                      />
+                    </div>
+                    {s.caption && (
+                      <figcaption className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">{s.caption}</figcaption>
+                    )}
+                  </figure>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </Wrap>
   );
 }
