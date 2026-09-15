@@ -12,60 +12,52 @@ import {
   type MotionValue,
 } from "framer-motion";
 import Link from "next/link";
+import { BrandStar } from "@/components/brand/Logo";
 import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
-import { Head3D } from "./Head3D";
+import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
+import headTurnManifest from "./headturn.manifest.json";
 
-// Frontale Linsenmitte in Bühnen-Anteilen (Poster witch-wide, lg-Layout);
-// muss mit --eye-x/--eye-y in globals.css übereinstimmen.
-const LENS_CTR = { x: 0.4923, y: 0.3936 };
-// Geometrische Mitte des Kamera-Kopfs im Poster (Bühnen-Anteile, lg):
-// Kopf-BBox x 0.322–0.666, y 0.144–0.530 → Drehpunkt der 3D-Ebene.
-const HEAD_BOX = { cx: 0.494, cy: 0.337, w: 0.285 };
-// Bewusster Abstand zwischen Kopf und Körper in Ruhelage (px): der Kopf
-// schwebt sichtbar über dem Kragen — die Trennung ist Absicht, kein Fehler.
-const HEAD_GAP = 12;
-// Blickführung: Maximalwinkel (Grad) und Translation (px). Durch die
-// weiche Sättigung (tanh) liegen die praktisch erreichten Werte bei
-// ≈ 87 % davon — deutlich sichtbare 3D-Drehung, aber kontrolliert.
-const ROT = { y: 34, x: 24 };
-const TRAVEL = { x: 16, y: 12 };
+const HEAD_TURN = headTurnManifest as HeadTurnManifest;
 
 /**
  * Die WITCH-Bühne: ein hochwertiger Charakter-Render, der auf Menschen
  * reagiert wie eine Figur, nicht wie ein Parallax-Bild.
  *
- * KOPF UND KÖRPER SIND GETRENNT — und der Kopf ist ECHTES 3D:
- * public/mascot/camera-head.glb (aus der freigegebenen Kunden-Referenz
- * multi-view-rekonstruiert) wird in einer eigenen Ebene mit three.js
- * gerendert (components/mascot/Head3D.tsx). Maus X → Yaw, Maus Y →
- * Pitch, dazu eine sekundäre Translation und weiches Zurückfedern in
- * die Mitte. Der Körper (Poster/kopflose Platte) ist zu 100 % statisch:
- * keine Transforms, kein Float, kein Parallax — nichts.
+ * Eingaben (was die Rolle des „Blickziels" übernimmt):
+ *   Maus     – überall im Viewport, Richtung von der echten Linsenposition
+ *   Finger   – während einer Berührung, auch beim Scrollen
+ *   Scrollen – ohne Maus schaut WITCH dorthin, wo gerade gelesen wird,
+ *              und blickt kurz in Scrollrichtung
+ *   Neigung  – Gerätesensor, wo ohne Rückfrage verfügbar (Android)
+ *   Niemand  – ruhiges, nicht periodisches Umschauen
  *
- * Bis zum ersten 3D-Frame (und überall ohne echten Mauszeiger, auf
- * schmalen Viewports, bei reduced motion oder WebGL-Fehlern) steht das
- * Poster mit gemaltem Kopf — zu jedem Zeitpunkt genau EIN Kopf, nie
- * eine kopflose Figur.
+ * Drei Reaktionsgeschwindigkeiten (Sekundärbewegung): Auge schnell, Kopf
+ * mittel (Ansichten-Überblendung, Neigung), Körper langsam (Versatz,
+ * 3D-Kippung, Lehnen). Dazu: Aufwachen beim ersten Erscheinen, Fokus-
+ * Glanz nahe der Linse und „Magic in Every Click": Klick/Tipp löst den
+ * Verschluss aus (Blitz + Sternfunken).
  *
- * Dazu: Aufwachen beim ersten Erscheinen und „Magic in Every Click":
- * Klick/Tipp löst den Verschluss aus (Blitz + Sternfunken).
+ * Der Charakter ist ein Render; das Logo im Objektiv ist immer das echte
+ * SVG als Overlay. Reduced Motion: keine Kopplung, kein Schweben, nur ein
+ * sanfter Blitz beim Klick.
  */
 
 const clamp = (v: number, lo = -1, hi = 1) => Math.min(hi, Math.max(lo, v));
 const smooth = (t: number) => t * t * (3 - 2 * t);
 const smoothEase = (t: number) => smooth(clamp(t, 0, 1));
-// Weiche Sättigung: nahe der Linse fein aufgelöst, am Bildschirmrand ≈ ±0.87.
+// Weiche Sättigung: nahe der Linse fein aufgelöst, am Bildschirmrand ≈ ±0.9.
 const soft = (v: number) => Math.tanh(v * 1.35);
 
-/** Ab wann WITCH sich auf Touch-Geräten wieder selbst umschaut (ms). */
-const IDLE_AFTER = { touch: 1500 };
+/** Ab wann WITCH sich ohne Eingabe wieder selbst umschaut (ms). */
+const IDLE_AFTER = { mouse: 3200, touch: 1500 };
 
 const SPRING = {
   eye: { stiffness: 320, damping: 26, mass: 0.6 },
-  head: { stiffness: 120, damping: 17, mass: 0.9 },
+  head: { stiffness: 110, damping: 20, mass: 1 },
   body: { stiffness: 55, damping: 18, mass: 1.4 },
   lean: { stiffness: 140, damping: 22 },
   magnet: { stiffness: 220, damping: 22 },
+  wake: { type: "spring" as const, stiffness: 120, damping: 14 },
 };
 
 const easeOut = [0.23, 1, 0.32, 1] as const;
@@ -157,27 +149,24 @@ export function HeroStage() {
   const vel = useVelocity(hx);
   const lean = useSpring(useTransform(vel, (v) => clamp(v * 0.4, -1.8, 1.8)), SPRING.lean);
 
-  /* ---------------- Kopf: eigene 3D-Ebene, schaut zum Cursor ---------------- */
-  // Nur Desktop mit echter Maus: das GLB dreht mit echter Geometrie zum
-  // Maus-Ziel. Erst wenn der 3D-Kopf seinen ersten Frame gezeichnet hat,
-  // ersetzt die kopflose Platte das Poster — sonst stünde WITCH kurz
-  // ohne Kopf.
-  const head3d = pointer && wide;
-  const [headReady, setHeadReady] = useState(false);
-  const onHeadReady = useCallback(() => setHeadReady(true), []);
-  // Maus X → Yaw, Maus Y → Pitch (echte Rotation, dominanter Effekt)
-  const yawDeg = useTransform(hx, (v) => v * ROT.y);
-  const pitchDeg = useTransform(hy, (v) => -v * ROT.x);
-  // Sekundär: der Kopf folgt dem Cursor auch positionsgetreu und schwebt
-  // in Ruhe mit HEAD_GAP über dem Kragen.
-  const headTX = useTransform(hx, (v) => (head3d ? v * TRAVEL.x : 0));
-  const headTY = useTransform(hy, (v) => (head3d ? -HEAD_GAP + v * TRAVEL.y : 0));
-  const headTilt = useMotionTemplate`translate3d(${headTX}px, ${headTY}px, 0) rotate(${lean}deg)`;
+  /* ---------------- Körper: Versatz, 3D-Kippung, Lehnen ---------------- */
+  const bodyTX = useTransform(bx, (v) => v * 10);
+  const bodyTY = useTransform(by, (v) => v * 6);
+  const bodyRX = useTransform(by, (v) => v * -2.5);
+  const bodyRY = useTransform(bx, (v) => v * 5);
+  const bodyTransform = useMotionTemplate`translate3d(${bodyTX}px, ${bodyTY}px, 0) rotateX(${bodyRX}deg) rotateY(${bodyRY}deg) rotate(${lean}deg)`;
+
+  /* ---------------- Kopf: Frame-Sequenz aus dem Turnaround-Clip ---------------- */
+  // Desktop mit Maus: der Kopf-Wert steuert die Sequenz (siehe HeadTurn).
+  const headTurn = pointer && wide;
+  // Linsenmitte wandert mit der Drehung; Versatz zur Mitte in Anteilen der
+  // Containerbreite bzw. -höhe (die Auge-Position ist auf die Mitte kalibriert).
+  const lensDX = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).x - HEAD_TURN.lens[HEAD_TURN.center].x) * 100 : 0));
+  const lensDY = useTransform(hx, (v) => (headTurn ? (lensAt(HEAD_TURN, v).y - HEAD_TURN.lens[HEAD_TURN.center].y) * 100 : 0));
 
   /* ---------------- Auge: Blick, Versatz mit der Ansicht, Fokus ---------------- */
   // Das Ziel ist bereits relativ zur Linse; hier nur auf eine Ellipse
-  // begrenzt, damit Diagonalen nicht überschießen. (Der Glanzpunkt läuft
-  // nur im statischen Poster-Modus — der 3D-Kopf bringt echtes Licht mit.)
+  // begrenzt, damit Diagonalen nicht überschießen.
   const gaze = useTransform([ex, ey], ([x, y]: number[]) => {
     let gx = x / 0.9;
     let gy = y / 0.8;
@@ -190,19 +179,25 @@ export function HeroStage() {
   });
   const gazeX = useTransform(gaze, (g) => g[0] * 9);
   const gazeY = useTransform(gaze, (g) => g[1] * 7);
-  const eyeTransform = useMotionTemplate`translate3d(${gazeX}px, ${gazeY}px, 0)`;
+  // Auge folgt der Linse der Sequenz (cqw/cqh = Anteile des Charakter-
+  // Containers) plus Blick; dazu leichte Neigung mit der Drehung.
+  const eyeRY = useTransform(hx, (v) => (wide ? v * 16 : v * 10));
+  const eyeTransform = useMotionTemplate`translate3d(calc(${lensDX}cqw + ${gazeX}px), calc(${lensDY}cqh + ${gazeY}px), 0) rotateY(${eyeRY}deg)`;
 
   // Glanzpunkt läuft dem Blick entgegen: verkauft die Glasfläche.
   const glintX = useTransform(gazeX, (v) => v * -0.6);
   const glintY = useTransform(gazeY, (v) => v * -0.6);
   const glintTransform = useMotionTemplate`translate3d(${glintX}px, ${glintY}px, 0)`;
 
-  // Fokus: je näher das Ziel an der Linse, desto kräftiger der Glanzpunkt.
+  // Fokus: je näher das Ziel an der Linse, desto stärker leuchtet sie.
   const focus = useTransform([ex, ey], ([x, y]: number[]) => {
     const d = Math.hypot(x, y * 1.3);
     return 1 - clamp((d - 0.08) / 0.3, 0, 1);
   });
-  const glintOpacity = useTransform(focus, [0, 1], [0.4, 0.85]);
+  const focusGlow = useTransform(focus, [0, 1], [0, 0.9]);
+  const focusScale = useTransform(focus, [0, 1], [1, 1.07]);
+  const glintOpacity = useTransform(focus, [0, 1], [0.35, 0.95]);
+  const starTransform = useMotionTemplate`scale(${focusScale})`;
 
   /* ---------------- Karten & Glow (gegenläufig, langsam) ---------------- */
   const c1x = useTransform(bx, (v) => v * -26);
@@ -269,56 +264,43 @@ export function HeroStage() {
     if (!pointer) setIdle(true);
   }, [live, pointer]);
 
-  /* ---------------- Maus: der Kopf schaut zum Cursor im Hero-Bereich ---------------- */
-  // Innerhalb der Bühne (plus etwas Rand) folgt der Kopf dem Cursor;
-  // verlässt er sie — oder scrollt sie aus dem Bild — kehrt der Kopf über
-  // die Federn weich in die neutrale Mitte zurück. Kein Idle-Wandern am
-  // Desktop: die Mitte IST der Ruhezustand.
+  /* ---------------- Maus: WITCH schaut dem Cursor überall hin nach ---------------- */
   useEffect(() => {
     if (!pointer) return;
     const el = charRef.current;
     if (!el) return;
     const cursor = { x: NaN, y: NaN };
-    const PAD = 48;
     measureLens();
-    const aim = () => {
-      if (Number.isNaN(cursor.x)) return;
-      const r = el.getBoundingClientRect();
-      const inside =
-        cursor.x > r.left - PAD &&
-        cursor.x < r.right + PAD &&
-        cursor.y > r.top - PAD &&
-        cursor.y < r.bottom + PAD;
-      if (inside) {
-        lookAt(cursor.x, cursor.y);
-      } else {
-        tx.set(0);
-        ty.set(0);
-        lastRef.current = { x: 0, y: 0 };
-      }
-    };
     const onMove = (e: PointerEvent) => {
       if (e.pointerType && e.pointerType !== "mouse") return;
       cursor.x = e.clientX;
       cursor.y = e.clientY;
-      aim();
+      lookAt(e.clientX, e.clientY);
+      wake(IDLE_AFTER.mouse);
     };
-    // Beim Scrollen wandert die Bühne unter dem stehenden Cursor weg:
-    // Innen/Außen und Blick aus der letzten Cursorposition nachführen.
+    // Beim Scrollen wandert die Linse unter dem stehenden Cursor weg:
+    // Blick aus der letzten Cursorposition nachführen.
     const onScroll = () => {
       measureLens();
-      aim();
+      if (!Number.isNaN(cursor.x)) lookAt(cursor.x, cursor.y);
+    };
+    // Cursor verlässt das Fenster: bald umschauen
+    const onOut = (e: MouseEvent) => {
+      if (!e.relatedTarget) armIdle(IDLE_AFTER.mouse);
     };
     const ro = new ResizeObserver(measureLens);
     ro.observe(el);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("mouseout", onOut);
+    armIdle(IDLE_AFTER.mouse);
     return () => {
       ro.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("mouseout", onOut);
     };
-  }, [pointer, measureLens, lookAt, tx, ty]);
+  }, [pointer, measureLens, lookAt, wake, armIdle]);
 
   /* ---------------- Finger: während der Berührung, auch beim Scrollen ---------------- */
   const touching = useRef(false);
@@ -384,9 +366,9 @@ export function HeroStage() {
   }, [live, pointer, measureLens, wake, tx, ty]);
 
   /* ---------------- Umschauen, wenn niemand interagiert ---------------- */
-  // Auf Touch-Geräten bewegt das nur den Glanzpunkt in der Linse (der
-  // Charakter selbst steht komplett still); am Desktop übernimmt die
-  // nächste Mausbewegung sofort.
+  // Blendet weich vom letzten Blickziel in eine ruhige, nicht periodische
+  // Wanderung; auf Touch etwas weiter ausholend. Die nächste Eingabe
+  // übernimmt sofort, die Federn glätten den Übergang.
   useEffect(() => {
     if (!live || !idle) return;
     let raf = 0;
@@ -425,9 +407,8 @@ export function HeroStage() {
   }, [live, idle, coarse, tx, ty]);
 
   /* ---------------- Aufwachen beim ersten Erscheinen ---------------- */
-  // Bis WITCH halb im Bild ist, ist die Linse dunkel. Dann zündet der
-  // Glanzpunkt. (Der Körper bleibt dabei unbewegt — die Aufwach-Geste
-  // lebt allein im Licht, nicht in einer Körper-Transformation.)
+  // Bis WITCH halb im Bild ist, ist die Linse dunkel. Dann: Doppelblinzeln,
+  // die Linse zündet, der Körper richtet sich auf. Einmalig.
   const [phase, setPhase] = useState<Phase>("asleep");
   useEffect(() => {
     if (reduce) {
@@ -465,6 +446,27 @@ export function HeroStage() {
   }, []);
 
   const awake = phase === "awake";
+  const waking = phase === "waking";
+
+  // Iris: schlafend gedimmt → Aufwach-Doppelblinzeln → Blinzel-Loop / Verschluss
+  const iris = reduce
+    ? { animate: undefined, transition: undefined }
+    : phase === "asleep"
+      ? { animate: { opacity: 0.35, scale: 0.9 }, transition: { duration: 0 } }
+      : waking
+        ? {
+            animate: { opacity: [0.35, 1, 0.15, 1, 0.2, 1], scale: [0.9, 1.16, 0.85, 1.08, 0.9, 1] },
+            transition: { duration: 1.1, times: [0, 0.22, 0.34, 0.5, 0.62, 1], ease: easeOut },
+          }
+        : shot
+          ? {
+              animate: { opacity: [1, 0.1, 1, 1], scale: [1, 0.55, 1.18, 1] },
+              transition: { duration: 0.5, times: [0, 0.25, 0.6, 1], ease: easeOut },
+            }
+          : {
+              animate: { opacity: [1, 1, 0.15, 1, 1], scale: [1, 1, 0.82, 1, 1] },
+              transition: { duration: 0.7, times: [0, 0.42, 0.5, 0.58, 1], repeat: Infinity, repeatDelay: 3.8, ease: "easeInOut" as const },
+            };
 
   return (
     <div className="relative overflow-hidden rounded-[32px] bg-deep shadow-lift md:rounded-[40px]">
@@ -476,111 +478,86 @@ export function HeroStage() {
         ref={charRef}
         className="witch-stage @container relative mx-auto aspect-[4/5] w-full max-w-[560px] [perspective:1000px] sm:max-w-[640px] lg:aspect-[16/9] lg:max-w-none"
       >
-        {/* GESPERRTE INVARIANTE (siehe CLAUDE.md): Der Körper ist zu 100 %
-            STATISCH — das Poster, die kopflose Platte und ALLE ihre
-            Vorfahren tragen keinerlei Transforms, Animationen, Parallaxe
-            oder cursorgesteuerte Bewegung. Alles, was sich bewegt, gehört
-            ausschließlich auf die Kopf-Ebene unten. */}
-        <div className="relative h-full w-full">
-          <div className="h-full w-full">
-            <picture>
-              <source media="(min-width: 1024px)" type="image/avif" srcSet="/mascot/witch-wide.avif" />
-              <source media="(min-width: 1024px)" srcSet="/mascot/witch-wide.webp" />
-              <source type="image/avif" srcSet="/mascot/witch-portrait.avif" />
-              <img
-                src="/mascot/witch-portrait.webp"
-                alt="WITCH, das Netwitcher-Maskottchen: eine Figur mit Kamera-Kopf im lila Hoodie"
-                className="h-full w-full object-cover"
-                fetchPriority="high"
-              />
-            </picture>
-          </div>
-
-          {/* Gestalteter Unterbau des schwebenden Kopfs: das Poster mit
-              oben offenem, natürlich beschattetem Kragen — der Kopf hebt
-              sichtbar aus der Kapuze ab, statt aufgesetzt zu wirken */}
-          {head3d && (
-            <>
-              <img
-                src="/mascot/witch-body.webp"
-                alt=""
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-                style={{ opacity: headReady ? 1 : 0 }}
-              />
-              {/* Statischer, subtiler Kontaktschatten im Kapuzenrand —
-                  fest positioniert, feste Deckkraft: er verändert die
-                  Kapuze in keiner Pose (siehe CLAUDE.md) */}
-              {headReady && (
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(10,6,26,0.9),rgba(10,6,26,0)_68%)]"
-                  style={{
-                    left: "36%",
-                    width: "25%",
-                    top: "49.5%",
-                    height: "6.5%",
-                    opacity: 0.2,
-                  }}
-                />
-              )}
-            </>
-          )}
-
-          {/* Die KOPF-EBENE: alles, was sich bewegt, lebt hier — Schweben,
-              Rückstoß beim Auslösen, Cursor-Verfolgung und Funken.
-              Der Körper darunter bleibt pixelstabil. */}
-          <div className={`pointer-events-none absolute inset-0 ${live && head3d && headReady ? "animate-float-head" : ""}`}>
+        <div className={`h-full w-full ${live ? "animate-float" : ""}`}>
+          {/* Einmalige Ganzkörper-Momente: Aufrichten beim Aufwachen, Rückstoß beim Auslösen */}
+          <motion.div
+            className="h-full w-full"
+            animate={
+              reduce
+                ? { scale: 1, rotate: 0 }
+                : phase === "asleep"
+                  ? { scale: 0.975, rotate: -1.5 }
+                  : shot
+                    ? { scale: [1, 0.992, 1.004, 1], rotate: 0 }
+                    : { scale: 1, rotate: 0 }
+            }
+            transition={shot ? { duration: 0.36, ease: easeOut } : phase === "asleep" ? { duration: 0 } : SPRING.wake}
+          >
             <motion.div
-              className="h-full w-full"
-              style={{ transformOrigin: `${LENS_CTR.x * 100}% ${LENS_CTR.y * 100}%` }}
-              animate={head3d && shot && !reduce ? { scale: [1, 0.992, 1.004, 1] } : { scale: 1 }}
-              transition={shot ? { duration: 0.36, ease: easeOut } : undefined}
+              className="relative h-full w-full will-change-transform"
+              style={live ? { transform: bodyTransform } : undefined}
             >
-              {/* Der 3D-Kopf: Box um die Kopfregion des Posters, mit
-                  Overscan, damit die rotierte Silhouette nie beschnitten
-                  wird. Sichtbar erst ab dem ersten gerenderten Frame. */}
-              {head3d && (
-                <motion.div
-                  className="absolute"
-                  style={{
-                    left: `${(HEAD_BOX.cx - HEAD_BOX.w / 2) * 100}%`,
-                    top: `calc(${HEAD_BOX.cy * 100}% - ${(HEAD_BOX.w / 2) * 100}cqw)`,
-                    width: `${HEAD_BOX.w * 100}%`,
-                    aspectRatio: "1 / 1",
-                    transform: headTilt,
-                    opacity: headReady ? 1 : 0,
-                  }}
-                >
-                  <div className="absolute -inset-[18%]">
-                    <Head3D yaw={yawDeg} pitch={pitchDeg} enabled={head3d} onReady={onHeadReady} />
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Glanzpunkt in der Poster-Linse — nur solange der gemalte
-                  Kopf sichtbar ist (Mobil/Fallback); der 3D-Kopf bringt
-                  echtes Licht und echte Reflexe mit. */}
-              {!(head3d && headReady) && (
-                <motion.div
-                  data-witch="eye"
-                  aria-hidden="true"
-                  className="pointer-events-none absolute aspect-square will-change-transform"
-                  style={{
-                    left: "var(--eye-x)",
-                    top: "var(--eye-y)",
-                    width: "var(--eye-s)",
-                    marginLeft: "calc(var(--eye-s) / -2)",
-                    marginTop: "calc(var(--eye-s) / -2)",
-                    transform: live ? eyeTransform : undefined,
-                  }}
-                >
-                  <motion.div
-                    className="absolute left-[18%] top-[14%] h-[22%] w-[22%] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,255,255,0.95),rgba(255,255,255,0)_70%)]"
-                    style={live ? { transform: glintTransform, opacity: awake ? glintOpacity : 0.25 } : { opacity: 0.4 }}
+              <div className="h-full w-full">
+                <picture>
+                  <source media="(min-width: 1024px)" type="image/avif" srcSet="/mascot/witch-wide.avif" />
+                  <source media="(min-width: 1024px)" srcSet="/mascot/witch-wide.webp" />
+                  <source type="image/avif" srcSet="/mascot/witch-portrait.avif" />
+                  <img
+                    src="/mascot/witch-portrait.webp"
+                    alt="WITCH, das Netwitcher-Maskottchen: eine Figur mit Kamera-Kopf im lila Hoodie"
+                    className="h-full w-full object-cover"
+                    fetchPriority="high"
                   />
+                </picture>
+              </div>
+
+              {/* Kopfdrehung: Frame-Sequenz über dem statischen Poster (Desktop mit Maus) */}
+              <HeadTurn manifest={HEAD_TURN} base="/mascot/headturn" value={hx} enabled={headTurn} />
+
+              {/* Echtes Logo als leuchtendes Auge: Blick, Fokus, Blinzeln */}
+              <motion.div
+                data-witch="eye"
+                className="absolute will-change-transform"
+                style={{
+                  left: "var(--eye-x)",
+                  top: "var(--eye-y)",
+                  width: "var(--eye-s)",
+                  marginLeft: "calc(var(--eye-s) / -2)",
+                  marginTop: "calc(var(--eye-s) / -2)",
+                  transform: live ? eyeTransform : undefined,
+                }}
+              >
+                {/* Fokus-Leuchten hinter dem Stern */}
+                <motion.div
+                  aria-hidden="true"
+                  className="absolute -inset-[35%] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.85),rgba(139,92,246,0)_65%)]"
+                  style={live && awake ? { opacity: focusGlow } : { opacity: 0 }}
+                />
+                {/* Zündung beim Aufwachen */}
+                {waking && (
+                  <motion.div
+                    aria-hidden="true"
+                    className="absolute -inset-[45%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.7),rgba(139,92,246,0.7)_35%,rgba(139,92,246,0)_65%)]"
+                    initial={{ opacity: 0, scale: 0.6 }}
+                    animate={{ opacity: [0, 0.95, 0.25, 0.7, 0], scale: [0.6, 1.1, 0.95, 1.05, 1.2] }}
+                    transition={{ duration: 1.1, times: [0, 0.22, 0.4, 0.55, 1], ease: easeOut }}
+                  />
+                )}
+                <motion.div data-witch="iris" className="relative" animate={iris.animate} transition={iris.transition}>
+                  <motion.div style={live ? { transform: starTransform } : undefined}>
+                    <BrandStar
+                      size={999}
+                      className="h-auto w-full [filter:drop-shadow(0_0_6px_rgba(255,255,255,0.55))_drop-shadow(0_0_18px_rgba(139,92,246,0.9))]"
+                    />
+                  </motion.div>
                 </motion.div>
-              )}
+                {/* Glanzpunkt auf der Linse */}
+                <motion.div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-[18%] top-[14%] h-[22%] w-[22%] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,255,255,0.95),rgba(255,255,255,0)_70%)]"
+                  style={live ? { transform: glintTransform, opacity: awake ? glintOpacity : 0.25 } : { opacity: 0.4 }}
+                />
+              </motion.div>
 
               {/* Sternfunken beim Auslösen: fünf Logo-Arme fliegen aus der Linse */}
               {shot > 0 && !reduce && (
@@ -609,16 +586,16 @@ export function HeroStage() {
                   })}
                 </div>
               )}
-            </motion.div>
-          </div>
 
-          {/* Auslöser: die ganze Figur ist der Knopf */}
-          <button
-            type="button"
-            onClick={shoot}
-            aria-label="WITCH macht ein Foto"
-            className="absolute inset-0 z-10 cursor-pointer rounded-[32px] focus-visible:outline-offset-[-6px] md:rounded-[40px]"
-          />
+              {/* Auslöser: die ganze Figur ist der Knopf */}
+              <button
+                type="button"
+                onClick={shoot}
+                aria-label="WITCH macht ein Foto"
+                className="absolute inset-0 z-10 cursor-pointer rounded-[32px] focus-visible:outline-offset-[-6px] md:rounded-[40px]"
+              />
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
