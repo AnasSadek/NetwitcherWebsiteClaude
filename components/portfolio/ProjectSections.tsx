@@ -6,6 +6,7 @@ import type { MediaImage, MediaVideo, PortfolioProject } from "@/lib/portfolio";
 import { getCategory, projectKind } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
 import { BrowserFrame, PhoneFrame } from "./Frames";
+import { ReelCard } from "./ReelCard";
 import { SmartImage } from "./SmartImage";
 import { VideoPlayer } from "./VideoPlayer";
 
@@ -359,7 +360,7 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
   const blocks: ({ kind: "chapter" } & Numbered | { kind: "textgrid"; items: Numbered[] })[] = [];
   sections.forEach((sec, i) => {
     const num = String(i + 1).padStart(2, "0");
-    if (sec.screens.length === 0) {
+    if (sec.screens.length === 0 && !sec.reels?.length) {
       const lastBlock = blocks[blocks.length - 1];
       if (lastBlock?.kind === "textgrid") lastBlock.items.push({ sec, num });
       else blocks.push({ kind: "textgrid", items: [{ sec, num }] });
@@ -439,6 +440,15 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
                 );
               })}
             </div>
+            {sec.reels?.length ? (
+              <ul className={`grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 ${sec.screens.length ? "mt-6 md:mt-8" : ""}`}>
+                {sec.reels.map((v, i) => (
+                  <Reveal as="li" key={v.href} delay={Math.min(i * 0.06, 0.24)}>
+                    <ReelCard {...v} color={project.color} />
+                  </Reveal>
+                ))}
+              </ul>
+            ) : null}
           </div>
         );
       })}

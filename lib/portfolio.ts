@@ -90,7 +90,14 @@ export type PortfolioProject = {
    *  Bilder (auch reine Text-Kapitel sind erlaubt, `screens: []`). Ist dies
    *  gesetzt, ersetzt es den Screens-Abschnitt der Detailseite; `screens`
    *  dient dann nur noch den Kompositionen. */
-  screenSections?: { title: string; body?: string | string[]; screens: MediaImage[] }[];
+  screenSections?: {
+    title: string;
+    body?: string | string[];
+    screens: MediaImage[];
+    /** Social-Reels (z. B. Instagram): leichte Vorschaukarten, der Player
+     *  wird erst beim Klick eingebettet — nie fünf schwere Embeds vorab. */
+    reels?: { href: string; title: string; label: string; quote: string }[];
+  }[];
   /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
   industry?: string;
   /** Kurze Story in Kapiteln, z. B. Ausgangslage · Ansatz · Umsetzung. */
@@ -233,8 +240,8 @@ export const portfolioProjects: PortfolioProject[] = [
     featured: true,
     logo: "/portfolio/frida-eu/logo.webp",
     cover: {
-      src: "/portfolio/frida-eu/hero.webp",
-      alt: "FridaEU, Produktwelt der Home-Fragrance-Marke",
+      src: "/portfolio/frida-eu/cover.webp",
+      alt: "FridaEU, Duft-Bundle-Komposition der Home-Fragrance-Marke",
       ratio: "1/1",
     },
     screenSections: [
@@ -266,7 +273,7 @@ export const portfolioProjects: PortfolioProject[] = [
           "Dadurch wird aus einem klassischen Produkt-Bundle ein persönlicheres Einkaufserlebnis, das gleichzeitig dazu motiviert, mehrere Düfte der Marke zu entdecken und auszuprobieren.",
         ],
         screens: [
-          { src: "/portfolio/frida-eu/bundle.webp", alt: "FridaEU, individuell zusammenstellbares Duft-Bundle", ratio: "1/1" },
+          { src: "/portfolio/frida-eu/hero.webp", alt: "FridaEU, individuell zusammenstellbares Duft-Set", ratio: "1/1" },
         ],
       },
       {
@@ -277,6 +284,46 @@ export const portfolioProjects: PortfolioProject[] = [
         ],
         screens: [
           { src: "/portfolio/frida-eu/storytelling.webp", alt: "FridaEU, Bildwelt der Marke mit Früchten und Blüten", ratio: "1/1" },
+        ],
+      },
+      {
+        title: "Content & Social Media",
+        body: [
+          "Neben dem E-Commerce-Erlebnis wurde die Marke auch durch aufmerksamkeitsstarken Social Content weiterentwickelt. Für FridaEU entstanden unterschiedliche Videoformate, die Produkte, Duftwelten und die Persönlichkeit der Marke auf unterhaltsame und plattformgerechte Weise vermitteln.",
+          "Von humorvollen Storytelling-Formaten über Produktinszenierungen bis hin zu Kampagnen rund um Duft-Bundles wurde Content entwickelt, der die Marke näher an ihre Community bringt und gleichzeitig die Produktentdeckung unterstützt. Die Inhalte wurden insbesondere für Social-Media-Plattformen wie Instagram und TikTok konzipiert und verbinden Markenkommunikation mit Unterhaltung und Produktpräsentation.",
+        ],
+        screens: [],
+        reels: [
+          {
+            href: "https://www.instagram.com/reel/DbgOB2qDKIK/",
+            title: "Video 01",
+            label: "Humor & Brand Awareness",
+            quote: "Kauf Frida nicht, wenn du lieber unauffällig bleiben möchtest!",
+          },
+          {
+            href: "https://www.instagram.com/reel/DcQcFE9gJEf/",
+            title: "Video 02",
+            label: "Storytelling & Entertainment",
+            quote: "Frida hat um einen dringenden Termin gebeten.",
+          },
+          {
+            href: "https://www.instagram.com/reel/DVHBZEmEbrY/",
+            title: "Video 03",
+            label: "Product Bundles & Commerce",
+            quote: "Wähle dein Paket – ganz nach deinem Geschmack.",
+          },
+          {
+            href: "https://www.instagram.com/reel/DU3kdkXijd2/",
+            title: "Video 04",
+            label: "Brand Atmosphere & Product Storytelling",
+            quote: "Weil jede Ecke in deinem Zuhause ihr eigenes Gefühl verdient.",
+          },
+          {
+            href: "https://www.instagram.com/reel/DbdpUKZD6dM/",
+            title: "Video 05",
+            label: "Character Content & Brand Personality",
+            quote: "Exklusives Interview mit Frida.",
+          },
         ],
       },
       {
