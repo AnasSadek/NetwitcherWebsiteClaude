@@ -246,32 +246,6 @@ export const portfolioProjects: PortfolioProject[] = [
     },
     screenSections: [
       {
-        title: "Düfte entdecken",
-        screens: [
-          { src: "/portfolio/frida-eu/duftwelten.webp", alt: "FridaEU, Duftvarianten in verschiedenen Duftwelten", ratio: "1/1" },
-        ],
-      },
-      {
-        title: "Produktorientiertes Shopping-Erlebnis",
-        screens: [
-          { src: "/portfolio/frida-eu/shop-01.webp", alt: "FridaEU, Lufterfrischer und Raumdüfte im Sortiment", ratio: "1/1" },
-          { src: "/portfolio/frida-eu/shop-02.webp", alt: "FridaEU, duftende Reinigungsprodukte", ratio: "1/1" },
-        ],
-      },
-      {
-        title: "Individuell zusammenstellbare Bundles",
-        screens: [
-          { src: "/portfolio/frida-eu/hero.webp", alt: "FridaEU, individuell zusammenstellbares Duft-Set", ratio: "1/1" },
-          { src: "/portfolio/frida-eu/cover.webp", alt: "FridaEU, Duft-Bundle-Komposition mit Geschenk", ratio: "1/1" },
-        ],
-      },
-      {
-        title: "Brand Storytelling",
-        screens: [
-          { src: "/portfolio/frida-eu/storytelling.webp", alt: "FridaEU, Bildwelt der Marke mit Früchten und Blüten", ratio: "1/1" },
-        ],
-      },
-      {
         title: "Social Content & Brand Building",
         body: [
           "Neben dem Online-Shop wurde FridaEU durch kreative Social-Media-Inhalte unterstützt.",
