@@ -41,20 +41,20 @@ function Caption({
   return (
     <div className="mt-4 flex items-start justify-between gap-4 md:mt-5">
       <div className="min-w-0">
-        <p className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">
+        <p className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.22em] text-ink-3">
           <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: hex }} />
           {project.client}
         </p>
         <h3
-          className={`mt-1.5 font-bold leading-snug tracking-tight text-white ${
+          className={`mt-1.5 font-bold leading-snug tracking-tight text-ink ${
             large ? "text-xl md:text-2xl" : "text-lg md:text-xl"
           }`}
         >
           {project.title}
         </h3>
-        <p className="mt-1.5 truncate text-sm text-white/50">{project.services.join(" · ")}</p>
+        <p className="mt-1.5 truncate text-sm text-ink-3">{project.services.join(" · ")}</p>
       </div>
-      <span className="shrink-0 pt-0.5 font-heading text-xs font-semibold tabular-nums text-white/40">
+      <span className="shrink-0 pt-0.5 font-heading text-xs font-semibold tabular-nums text-ink-3">
         {project.year}
       </span>
     </div>
@@ -97,7 +97,7 @@ export function WorkTile({
         </span>
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 transition-colors duration-300 group-hover:ring-white/25 md:rounded-3xl"
+          className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-ink/10 transition-colors duration-300 group-hover:ring-ink/25 md:rounded-3xl"
         />
       </div>
       <Caption project={project} />
@@ -120,32 +120,32 @@ export function FeatureSpread({
   const cats = project.categories.map((c) => getCategory(c).label);
   return (
     <article
-      className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-void-2 md:rounded-[40px]"
+      className="relative overflow-hidden rounded-[28px] border border-line bg-white shadow-soft md:rounded-[40px]"
       style={{
-        backgroundImage: `radial-gradient(90% 70% at ${flip ? "85%" : "15%"} 0%, ${hex}26, transparent 60%)`,
+        backgroundImage: `radial-gradient(90% 70% at ${flip ? "85%" : "15%"} 0%, ${hex}14, transparent 60%)`,
       }}
     >
       <div
         className="grid gap-10 p-6 sm:p-8 md:p-10 lg:grid-cols-12 lg:items-center lg:gap-12 lg:p-14"
       >
         <div className={`min-w-0 lg:col-span-5 ${flip ? "lg:order-2" : ""}`}>
-          <p className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/55">
+          <p className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: hex }} />
             {project.client}
-            <span className="text-white/25">·</span>
-            <span className="text-white/40">{project.year}</span>
+            <span className="text-ink/25">·</span>
+            <span className="text-ink-3">{project.year}</span>
           </p>
           <div className="mt-5">
-            <BoxiTitle as="h3" lines={[project.title]} max="2.9rem" min="1.1rem" className="text-white" />
+            <BoxiTitle as="h3" lines={[project.title]} max="2.9rem" min="1.1rem" className="text-ink" />
           </div>
-          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/65 md:text-base">
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-2 md:text-base">
             {project.description}
           </p>
           <ul className="mt-6 flex flex-wrap gap-2">
             {project.services.map((s) => (
               <li
                 key={s}
-                className="rounded-full border border-white/12 px-3 py-1.5 text-xs font-semibold text-white/75"
+                className="rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-ink-2"
               >
                 {s}
               </li>
@@ -154,7 +154,7 @@ export function FeatureSpread({
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link
               href={`/portfolio/${project.slug}`}
-              className="group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+              className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-6 py-3 font-heading text-sm font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
             >
               Projekt ansehen
               <Chevron color="currentColor" />
@@ -164,14 +164,14 @@ export function FeatureSpread({
                 href={project.website.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 font-heading text-xs font-bold uppercase tracking-[0.18em] text-white/70 transition-colors hover:text-white"
+                className="group inline-flex items-center gap-2 font-heading text-xs font-bold uppercase tracking-[0.18em] text-ink-2 transition-colors hover:text-ink"
               >
                 Website besuchen
                 <Chevron color={hex} />
               </a>
             )}
           </div>
-          <p className="mt-8 hidden font-heading text-[11px] font-semibold uppercase tracking-[0.2em] text-white/30 lg:block">
+          <p className="mt-8 hidden font-heading text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-3 lg:block">
             {cats.join(" · ")}
           </p>
         </div>

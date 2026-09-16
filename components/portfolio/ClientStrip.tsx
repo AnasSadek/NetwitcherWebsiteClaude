@@ -9,11 +9,11 @@ export function ClientStrip({ projects }: { projects: PortfolioProject[] }) {
   const clients = projects.filter((p) => (seen.has(p.client) ? false : (seen.add(p.client), true)));
   if (clients.length < 2) return null;
   return (
-    <section className="border-y border-white/[0.07] py-10 md:py-12" aria-label="Marken, mit denen wir arbeiten">
+    <section className="border-y border-line-2 py-10 md:py-12" aria-label="Marken, mit denen wir arbeiten">
       <div className="mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-12">
-            <p className="shrink-0 font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-white/40">
+            <p className="shrink-0 font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3">
               Marken, mit denen wir arbeiten
             </p>
             <ul className="flex flex-wrap items-center gap-x-10 gap-y-4 md:justify-end md:flex-1">
@@ -21,7 +21,7 @@ export function ClientStrip({ projects }: { projects: PortfolioProject[] }) {
                 <li key={c.slug}>
                   <Link
                     href={`/portfolio/${c.slug}`}
-                    className="block text-white/55 transition-colors hover:text-white"
+                    className="block text-ink-3 transition-colors hover:text-ink"
                     aria-label={`${c.client} ansehen`}
                   >
                     {c.logo ? (

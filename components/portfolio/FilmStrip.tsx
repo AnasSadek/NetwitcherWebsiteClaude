@@ -14,7 +14,7 @@ function Frame({ item, priority }: { item: StripItem; priority?: boolean }) {
   return (
     <Link
       href={`/portfolio/${item.slug}`}
-      className="group relative block h-[220px] shrink-0 snap-start overflow-hidden rounded-2xl bg-void-2 sm:h-[280px] lg:h-[340px]"
+      className="group relative block h-[220px] shrink-0 snap-start overflow-hidden rounded-2xl bg-paper-2 sm:h-[280px] lg:h-[340px]"
       style={{ aspectRatio: ratioValue(item.ratio) }}
       aria-label={`${item.client}: ${item.alt}`}
     >
@@ -46,7 +46,7 @@ function Frame({ item, priority }: { item: StripItem; priority?: boolean }) {
       </span>
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10"
+        className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-ink/10"
         style={{ boxShadow: `inset 0 0 0 0 ${ARROW_COLORS[item.color]}` }}
       />
     </Link>

@@ -60,7 +60,7 @@ export function ProjectVisual({
           return (
             <div
               key={v.title + i}
-              className={`relative w-[38%] max-w-[240px] overflow-hidden rounded-2xl border border-white/10 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] transition-transform duration-500 md:rounded-3xl ${
+              className={`relative w-[38%] max-w-[240px] overflow-hidden rounded-2xl border border-line shadow-lift transition-transform duration-500 md:rounded-3xl ${
                 center ? "z-10 scale-[1.06] md:w-[36%]" : i === 0 ? "-rotate-3 translate-y-4" : "rotate-3 translate-y-4"
               }`}
               style={{ aspectRatio: "9 / 16" }}
@@ -91,7 +91,7 @@ export function ProjectVisual({
     const [main, second] = project.screens;
     return (
       <div className="relative pb-[10%] pr-[10%]">
-        <div className="overflow-hidden rounded-2xl border border-white/10 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] md:rounded-3xl">
+        <div className="overflow-hidden rounded-2xl border border-line shadow-lift md:rounded-3xl">
           <SmartImage
             image={main}
             color={project.color}
@@ -104,7 +104,7 @@ export function ProjectVisual({
           />
         </div>
         {second && (
-          <div className="absolute bottom-0 right-0 w-[46%] overflow-hidden rounded-xl border border-white/10 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.9)] md:rounded-2xl">
+          <div className="absolute bottom-0 right-0 w-[46%] overflow-hidden rounded-xl border border-line shadow-lift md:rounded-2xl">
             <SmartImage
               image={second}
               color={project.color}
@@ -130,7 +130,7 @@ export function ProjectVisual({
         priority={priority}
         monogram={m}
         rounded="rounded-2xl md:rounded-3xl"
-        className="shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]"
+        className="shadow-lift"
       />
       {companion && (
         <SmartImage
@@ -139,7 +139,7 @@ export function ProjectVisual({
           ratio="4/5"
           sizes="(min-width: 1024px) 18vw, 36vw"
           rounded="rounded-xl md:rounded-2xl"
-          className="absolute bottom-0 right-0 w-[34%] border border-white/10 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.9)]"
+          className="absolute bottom-0 right-0 w-[34%] border border-line shadow-lift"
         />
       )}
     </div>

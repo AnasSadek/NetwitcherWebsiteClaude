@@ -38,7 +38,7 @@ export function SmartImage({
   const r = ratio ?? image.ratio ?? "16/10";
   return (
     <div
-      className={`relative w-full overflow-hidden bg-void-2 ${rounded} ${ratioClass ?? ""} ${className}`}
+      className={`relative w-full overflow-hidden bg-paper-2 ${rounded} ${ratioClass ?? ""} ${className}`}
       style={ratioClass ? undefined : { aspectRatio: ratioValue(r) }}
     >
       {image.src ? (

@@ -1,16 +1,12 @@
 import type { Viewport } from "next";
-import { DarkStage } from "@/components/portfolio/DarkStage";
 
 export const viewport: Viewport = {
-  themeColor: "#0b0620",
+  themeColor: "#faf8ff",
 };
 
-/** Portfolio-Bühne: dunkel, eigenständig, aber mit Header/Footer der Site. */
+/** Portfolio-Bühne: hell und ruhig, mit Header/Footer der Site. */
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-void text-white">
-      <DarkStage />
-      {children}
-    </div>
+    <div className="bg-paper text-ink">{children}</div>
   );
 }

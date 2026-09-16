@@ -23,15 +23,15 @@ export function BrowserFrame({
   const host = url ? url.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
   return (
     <div
-      className={`overflow-hidden rounded-2xl border border-white/10 bg-void-2 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.7)] md:rounded-3xl ${className}`}
+      className={`overflow-hidden rounded-2xl border border-line bg-white shadow-lift md:rounded-3xl ${className}`}
     >
-      <div className="flex items-center gap-3 border-b border-white/10 px-4 py-2.5">
+      <div className="flex items-center gap-3 border-b border-line-2 px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden="true">
-          <i className="block h-2.5 w-2.5 rounded-full bg-white/15" />
-          <i className="block h-2.5 w-2.5 rounded-full bg-white/15" />
-          <i className="block h-2.5 w-2.5 rounded-full bg-white/15" />
+          <i className="block h-2.5 w-2.5 rounded-full bg-ink/15" />
+          <i className="block h-2.5 w-2.5 rounded-full bg-ink/15" />
+          <i className="block h-2.5 w-2.5 rounded-full bg-ink/15" />
         </span>
-        <span className="mx-auto flex h-6 w-full max-w-xs items-center justify-center rounded-md bg-white/[0.06] font-heading text-[10px] font-semibold tracking-wide text-white/45">
+        <span className="mx-auto flex h-6 w-full max-w-xs items-center justify-center rounded-md bg-ink/5 font-heading text-[10px] font-semibold tracking-wide text-ink-3">
           {host || " "}
         </span>
       </div>
@@ -68,7 +68,7 @@ export function PhoneFrame({
 }) {
   return (
     <div
-      className={`relative rounded-[2rem] border border-white/15 bg-void-3 p-1.5 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] md:rounded-[2.4rem] md:p-2 ${className}`}
+      className={`relative rounded-[2rem] border border-ink/80 bg-ink p-1.5 shadow-lift md:rounded-[2.4rem] md:p-2 ${className}`}
     >
       <span
         aria-hidden="true"

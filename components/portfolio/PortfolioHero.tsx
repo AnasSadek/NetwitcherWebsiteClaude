@@ -16,14 +16,14 @@ export function PortfolioHero({ items, count }: { items: StripItem[]; count: num
         className="pointer-events-none absolute inset-x-0 top-0 h-[70vh]"
         style={{
           background:
-            "radial-gradient(60% 50% at 20% 0%, rgba(139,92,246,0.28), transparent 70%), radial-gradient(40% 40% at 90% 10%, rgba(15,185,242,0.16), transparent 70%)",
+            "radial-gradient(60% 50% at 20% 0%, rgba(139,92,246,0.16), transparent 70%), radial-gradient(40% 40% at 90% 10%, rgba(15,185,242,0.10), transparent 70%)",
         }}
       />
       <div className="relative mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
             <div className="min-w-0 flex-1">
-              <p className="flex items-center gap-3 font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-white/55">
+              <p className="flex items-center gap-3 font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3">
                 <BrandStar size={18} />
                 Portfolio · Netwitcher Berlin
               </p>
@@ -34,15 +34,15 @@ export function PortfolioHero({ items, count }: { items: StripItem[]; count: num
                   max="7.5rem"
                   min="2rem"
                   fitLines
-                  className="text-white"
+                  className="text-ink"
                 />
               </div>
             </div>
             <div className="max-w-sm shrink-0 lg:w-[360px] lg:pb-3 lg:text-right">
-              <p className="text-base leading-relaxed text-white/70 sm:text-lg">
+              <p className="text-base leading-relaxed text-ink-2 sm:text-lg">
                 Websites, Content, Kampagnen und Software für Marken, die mehr wollen.
               </p>
-              <p className="mt-4 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
+              <p className="mt-4 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
                 {count} {count === 1 ? "Projekt" : "Projekte"} · Auswahl
               </p>
             </div>

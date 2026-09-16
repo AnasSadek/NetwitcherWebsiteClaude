@@ -113,18 +113,6 @@
   }
 }
 
-@layer base {
-  /* Portfolio-Routen schalten die ganze Seite auf die dunkle Bühne
-     (inkl. Overscroll-Flächen). Gesetzt von components/portfolio/DarkStage. */
-  html[data-stage="dark"] body {
-    background-color: var(--color-void);
-    color: #fff;
-  }
-  html[data-stage="dark"] :focus-visible {
-    outline-color: var(--color-mint);
-  }
-}
-
 @layer utilities {
   /* Website-Vorschau: langer Screenshot fährt beim Hover nach unten. */
   .scroll-preview img {

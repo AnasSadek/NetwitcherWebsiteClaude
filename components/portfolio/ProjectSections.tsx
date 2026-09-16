@@ -17,11 +17,11 @@ export function SectionTitle({ kicker, title, id }: { kicker?: string; title: st
   return (
     <Reveal>
       <div className="mb-8 flex items-end justify-between gap-6 md:mb-10">
-        <h2 id={id} className="font-boxi text-2xl leading-none text-white md:text-4xl">
+        <h2 id={id} className="font-boxi text-2xl leading-none text-ink md:text-4xl">
           {title}
         </h2>
         {kicker && (
-          <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">{kicker}</p>
+          <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">{kicker}</p>
         )}
       </div>
     </Reveal>
@@ -43,18 +43,18 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[80vh]"
-        style={{ background: `radial-gradient(60% 50% at 30% 0%, ${hex}30, transparent 70%)` }}
+        style={{ background: `radial-gradient(60% 50% at 30% 0%, ${hex}1c, transparent 70%)` }}
       />
       <div className="relative mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
-          <nav aria-label="Brotkrumen" className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/45">
-            <Link href="/portfolio" className="transition-colors hover:text-white">
+          <nav aria-label="Brotkrumen" className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
+            <Link href="/portfolio" className="transition-colors hover:text-ink">
               Portfolio
             </Link>
-            <span aria-hidden="true" className="text-white/25">
+            <span aria-hidden="true" className="text-ink/25">
               /
             </span>
-            <span className="text-white/80">{project.client}</span>
+            <span className="text-ink-2">{project.client}</span>
           </nav>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:items-end">
@@ -69,42 +69,42 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                   className="mb-6 h-14 w-auto max-w-[220px] object-contain object-left md:h-16"
                 />
               )}
-              <p className="flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.25em] text-white/60">
+              <p className="flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.25em] text-ink-2">
                 <span className="h-2 w-2 rounded-full" style={{ backgroundColor: hex }} />
                 {project.client}
-                <span className="text-white/25">·</span>
-                <span className="text-white/45">{project.year}</span>
+                <span className="text-ink/25">·</span>
+                <span className="text-ink-3">{project.year}</span>
               </p>
               <div className="mt-5">
-                <BoxiTitle as="h1" lines={[project.title]} max="5.5rem" min="1.375rem" className="text-white" />
+                <BoxiTitle as="h1" lines={[project.title]} max="5.5rem" min="1.375rem" className="text-ink" />
               </div>
             </div>
             <div className="lg:col-span-4 lg:pb-2">
-              <p className="text-base leading-relaxed text-white/70 md:text-lg">{project.description}</p>
+              <p className="text-base leading-relaxed text-ink-2 md:text-lg">{project.description}</p>
               {project.placeholder && (
-                <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 font-heading text-[10px] font-bold uppercase tracking-[0.2em] text-white/45">
+                <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-heading text-[10px] font-bold uppercase tracking-[0.2em] text-ink-3">
                   Vorschau · Inhalte folgen
                 </p>
               )}
             </div>
           </div>
 
-          <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/10 pt-6 md:grid-cols-4">
+          <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-6 md:grid-cols-4">
             <div>
-              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Leistungen</dt>
-              <dd className="mt-2 text-sm font-semibold text-white/85">{project.services.join(", ")}</dd>
+              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">Leistungen</dt>
+              <dd className="mt-2 text-sm font-semibold text-ink-2">{project.services.join(", ")}</dd>
             </div>
             <div>
-              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Bereich</dt>
-              <dd className="mt-2 text-sm font-semibold text-white/85">
+              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">Bereich</dt>
+              <dd className="mt-2 text-sm font-semibold text-ink-2">
                 {[project.industry, ...project.categories.map((c) => getCategory(c).label)]
                   .filter(Boolean)
                   .join(" · ")}
               </dd>
             </div>
             <div>
-              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Jahr</dt>
-              <dd className="mt-2 text-sm font-semibold text-white/85">{project.year}</dd>
+              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">Jahr</dt>
+              <dd className="mt-2 text-sm font-semibold text-ink-2">{project.year}</dd>
             </div>
             <div className="flex items-end md:justify-end">
               {project.website?.url ? (
@@ -112,7 +112,7 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                   href={project.website.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+                  className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
                 >
                   Website besuchen
                   <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
@@ -125,7 +125,7 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                     href={project.links[0].href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+                    className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
                   >
                     {project.links[0].label}
                     <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
@@ -135,7 +135,7 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                 ) : (
                   <Link
                     href={project.links[0].href}
-                    className="group inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+                    className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
                   >
                     {project.links[0].label}
                     <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
@@ -163,10 +163,10 @@ export function ProjectStory({ story }: { story: NonNullable<PortfolioProject["s
       <div className="grid gap-10 md:grid-cols-12">
         {story.map((s, i) => (
           <Reveal key={s.heading} delay={i * 0.08} className="md:col-span-6 lg:col-span-5 lg:odd:col-start-2">
-            <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
+            <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
               {String(i + 1).padStart(2, "0")} · {s.heading}
             </p>
-            <p className="mt-4 text-lg leading-relaxed text-white/80 md:text-xl">{s.body}</p>
+            <p className="mt-4 text-lg leading-relaxed text-ink-2 md:text-xl">{s.body}</p>
           </Reveal>
         ))}
       </div>
@@ -197,7 +197,7 @@ export function WebsiteShowcase({ project }: { project: PortfolioProject }) {
               href={w.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2.5 rounded-full border-2 border-white/15 px-6 py-3 font-heading text-sm font-bold tracking-wide text-white transition-colors hover:border-white/50 hover:bg-white/5"
+              className="group inline-flex items-center gap-2.5 rounded-full border-2 border-ink/15 px-6 py-3 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:border-ink/40 hover:bg-ink/5"
             >
               Website besuchen
               <svg width="11" height="11" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
@@ -254,7 +254,7 @@ function Masonry({ items, color, monogram, sizes }: { items: MediaImage[]; color
         <Reveal key={i} delay={Math.min(i * 0.05, 0.25)} className="break-inside-avoid">
           <figure>
             <SmartImage image={img} color={color} sizes={sizes} monogram={monogram} rounded="rounded-xl md:rounded-2xl" />
-            {img.caption && <figcaption className="mt-2 text-xs text-white/45">{img.caption}</figcaption>}
+            {img.caption && <figcaption className="mt-2 text-xs text-ink-3">{img.caption}</figcaption>}
           </figure>
         </Reveal>
       ))}
@@ -310,7 +310,7 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
         {wide.map((s, i) => (
           <Reveal key={i} delay={0.05} className={i === 0 ? "md:col-span-12" : "md:col-span-6"}>
             <figure>
-              <div className="overflow-hidden rounded-2xl border border-white/10 md:rounded-3xl">
+              <div className="overflow-hidden rounded-2xl border border-line md:rounded-3xl">
                 <SmartImage
                   image={s}
                   color={project.color}
@@ -322,7 +322,7 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
                 />
               </div>
               {s.caption && (
-                <figcaption className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">{s.caption}</figcaption>
+                <figcaption className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-ink-3">{s.caption}</figcaption>
               )}
             </figure>
           </Reveal>
@@ -334,7 +334,7 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
                 <figure>
                   <PhoneFrame image={s} color={project.color} sizes="(min-width: 768px) 24vw, 58vw" monogram={m} label={s.caption ? `${s.caption} · folgt` : undefined} />
                   {s.caption && (
-                    <figcaption className="mt-3 text-center font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">{s.caption}</figcaption>
+                    <figcaption className="mt-3 text-center font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-ink-3">{s.caption}</figcaption>
                   )}
                 </figure>
               </Reveal>
@@ -383,11 +383,11 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
             <div key={`t${bi}`} className={`grid gap-10 md:grid-cols-2 ${spacing ?? ""}`}>
               {block.items.map(({ sec, num }, i) => (
                 <Reveal key={sec.title} delay={Math.min(i * 0.08, 0.24)}>
-                  <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
+                  <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
                     {num} · {sec.title}
                   </p>
                   {paras(sec.body).map((p, pi) => (
-                    <p key={pi} className="mt-4 text-lg leading-relaxed text-white/80">
+                    <p key={pi} className="mt-4 text-lg leading-relaxed text-ink-2">
                       {p}
                     </p>
                   ))}
@@ -402,11 +402,11 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
           <div key={sec.title} className={spacing}>
             <Reveal>
               <div className="mb-6 flex items-baseline gap-4 md:mb-8">
-                <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">{num}</p>
-                <h3 className="font-boxi text-xl leading-none text-white md:text-2xl">{sec.title}</h3>
+                <p className="font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">{num}</p>
+                <h3 className="font-boxi text-xl leading-none text-ink md:text-2xl">{sec.title}</h3>
               </div>
               {paras(sec.body).map((p, pi) => (
-                <p key={pi} className="mb-4 max-w-3xl text-lg leading-relaxed text-white/75 last-of-type:mb-8">
+                <p key={pi} className="mb-4 max-w-3xl text-lg leading-relaxed text-ink-2 last-of-type:mb-8">
                   {p}
                 </p>
               ))}
@@ -421,7 +421,7 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
                 return (
                   <Reveal key={i} delay={Math.min(i * 0.06, 0.2)} className={cols}>
                     <figure>
-                      <div className="overflow-hidden rounded-2xl border border-white/10 md:rounded-3xl">
+                      <div className="overflow-hidden rounded-2xl border border-line md:rounded-3xl">
                         <SmartImage
                           image={s}
                           color={project.color}
@@ -433,7 +433,7 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
                         />
                       </div>
                       {s.caption && (
-                        <figcaption className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">{s.caption}</figcaption>
+                        <figcaption className="mt-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-ink-3">{s.caption}</figcaption>
                       )}
                     </figure>
                   </Reveal>
@@ -463,13 +463,13 @@ export function ProjectResults({ project }: { project: PortfolioProject }) {
   return (
     <Wrap id="ergebnisse">
       <SectionTitle id="ergebnisse" title="ERGEBNIS." />
-      <dl className="grid gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
         {project.results!.map((r, i) => (
-          <Reveal key={r.label} delay={i * 0.06} className="bg-void-2 p-7 md:p-9">
+          <Reveal key={r.label} delay={i * 0.06} className="bg-white p-7 md:p-9">
             <dd className="font-boxi text-4xl leading-none md:text-5xl" style={{ color: hex }}>
               {r.value}
             </dd>
-            <dt className="mt-3 text-sm text-white/60">{r.label}</dt>
+            <dt className="mt-3 text-sm text-ink-3">{r.label}</dt>
           </Reveal>
         ))}
       </dl>
@@ -483,11 +483,11 @@ export function ProjectTestimonial({ project }: { project: PortfolioProject }) {
     <Wrap id="stimme">
       <Reveal>
         <figure className="mx-auto max-w-3xl text-center">
-          <blockquote className="font-heading text-2xl font-bold leading-snug text-white md:text-3xl">
+          <blockquote className="font-heading text-2xl font-bold leading-snug text-ink md:text-3xl">
             „{t.quote}"
           </blockquote>
-          <figcaption className="mt-6 text-sm text-white/55">
-            <span className="font-semibold text-white/80">{t.name}</span>
+          <figcaption className="mt-6 text-sm text-ink-3">
+            <span className="font-semibold text-ink-2">{t.name}</span>
             {t.role && <> · {t.role}</>}
           </figcaption>
         </figure>
@@ -510,7 +510,7 @@ export function ProjectLinks({ project }: { project: PortfolioProject }) {
           {links.map((l) => {
             const ext = l.href.startsWith("http");
             const cls =
-              "group inline-flex items-center gap-2.5 rounded-full border-2 border-white/15 px-6 py-3 font-heading text-sm font-bold tracking-wide text-white transition-colors hover:border-white/50 hover:bg-white/5";
+              "group inline-flex items-center gap-2.5 rounded-full border-2 border-ink/15 px-6 py-3 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:border-ink/40 hover:bg-ink/5";
             const arrow = (
               <svg width="11" height="11" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
                 <path d={ARROW_PATH} fill={hex} transform="rotate(90 50 50)" />
@@ -545,35 +545,35 @@ export function NextProject({ next, prev }: { next: PortfolioProject; prev: Port
       <div className="mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
           <div className="mb-6 flex items-center justify-between gap-4">
-            <p id="next" className="font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-white/45">
+            <p id="next" className="font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3">
               Nächstes Projekt
             </p>
             <div className="flex items-center gap-5 font-heading text-[11px] font-bold uppercase tracking-[0.2em]">
               {prev.slug !== next.slug && (
-                <Link href={`/portfolio/${prev.slug}`} className="text-white/45 transition-colors hover:text-white">
+                <Link href={`/portfolio/${prev.slug}`} className="text-ink-3 transition-colors hover:text-ink">
                   ← {prev.client}
                 </Link>
               )}
-              <Link href="/portfolio" className="text-white/45 transition-colors hover:text-white">
+              <Link href="/portfolio" className="text-ink-3 transition-colors hover:text-ink">
                 Alle Projekte
               </Link>
             </div>
           </div>
           <Link
             href={`/portfolio/${next.slug}`}
-            className="group relative block overflow-hidden rounded-[28px] border border-white/[0.08] bg-void-2 md:rounded-[40px]"
-            style={{ backgroundImage: `radial-gradient(70% 80% at 100% 0%, ${hex}26, transparent 60%)` }}
+            className="group relative block overflow-hidden rounded-[28px] border border-line bg-white shadow-soft md:rounded-[40px]"
+            style={{ backgroundImage: `radial-gradient(70% 80% at 100% 0%, ${hex}14, transparent 60%)` }}
           >
             <div className="grid items-center gap-8 p-6 sm:p-8 md:grid-cols-12 md:p-10 lg:p-14">
               <div className="min-w-0 md:col-span-7">
-                <p className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-white/55">
+                <p className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
                   <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: hex }} />
                   {next.client}
                 </p>
                 <div className="mt-4">
-                  <BoxiTitle as="p" lines={[next.title]} max="3.75rem" min="1.1rem" className="text-white" />
+                  <BoxiTitle as="p" lines={[next.title]} max="3.75rem" min="1.1rem" className="text-ink" />
                 </div>
-                <span className="mt-8 inline-flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-white/70 transition-colors group-hover:text-white">
+                <span className="mt-8 inline-flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-ink-2 transition-colors group-hover:text-ink">
                   Ansehen
                   <svg width="11" height="11" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">
                     <path d={ARROW_PATH} fill={hex} transform="rotate(90 50 50)" />

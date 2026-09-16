@@ -41,40 +41,40 @@ export function ServiceSpectrum() {
       <div className="mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <h2 id="spektrum" className="font-boxi text-3xl leading-[1.05] text-white md:text-5xl">
+            <h2 id="spektrum" className="font-boxi text-3xl leading-[1.05] text-ink md:text-5xl">
               DAS GANZE
               <br />
               SPEKTRUM.
             </h2>
-            <p className="max-w-sm text-base leading-relaxed text-white/60">
+            <p className="max-w-sm text-base leading-relaxed text-ink-2">
               Vom ersten Reel bis zur eigenen Plattform. Alles aus einem Team, alles
               aus Berlin.
             </p>
           </div>
         </Reveal>
 
-        <ol className="mt-12 grid gap-x-12 border-t border-white/10 md:mt-16 md:grid-cols-2">
+        <ol className="mt-12 grid gap-x-12 border-t border-line md:mt-16 md:grid-cols-2">
           {ROWS.map((r, i) => {
             const n = counts.get(r.category) ?? 0;
             const href = n > 0 ? `/portfolio?f=${r.category}#arbeiten` : r.href;
             const hex = ARROW_COLORS[r.color];
             return (
-              <Reveal as="li" key={r.label} delay={Math.min(i * 0.03, 0.2)} className="border-b border-white/10">
+              <Reveal as="li" key={r.label} delay={Math.min(i * 0.03, 0.2)} className="border-b border-line">
                 <Link
                   href={href}
                   className="group flex items-center gap-4 py-4 transition-colors md:gap-6 md:py-5"
                 >
-                  <span className="w-7 shrink-0 font-heading text-xs font-semibold tabular-nums text-white/30">
+                  <span className="w-7 shrink-0 font-heading text-xs font-semibold tabular-nums text-ink-3">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="flex-1 font-heading text-xl font-bold tracking-tight text-white/85 transition-colors group-hover:text-white md:text-2xl">
+                  <span className="flex-1 font-heading text-xl font-bold tracking-tight text-ink-2 transition-colors group-hover:text-ink md:text-2xl">
                     {r.label}
                   </span>
-                  <span className="hidden font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white/35 sm:block">
+                  <span className="hidden font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-ink-3 sm:block">
                     {n > 0 ? `${n} ${n === 1 ? "Projekt" : "Projekte"}` : r.group}
                   </span>
                   <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 transition-all duration-300 group-hover:border-transparent"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line transition-all duration-300 group-hover:border-transparent"
                     style={{ ["--hex" as string]: hex }}
                   >
                     <svg

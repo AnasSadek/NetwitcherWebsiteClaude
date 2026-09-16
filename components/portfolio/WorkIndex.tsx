@@ -119,7 +119,7 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
       </h2>
 
       {/* Filterleiste, klebt unter dem Header */}
-      <div className="sticky top-[58px] z-30 -mx-5 border-y border-white/[0.07] bg-void/80 backdrop-blur-xl sm:-mx-8 md:top-[60px]">
+      <div className="sticky top-[58px] z-30 -mx-5 border-y border-line-2 bg-paper/80 backdrop-blur-xl sm:-mx-8 md:top-[60px]">
         <div className="mx-auto max-w-[1500px]">
           <div
             role="group"
@@ -136,8 +136,8 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
                   onClick={() => setFilter(c.id)}
                   className={`group flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 font-heading text-xs font-bold tracking-wide transition-colors duration-200 ${
                     active
-                      ? "border-white bg-white text-ink"
-                      : "border-white/12 text-white/70 hover:border-white/30 hover:text-white"
+                      ? "border-ink bg-ink text-white"
+                      : "border-line text-ink-2 hover:border-ink/30 hover:text-ink"
                   }`}
                 >
                   {c.color && (
@@ -148,7 +148,7 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
                     />
                   )}
                   {c.label}
-                  <span className={`tabular-nums ${active ? "text-ink/50" : "text-white/35"}`}>{c.count}</span>
+                  <span className={`tabular-nums ${active ? "text-white/60" : "text-ink-3"}`}>{c.count}</span>
                 </button>
               );
             })}
@@ -184,7 +184,7 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
       </LayoutGroup>
 
       {visible.length === 0 && (
-        <p className="mt-16 text-center text-white/60">In dieser Kategorie zeigen wir bald erste Projekte.</p>
+        <p className="mt-16 text-center text-ink-3">In dieser Kategorie zeigen wir bald erste Projekte.</p>
       )}
     </section>
   );
