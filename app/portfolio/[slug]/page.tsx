@@ -106,7 +106,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <ProjectLinks project={project} />
         </div>
 
-        <NextProject next={next} prev={prev} />
+        {project.hideNextProject ? null : <NextProject next={next} prev={prev} />}
       </article>
       <PortfolioCTA service={CTA_TOPIC[project.categories[0]]} />
     </>

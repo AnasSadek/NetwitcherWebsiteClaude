@@ -119,6 +119,9 @@ export type PortfolioProject = {
   tech?: string[];
   /** true, solange Texte/Medien noch nicht die echten Projektinhalte sind. */
   placeholder?: boolean;
+  /** Blendet die grosse Naechstes-Projekt-Buehne am Seitenende aus
+   *  (z. B. wenn sie inhaltlich mit der Case Study kollidieren wuerde). */
+  hideNextProject?: boolean;
 };
 
 /* ------------------------------------------------------------------------
@@ -318,6 +321,7 @@ export const portfolioProjects: PortfolioProject[] = [
         body: "Duftwelten für eine intuitive Produktauswahl · Produktorientiertes Shopping-Erlebnis · Individuell zusammenstellbare Duft-Bundles · Mobile-first Commerce · Brand Storytelling & Social Content Integration · Mehrsprachige Nutzererfahrung",
       },
     ],
+    hideNextProject: true,
     links: [{ label: "Website besuchen", href: "https://fridaeu.com" }],
   },
   {

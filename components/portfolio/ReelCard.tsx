@@ -132,9 +132,8 @@ export function ReelCard({
                 }}
               />
             )}
-            {/* Scrims für Lesbarkeit auf dem Motiv */}
+            {/* Scrim für Lesbarkeit auf dem Motiv */}
             <span aria-hidden="true" className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/55 to-transparent" />
-            <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/65 to-transparent" />
 
             <span className="absolute left-5 right-5 top-5 block md:left-6 md:top-6">
               <span className="block font-heading text-[10px] font-bold uppercase tracking-[0.3em] text-white/75">
@@ -149,21 +148,15 @@ export function ReelCard({
                 <path d="M4 2.5v11l9-5.5z" fill="#150a33" />
               </svg>
             </span>
-            <span className="absolute bottom-5 left-5 right-5 block text-sm leading-snug text-white/90 md:bottom-6 md:left-6 md:right-6">
-              „{quote}"
-            </span>
           </button>
         )}
       </div>
-      <figcaption className="mt-3 flex items-center justify-between gap-3">
-        <span className="font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-ink-3">
-          {title} · Instagram Reel
-        </span>
+      <figcaption className="mt-2.5 text-center">
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-ink-3 underline-offset-4 transition-colors hover:text-ink hover:underline"
+          className="font-heading text-[10px] font-bold uppercase tracking-[0.2em] text-ink-3 underline-offset-4 transition-colors hover:text-ink hover:underline"
         >
           Auf Instagram ansehen
         </a>

@@ -441,13 +441,20 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
               })}
             </div>
             {sec.reels?.length ? (
-              <ul className={`grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 ${sec.screens.length ? "mt-6 md:mt-8" : ""}`}>
-                {sec.reels.map((v, i) => (
-                  <Reveal as="li" key={v.href} delay={Math.min(i * 0.06, 0.24)}>
-                    <ReelCard {...v} color={project.color} />
-                  </Reveal>
-                ))}
-              </ul>
+              <div className={`-mx-5 sm:mx-0 ${sec.screens.length ? "mt-6 md:mt-8" : ""}`}>
+                <ul className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:flex-wrap sm:justify-center sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0">
+                  {sec.reels.map((v, i) => (
+                    <Reveal
+                      as="li"
+                      key={v.href}
+                      delay={Math.min(i * 0.06, 0.24)}
+                      className="w-[68%] shrink-0 snap-center sm:w-[calc(50%-12px)] sm:shrink lg:w-[calc(33.333%-16px)]"
+                    >
+                      <ReelCard {...v} color={project.color} />
+                    </Reveal>
+                  ))}
+                </ul>
+              </div>
             ) : null}
           </div>
         );
