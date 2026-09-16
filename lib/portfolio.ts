@@ -240,9 +240,9 @@ export const portfolioProjects: PortfolioProject[] = [
     featured: true,
     logo: "/portfolio/frida-eu/logo.webp",
     cover: {
-      src: "/portfolio/frida-eu/cover.webp",
-      alt: "FridaEU, Duft-Bundle-Komposition der Home-Fragrance-Marke",
-      ratio: "1/1",
+      src: "/portfolio/frida-eu/device-showcase.webp",
+      alt: "FridaEU, Online-Shop auf Laptop, Tablet und Smartphone – echte Screenshots der Website",
+      ratio: "16/10",
     },
     screenSections: [
       {
@@ -274,6 +274,7 @@ export const portfolioProjects: PortfolioProject[] = [
         ],
         screens: [
           { src: "/portfolio/frida-eu/hero.webp", alt: "FridaEU, individuell zusammenstellbares Duft-Set", ratio: "1/1" },
+          { src: "/portfolio/frida-eu/cover.webp", alt: "FridaEU, Duft-Bundle-Komposition mit Geschenk", ratio: "1/1" },
         ],
       },
       {
