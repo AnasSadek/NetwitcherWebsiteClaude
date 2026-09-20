@@ -27,6 +27,12 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
 
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
+  /** Solange der Nutzer noch kein Thumbnail gewählt hat, zeigt das grosse
+   *  Bild `project.galleryHero` (falls vorhanden) statt `items[0]` — der
+   *  Thumbnail-Slider selbst (Reihenfolge, aktives Thumbnail, Pfeile,
+   *  Drag) bleibt davon komplett unberührt. */
+  const [touched, setTouched] = useState(false);
+  const current = !touched && project.galleryHero ? project.galleryHero : items[active].image;
 
   const trackRef = useRef<HTMLDivElement>(null);
   const drag = useRef({ active: false, pointerId: -1, startX: 0, startScrollLeft: 0, moved: 0 });
@@ -98,6 +104,7 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
   };
 
   const select = (i: number) => {
+    setTouched(true);
     setActive(i);
     scrollThumbIntoView(i);
   };
@@ -118,23 +125,23 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
           >
             <AnimatePresence>
               <motion.button
-                key={active}
+                key={touched ? active : "hero"}
                 type="button"
                 onClick={() => setLightbox(true)}
-                aria-label={`${items[active].image.alt} vergrössern`}
+                aria-label={`${current.alt} vergrössern`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 h-full w-full cursor-zoom-in"
               >
-                {items[active].image.src && (
+                {current.src && (
                   <Image
-                    src={items[active].image.src}
-                    alt={items[active].image.alt}
+                    src={current.src}
+                    alt={current.alt}
                     fill
                     sizes="(min-width: 1500px) 1400px, 100vw"
-                    priority={active === 0}
+                    priority={!touched}
                     className="object-contain p-2 sm:p-4"
                   />
                 )}
@@ -226,14 +233,8 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
             </svg>
           </button>
           <div className="relative h-full max-h-[85vh] w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-            {items[active].image.src && (
-              <Image
-                src={items[active].image.src}
-                alt={items[active].image.alt}
-                fill
-                sizes="90vw"
-                className="object-contain"
-              />
+            {current.src && (
+              <Image src={current.src} alt={current.alt} fill sizes="90vw" className="object-contain" />
             )}
           </div>
         </div>
