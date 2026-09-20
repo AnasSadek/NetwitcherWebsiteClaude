@@ -6,7 +6,7 @@ import type { MediaImage, MediaVideo, PortfolioProject } from "@/lib/portfolio";
 import { getCategory, projectKind } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
 import { BrowserFrame, PhoneFrame } from "./Frames";
-import { InstagramEmbed } from "./InstagramEmbed";
+import { ReelGallery } from "./ReelGallery";
 import { SmartImage } from "./SmartImage";
 import { VideoPlayer } from "./VideoPlayer";
 
@@ -441,15 +441,9 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
               })}
             </div>
             {sec.reels?.length ? (
-              <div className={sec.screens.length ? "mt-6 md:mt-8" : ""}>
-                <ul className="grid grid-cols-1 items-start gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-                  {sec.reels.map((v, i) => (
-                    <Reveal as="li" key={v.href} delay={Math.min(i * 0.06, 0.24)}>
-                      <InstagramEmbed href={v.href} />
-                    </Reveal>
-                  ))}
-                </ul>
-              </div>
+              <Reveal className={sec.screens.length ? "mt-10 md:mt-14" : ""}>
+                <ReelGallery reels={sec.reels} color={project.color} />
+              </Reveal>
             ) : null}
           </div>
         );
