@@ -62,12 +62,12 @@ export function InstagramEmbed({ href }: { href: string }) {
   }, [href]);
 
   return (
-    <div ref={ref} className="mx-auto w-full">
+    <div ref={ref} className="w-full">
       <blockquote
         className="instagram-media"
         data-instgrm-permalink={`${url}/?utm_source=ig_embed`}
         data-instgrm-version="14"
-        style={{ background: "#FFF", border: 0, borderRadius: 12, margin: "0 auto", maxWidth: 540, minWidth: 300, width: "100%" }}
+        style={{ background: "#FFF", border: 0, borderRadius: 12, margin: 0, width: "100%", maxWidth: "100%", minWidth: 0 }}
       >
         <a href={`${url}/`} target="_blank" rel="noopener noreferrer">
           Beitrag auf Instagram ansehen

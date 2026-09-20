@@ -182,6 +182,32 @@
 
 }
 
+/* FridaEU Reel-Galerie: die Karte muss immer die volle, tatsächliche
+   Höhe des nativen Instagram-Embeds umschliessen. Kein Clipping, keine
+   fixe Höhe — Instagram setzt die Breite des generierten iframes per
+   Inline-Style selbst; das hier zwingt es auf 100% der Karte, damit
+   nichts unten oder seitlich übersteht. */
+.reel-card {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+.reel-card > div {
+  height: auto;
+  min-height: 0;
+}
+.reel-card blockquote.instagram-media {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+.reel-card .instagram-media,
+.reel-card .instagram-media iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
