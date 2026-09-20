@@ -148,8 +148,11 @@ export const portfolioProjects: PortfolioProject[] = [
     },
     /* Kompositionen (Auftaktbild, Featured-Bühne, Filmstreifen) */
     screens: [
-      { src: "/portfolio/fekrahub/features-01.webp", alt: "FekraHub, Dashboard der Plattform", ratio: "16/10" },
-      { src: "/portfolio/fekrahub/dashboard-01.webp", alt: "FekraHub, personalisiertes Dashboard für Schüler und Eltern", ratio: "16/10" },
+      {
+        src: "/portfolio/fekrahub/hero-devices.webp",
+        alt: "FekraHub, Schulmanagement-Plattform auf Laptop, Tablet und Smartphone",
+        ratio: "16/10",
+      },
     ],
     /* Featured-Galerie: grosses Bild + Thumbnail-Slider darunter */
     gallery: [
