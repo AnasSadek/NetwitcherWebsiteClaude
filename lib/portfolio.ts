@@ -153,7 +153,6 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     /* Featured-Galerie: grosses Bild + Thumbnail-Slider darunter */
     gallery: [
-      { label: "FekraHub", image: { src: "/portfolio/fekrahub/features-01.webp", alt: "FekraHub, Übersicht der Schulmanagement-Plattform", ratio: "16/10" } },
       { label: "Anwesenheit & Noten", image: { src: "/portfolio/fekrahub/mockup-attendance.webp", alt: "FekraHub, Anwesenheit & Noten im Überblick", ratio: "4/3" } },
       { label: "Unterrichtsplanung", image: { src: "/portfolio/fekrahub/mockup-lessons.webp", alt: "FekraHub, Unterrichtsplanung und Hausaufgaben", ratio: "4/3" } },
       { label: "Kommunikation", image: { src: "/portfolio/fekrahub/mockup-communication.webp", alt: "FekraHub, Kommunikationszentrale", ratio: "4/3" } },
