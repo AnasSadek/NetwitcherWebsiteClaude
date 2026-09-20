@@ -10,12 +10,19 @@ import { SmartImage } from "./SmartImage";
 
 /** Ab dieser Bewegung (px) gilt ein Pointer-Down als Drag, nicht als Klick. */
 const DRAG_THRESHOLD = 6;
+/** Autoplay: Abstand zwischen zwei automatischen Schritten. */
+const AUTOPLAY_INTERVAL = 3500;
+/** Autoplay: Pause nach Loslassen, bevor es automatisch weiterläuft. */
+const AUTOPLAY_RESUME_DELAY = 2000;
 
 /**
  * Filmstreifen aus echten Projektmedien in gemischten Formaten.
  * Touch: native Wisch-/Snap-Gesten (unverändert). Maus/Trackpad: dieselbe
  * Spur lässt sich zusätzlich per Klick-und-Ziehen scrollen (Pointer Events),
  * 1:1 zur Mausbewegung, mit echten Rändern am ersten/letzten Projekt.
+ * Dazu läuft ein Autoplay (ein Projekt alle ~3,5s, sanft gescrollt, ohne
+ * geklonte Slides), das bei jeder Interaktion nur kurz pausiert und danach
+ * von selbst weiterläuft.
  */
 function Frame({ item, priority }: { item: StripItem; priority?: boolean }) {
   return (
@@ -121,6 +128,82 @@ export function FilmStrip({ items }: { items: StripItem[] }) {
       el.removeEventListener("pointerup", endDrag);
       el.removeEventListener("pointercancel", endDrag);
       el.removeEventListener("click", onClickCapture, true);
+    };
+  }, []);
+
+  // Autoplay: eigener Effekt, unabhängig von der Drag-Logik oben. Pausiert
+  // bei jedem Pointer-Down (Maus UND Touch) und läuft ~2s nach Loslassen
+  // automatisch weiter — nie dauerhaft deaktiviert durch Interaktion.
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let timer: number | null = null;
+    let resumeTimer: number | null = null;
+
+    // Positionen relativ zur Reihe selbst (nicht offsetLeft/offsetParent,
+    // der je nach CSS-Positionierungs-Kontext irgendwo weiter oben in der
+    // Seite verankert sein kann und dann falsche Werte liefert).
+    const cardOffsets = () => {
+      const row = el.firstElementChild as HTMLElement | null;
+      if (!row) return [];
+      const rowLeft = row.getBoundingClientRect().left;
+      return Array.from(row.children).map((c) => (c as HTMLElement).getBoundingClientRect().left - rowLeft);
+    };
+
+    const advance = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      if (max <= 0) return;
+      // Bereits am rechten Rand (letztes Projekt voll sichtbar): sanft
+      // zurück zum ersten, statt geklonte Slides zu erzeugen. Ein
+      // theoretischer nächster Kartenoffset existiert hier zwar noch
+      // rechnerisch, ist aber nicht mehr erreichbar (würde nur wieder auf
+      // `max` geklemmt) — deshalb zuerst explizit auf das Ende prüfen.
+      if (el.scrollLeft >= max - 2) {
+        el.scrollTo({ left: 0, behavior: "smooth" });
+        return;
+      }
+      const offsets = cardOffsets();
+      const next = offsets.find((o) => o > el.scrollLeft + 4);
+      el.scrollTo({ left: next !== undefined ? Math.min(next, max) : max, behavior: "smooth" });
+    };
+
+    const stop = () => {
+      if (timer != null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+    const start = () => {
+      stop();
+      timer = window.setInterval(advance, AUTOPLAY_INTERVAL);
+    };
+    const pause = () => {
+      stop();
+      if (resumeTimer != null) {
+        window.clearTimeout(resumeTimer);
+        resumeTimer = null;
+      }
+    };
+    const scheduleResume = () => {
+      if (resumeTimer != null) window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => {
+        resumeTimer = null;
+        start();
+      }, AUTOPLAY_RESUME_DELAY);
+    };
+
+    start();
+    el.addEventListener("pointerdown", pause);
+    el.addEventListener("pointerup", scheduleResume);
+    el.addEventListener("pointercancel", scheduleResume);
+    return () => {
+      stop();
+      if (resumeTimer != null) window.clearTimeout(resumeTimer);
+      el.removeEventListener("pointerdown", pause);
+      el.removeEventListener("pointerup", scheduleResume);
+      el.removeEventListener("pointercancel", scheduleResume);
     };
   }, []);
 
