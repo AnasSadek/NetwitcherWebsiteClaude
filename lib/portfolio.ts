@@ -127,12 +127,12 @@ export const portfolioProjects: PortfolioProject[] = [
   {
     slug: "fekrahub",
     client: "FekraHub",
-    title: "Schulmanagement-Plattform",
+    title: "Schulmanagement neu gedacht",
     description:
-      "Ein cloudbasiertes Schulmanagement-System, das speziell für arabischsprachige Schulen in Europa entwickelt wurde und Verwaltung, Lehrkräfte, Schüler und Eltern in einem zentralen digitalen Ökosystem miteinander verbindet.",
+      "Eine cloudbasierte Plattform für arabischsprachige Schulen in Europa, die Verwaltung, Lehrkräfte, Schüler und Eltern in einem zentralen System verbindet.",
     year: "seit 2023",
     categories: ["software"],
-    services: ["UI/UX Design", "Webanwendung", "SaaS-Entwicklung", "Produktdesign"],
+    services: ["UI/UX Design", "Webanwendung", "SaaS-Entwicklung"],
     industry: "EdTech",
     color: "violet",
     featured: true,
@@ -204,28 +204,20 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     story: [
       {
-        heading: "Überblick",
-        body: "FekraHub ist eine cloudbasierte Schulmanagement-Plattform, die entwickelt wurde, um Verwaltung, Unterricht, Schülerorganisation und die Kommunikation mit Eltern einfacher und effizienter zu gestalten. Die Plattform vereinfacht den Schulalltag und bündelt zentrale Prozesse wie Schülerverwaltung, Anwesenheit, Noten, Hausaufgaben, Stundenpläne, Kommunikation und Berichterstattung an einem Ort.",
-      },
-      {
         heading: "Die Herausforderung",
-        body: "Schulen arbeiten häufig mit voneinander getrennten Lösungen für Anwesenheit, Noten, Hausaufgaben, Stundenpläne, Kommunikation und Schülerverwaltung. Dadurch werden tägliche Abläufe unnötig komplex und wichtige Informationen sind oft nur schwer oder über mehrere Systeme hinweg zugänglich.",
+        body: "Viele Schulen nutzen getrennte Systeme für Anwesenheit, Noten, Stundenpläne, Aufgaben und Kommunikation. Das macht den Schulalltag unnötig komplex.",
       },
       {
         heading: "Die Lösung",
-        body: "Wir haben eine zentrale digitale Plattform entwickelt, die die gesamte Schulgemeinschaft in einem vernetzten System zusammenführt. Die Verwaltung kann schulische Abläufe zentral steuern, Lehrkräfte können Anwesenheiten, Unterricht, Aufgaben und Noten verwalten, während Schüler und Eltern einen eigenen Zugang zu den für sie relevanten Informationen erhalten.",
+        body: "FekraHub bündelt alle wichtigen Schulprozesse in einer zentralen Plattform mit rollenbasierten Zugängen für Verwaltung, Lehrkräfte, Schüler und Eltern.",
       },
       {
         heading: "Zentrale Funktionen",
-        body: "Schüler- und Personalverwaltung · Anwesenheitserfassung · Noten und Leistungsübersicht · Hausaufgaben- und Unterrichtsverwaltung · Eltern- und Schüler-Dashboards · Schulmitteilungen und Kommunikation · Berichte und Auswertungen",
-      },
-      {
-        heading: "Die Nutzererfahrung",
-        body: "Die Plattform wurde auf Basis rollenbasierter Workflows entwickelt. Dadurch sieht jeder Nutzer gezielt die Funktionen und Informationen, die für seine jeweilige Rolle relevant sind, während alle Beteiligten weiterhin Teil desselben zentralen digitalen Systems bleiben.",
+        body: "Schüler- & Personalverwaltung · Anwesenheit & Noten · Hausaufgaben & Unterricht · Stundenpläne · Eltern- & Schüler-Dashboards · Kommunikation & Berichte",
       },
       {
         heading: "Das Ergebnis",
-        body: "Eine strukturiertere, zugänglichere und stärker vernetzte Schulerfahrung, die fragmentierte Verwaltungsprozesse durch eine einheitliche digitale Plattform ersetzt.",
+        body: "Eine übersichtliche, vernetzte Schulplattform, die Verwaltungsprozesse vereinfacht und Informationen für alle Beteiligten zentral zugänglich macht.",
       },
     ],
     links: [{ label: "Mehr zu FekraHub", href: "/produkte/fekrahub" }],
