@@ -6,7 +6,7 @@ import type { MediaImage, MediaVideo, PortfolioProject } from "@/lib/portfolio";
 import { getCategory, projectKind } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
 import { BrowserFrame, PhoneFrame } from "./Frames";
-import { ReelCard } from "./ReelCard";
+import { InstagramEmbed } from "./InstagramEmbed";
 import { SmartImage } from "./SmartImage";
 import { VideoPlayer } from "./VideoPlayer";
 
@@ -441,16 +441,11 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
               })}
             </div>
             {sec.reels?.length ? (
-              <div className={`-mx-5 sm:mx-0 ${sec.screens.length ? "mt-6 md:mt-8" : ""}`}>
-                <ul className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:flex-wrap sm:justify-center sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0">
+              <div className={sec.screens.length ? "mt-6 md:mt-8" : ""}>
+                <ul className="grid grid-cols-1 items-start gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
                   {sec.reels.map((v, i) => (
-                    <Reveal
-                      as="li"
-                      key={v.href}
-                      delay={Math.min(i * 0.06, 0.24)}
-                      className="w-[68%] shrink-0 snap-center sm:w-[calc(50%-12px)] sm:shrink lg:w-[calc(33.333%-16px)]"
-                    >
-                      <ReelCard {...v} color={project.color} />
+                    <Reveal as="li" key={v.href} delay={Math.min(i * 0.06, 0.24)}>
+                      <InstagramEmbed href={v.href} />
                     </Reveal>
                   ))}
                 </ul>

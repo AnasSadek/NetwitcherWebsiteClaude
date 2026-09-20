@@ -94,17 +94,9 @@ export type PortfolioProject = {
     title: string;
     body?: string | string[];
     screens: MediaImage[];
-    /** Social-Reels (z. B. Instagram): leichte Vorschaukarten, der Player
-     *  wird erst beim Klick eingebettet — nie fünf schwere Embeds vorab. */
-    reels?: {
-      href: string;
-      title: string;
-      label: string;
-      quote: string;
-      /** Vorschaumotiv der Karte (eigenes Asset — vor dem Klick geht
-       *  keine Anfrage an Instagram raus). */
-      poster?: string;
-    }[];
+    /** Social-Reels (z. B. Instagram): natives Instagram-Embed
+     *  (`blockquote.instagram-media`), Instagram steuert die Darstellung. */
+    reels?: { href: string }[];
   }[];
   /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
   industry?: string;
@@ -264,41 +256,11 @@ export const portfolioProjects: PortfolioProject[] = [
         ],
         screens: [],
         reels: [
-          {
-            href: "https://www.instagram.com/reel/DbgOB2qDKIK/",
-            poster: "/portfolio/frida-eu/shop-01.webp",
-            title: "Video 01",
-            label: "Humor & Brand Awareness",
-            quote: "Kauf Frida nicht, wenn du lieber unauffällig bleiben möchtest!",
-          },
-          {
-            href: "https://www.instagram.com/reel/DcQcFE9gJEf/",
-            poster: "/portfolio/frida-eu/storytelling.webp",
-            title: "Video 02",
-            label: "Storytelling & Entertainment",
-            quote: "Frida hat um einen dringenden Termin gebeten.",
-          },
-          {
-            href: "https://www.instagram.com/reel/DVHBZEmEbrY/",
-            poster: "/portfolio/frida-eu/hero.webp",
-            title: "Video 03",
-            label: "Product Bundles & Commerce",
-            quote: "Wähle dein Paket – ganz nach deinem Geschmack.",
-          },
-          {
-            href: "https://www.instagram.com/reel/DU3kdkXijd2/",
-            poster: "/portfolio/frida-eu/duftwelten.webp",
-            title: "Video 04",
-            label: "Brand Atmosphere & Product Storytelling",
-            quote: "Weil jede Ecke in deinem Zuhause ihr eigenes Gefühl verdient.",
-          },
-          {
-            href: "https://www.instagram.com/reel/DbdpUKZD6dM/",
-            poster: "/portfolio/frida-eu/cover.webp",
-            title: "Video 05",
-            label: "Character Content & Brand Personality",
-            quote: "Exklusives Interview mit Frida.",
-          },
+          { href: "https://www.instagram.com/reel/DbgOB2qDKIK/" },
+          { href: "https://www.instagram.com/reel/DcQcFE9gJEf/" },
+          { href: "https://www.instagram.com/reel/DVHBZEmEbrY/" },
+          { href: "https://www.instagram.com/reel/DU3kdkXijd2/" },
+          { href: "https://www.instagram.com/reel/DbdpUKZD6dM/" },
         ],
       },
       {
