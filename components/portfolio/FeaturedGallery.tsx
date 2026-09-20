@@ -6,27 +6,31 @@ import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
 import type { PortfolioProject } from "@/lib/portfolio";
-import { projectKind } from "@/lib/portfolio";
+import { projectKind, ratioValue } from "@/lib/portfolio";
 import { SectionTitle } from "./ProjectSections";
 
 /** Ab dieser Bewegung (px) gilt ein Pointer-Down als Drag, nicht als Klick. */
 const DRAG_THRESHOLD = 6;
 
 /**
- * Featured-Galerie: ein grosses Bild oben, darunter ein Thumbnail-Slider
- * mit den restlichen Screens. Klick auf ein Thumbnail tauscht das grosse
- * Bild (sanfter Crossfade); Klick auf das grosse Bild öffnet eine Lightbox.
+ * Featured-Galerie: ein grosses Hero-Bild oben, darunter ein Thumbnail-
+ * Slider mit den internen Screens (der Hero ist kein Thumbnail). Klick auf
+ * ein Thumbnail tauscht das grosse Bild (sanfter Crossfade, keine Zoom-/
+ * Bewegungs-Animation); Klick auf das grosse Bild öffnet eine Lightbox.
  * Der Slider läuft nicht automatisch. Desktop: Klick-und-Ziehen (Pointer
  * Events, wie im Portfolio-Filmstreifen) plus Pfeile; Mobile: natives
  * Touch-Scrollen, unverändert.
  */
 export function FeaturedGallery({ project }: { project: PortfolioProject }) {
-  const items = project.gallery!;
+  const { hero, items } = project.gallery!;
   const hex = ARROW_COLORS[project.color];
   const software = projectKind(project) === "software";
 
-  const [active, setActive] = useState(0);
+  /** -1 = Hero-Bild, 0..n-1 = Index in `items`. */
+  const [active, setActive] = useState(-1);
   const [lightbox, setLightbox] = useState(false);
+
+  const current = active === -1 ? hero : items[active].image;
 
   const trackRef = useRef<HTMLDivElement>(null);
   const drag = useRef({ active: false, pointerId: -1, startX: 0, startScrollLeft: 0, moved: 0 });
@@ -90,8 +94,13 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
   const scrollThumbIntoView = (i: number) => {
     const el = trackRef.current;
     const row = el?.firstElementChild as HTMLElement | null;
-    const thumb = row?.children[i] as HTMLElement | undefined;
-    if (!el || !row || !thumb) return;
+    if (!el || !row) return;
+    if (i < 0) {
+      el.scrollTo({ left: 0, behavior: "smooth" });
+      return;
+    }
+    const thumb = row.children[i] as HTMLElement | undefined;
+    if (!thumb) return;
     const target = thumb.getBoundingClientRect().left - row.getBoundingClientRect().left;
     const max = el.scrollWidth - el.clientWidth;
     el.scrollTo({ left: Math.max(0, Math.min(target - 24, max)), behavior: "smooth" });
@@ -113,28 +122,28 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
         <Reveal>
           {/* Grosses Bild */}
           <div
-            className="relative overflow-hidden rounded-2xl border border-line bg-paper-2 md:rounded-3xl"
-            style={{ aspectRatio: "16 / 10" }}
+            className="relative mx-auto overflow-hidden rounded-2xl border border-line bg-paper-2 shadow-soft md:rounded-3xl"
+            style={{ aspectRatio: ratioValue(current.ratio ?? "16/10") }}
           >
             <AnimatePresence>
               <motion.button
                 key={active}
                 type="button"
                 onClick={() => setLightbox(true)}
-                aria-label={`${items[active].image.alt} vergrössern`}
+                aria-label={`${current.alt} vergrössern`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 h-full w-full cursor-zoom-in"
               >
-                {items[active].image.src && (
+                {current.src && (
                   <Image
-                    src={items[active].image.src}
-                    alt={items[active].image.alt}
+                    src={current.src}
+                    alt={current.alt}
                     fill
                     sizes="(min-width: 1500px) 1400px, 100vw"
-                    priority={active === 0}
+                    priority={active === -1}
                     className="object-contain p-2 sm:p-4"
                   />
                 )}
@@ -143,11 +152,11 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
           </div>
 
           {/* Thumbnail-Slider */}
-          <div className="relative mt-4 md:mt-6">
+          <div className="relative mt-6 md:mt-8">
             <button
               type="button"
-              onClick={() => select(Math.max(active - 1, 0))}
-              disabled={active === 0}
+              onClick={() => select(Math.max(active - 1, -1))}
+              disabled={active === -1}
               aria-label="Vorheriges Bild"
               className="absolute -left-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white shadow-soft transition-opacity disabled:pointer-events-none disabled:opacity-0 md:flex"
             >
@@ -187,7 +196,7 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
                     style={{
                       outline: i === active ? `2px solid ${hex}` : "2px solid transparent",
                       outlineOffset: 2,
-                      opacity: i === active ? 1 : 0.6,
+                      opacity: i === active ? 1 : 0.65,
                     }}
                   >
                     {it.image.src && (
@@ -226,14 +235,8 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
             </svg>
           </button>
           <div className="relative h-full max-h-[85vh] w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-            {items[active].image.src && (
-              <Image
-                src={items[active].image.src}
-                alt={items[active].image.alt}
-                fill
-                sizes="90vw"
-                className="object-contain"
-              />
+            {current.src && (
+              <Image src={current.src} alt={current.alt} fill sizes="90vw" className="object-contain" />
             )}
           </div>
         </div>
