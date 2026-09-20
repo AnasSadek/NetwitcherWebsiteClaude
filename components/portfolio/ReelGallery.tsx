@@ -29,15 +29,17 @@ export function ReelGallery({ reels, color }: { reels: { href: string }[]; color
           backgroundImage: `radial-gradient(38% 70% at 22% 30%, ${hex}14, transparent 70%), radial-gradient(32% 60% at 78% 20%, ${hex}0f, transparent 70%)`,
         }}
       />
-      <ul className="relative mx-auto grid grid-cols-1 items-start gap-y-10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 min-[1200px]:flex min-[1200px]:max-w-[1180px] min-[1200px]:flex-wrap min-[1200px]:items-start min-[1200px]:justify-center min-[1200px]:gap-x-8 min-[1200px]:gap-y-0">
+      <ul className="relative mx-auto grid grid-cols-1 items-start gap-y-10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 min-[1200px]:flex min-[1200px]:max-w-[1220px] min-[1200px]:flex-wrap min-[1200px]:items-start min-[1200px]:justify-center min-[1200px]:gap-x-8 min-[1200px]:gap-y-0">
         {reels.map((v, i) => {
           const cfg = LAYOUT[i] ?? { tilt: 0, lift: 0 };
           return (
             <li
               key={v.href}
               className={[
-                "reel-position-wrapper w-full self-start min-[1200px]:shrink-0",
-                cfg.dominant ? "min-[1200px]:z-10 min-[1200px]:w-[336px]" : "min-[1200px]:w-[320px]",
+                "reel-position-wrapper w-full min-w-0 self-start min-[1200px]:shrink-0",
+                cfg.dominant
+                  ? "min-[1200px]:z-10 min-[1200px]:w-[clamp(362px,28vw,380px)]"
+                  : "min-[1200px]:w-[clamp(346px,27vw,364px)]",
                 cfg.row2 ? "min-[1200px]:-mt-12" : "",
               ].join(" ")}
             >
