@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.story?.length ? <ProjectStory story={project.story} /> : null}
           {kind === "website" && project.website ? <WebsiteShowcase project={project} /> : null}
           {project.videos?.length ? <VideoShowcase project={project} /> : null}
-          {project.gallery?.items?.length ? (
+          {project.gallery?.length ? (
             <FeaturedGallery project={project} />
           ) : project.screenSections?.length ? (
             <ScreenChapters project={project} />
