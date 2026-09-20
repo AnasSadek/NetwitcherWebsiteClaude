@@ -98,6 +98,10 @@ export type PortfolioProject = {
      *  (`blockquote.instagram-media`), Instagram steuert die Darstellung. */
     reels?: { href: string }[];
   }[];
+  /** Featured-Galerie: ein grosses Bild + Thumbnail-Slider darunter (ersetzt
+   *  `screenSections`/`screens` auf der Detailseite, wenn gesetzt). Erster
+   *  Eintrag ist das Bild, das standardmässig gross angezeigt wird. */
+  gallery?: { label: string; image: MediaImage }[];
   /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
   industry?: string;
   /** Kurze Story in Kapiteln, z. B. Ausgangslage · Ansatz · Umsetzung. */
@@ -147,60 +151,14 @@ export const portfolioProjects: PortfolioProject[] = [
       { src: "/portfolio/fekrahub/features-01.webp", alt: "FekraHub, Dashboard der Plattform", ratio: "16/10" },
       { src: "/portfolio/fekrahub/dashboard-01.webp", alt: "FekraHub, personalisiertes Dashboard für Schüler und Eltern", ratio: "16/10" },
     ],
-    /* Kuratierte Bild-Kapitel der Case Study */
-    screenSections: [
-      {
-        title: "Funktionen im Überblick",
-        screens: [
-          { src: "/portfolio/fekrahub/features-01.webp", alt: "FekraHub, zentrale Funktionen im Überblick", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/features-02.webp", alt: "FekraHub, Funktionsübersicht der Plattform", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/features-03.webp", alt: "FekraHub, Module der Schulverwaltung", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/features-04.webp", alt: "FekraHub, Plattform-Übersicht", ratio: "16/10" },
-        ],
-      },
-      {
-        title: "Nahtlose Kommunikation",
-        screens: [
-          { src: "/portfolio/fekrahub/communication-01.webp", alt: "FekraHub, Kommunikation über alle Kanäle", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/communication-02.webp", alt: "FekraHub, Schulmitteilungen", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/communication-03.webp", alt: "FekraHub, Nachrichten zwischen Schule und Eltern", ratio: "16/10" },
-        ],
-      },
-      {
-        title: "Anwesenheit & Noten",
-        screens: [
-          { src: "/portfolio/fekrahub/attendance-01.webp", alt: "FekraHub, Anwesenheitserfassung", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/attendance-02.webp", alt: "FekraHub, Notenverwaltung", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/attendance-03.webp", alt: "FekraHub, Leistungsübersicht", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/attendance-04.webp", alt: "FekraHub, Bewertung im Detail", ratio: "16/10" },
-        ],
-      },
-      {
-        title: "Dashboards für Schüler & Eltern",
-        screens: [
-          { src: "/portfolio/fekrahub/dashboard-01.webp", alt: "FekraHub, personalisiertes Schüler-Dashboard", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/dashboard-02.webp", alt: "FekraHub, Elternansicht", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/dashboard-03.webp", alt: "FekraHub, Schülerprofil", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/dashboard-04.webp", alt: "FekraHub, Übersicht für Familien", ratio: "16/10" },
-        ],
-      },
-      {
-        title: "Unterricht & Hausaufgaben",
-        screens: [
-          { src: "/portfolio/fekrahub/lessons-01.webp", alt: "FekraHub, Unterrichtsplanung", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/lessons-02.webp", alt: "FekraHub, Hausaufgabenverwaltung", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/lessons-03.webp", alt: "FekraHub, Aufgaben im Überblick", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/lessons-04.webp", alt: "FekraHub, Stundenplan und Unterricht", ratio: "16/10" },
-        ],
-      },
-      {
-        title: "Berichte & Auswertungen",
-        screens: [
-          { src: "/portfolio/fekrahub/reports-01.webp", alt: "FekraHub, Berichte in Echtzeit", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/reports-02.webp", alt: "FekraHub, Auswertungen und Statistiken", ratio: "16/10" },
-          { src: "/portfolio/fekrahub/reports-03.webp", alt: "FekraHub, Analyse der Schuldaten", ratio: "16/10" },
-        ],
-      },
+    /* Featured-Galerie: grosses Bild + Thumbnail-Slider darunter */
+    gallery: [
+      { label: "FekraHub", image: { src: "/portfolio/fekrahub/features-01.webp", alt: "FekraHub, Übersicht der Schulmanagement-Plattform", ratio: "16/10" } },
+      { label: "Anwesenheit & Noten", image: { src: "/portfolio/fekrahub/mockup-attendance.webp", alt: "FekraHub, Anwesenheit & Noten im Überblick", ratio: "4/3" } },
+      { label: "Unterrichtsplanung", image: { src: "/portfolio/fekrahub/mockup-lessons.webp", alt: "FekraHub, Unterrichtsplanung und Hausaufgaben", ratio: "4/3" } },
+      { label: "Kommunikation", image: { src: "/portfolio/fekrahub/mockup-communication.webp", alt: "FekraHub, Kommunikationszentrale", ratio: "4/3" } },
+      { label: "Berichte & Auswertungen", image: { src: "/portfolio/fekrahub/mockup-reports.webp", alt: "FekraHub, Berichte & Auswertungen", ratio: "4/3" } },
+      { label: "Rollen & Berechtigungen", image: { src: "/portfolio/fekrahub/mockup-roles.webp", alt: "FekraHub, Nutzerrollen & Berechtigungen", ratio: "4/3" } },
     ],
     story: [
       {
