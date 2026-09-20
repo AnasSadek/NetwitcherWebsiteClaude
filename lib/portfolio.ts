@@ -384,24 +384,19 @@ export type StripItem = {
   kind: "image" | "video";
 };
 
-/** Medienauswahl für den Filmstreifen im Hero: Cover + zwei weitere je Projekt. */
+/** Medienauswahl für den Filmstreifen im Hero: genau eine Karte je Projekt
+ *  (Cover-Bild). `FilmStrip` dupliziert die Liste separat für den
+ *  nahtlosen Endlos-Loop — hier bleibt jedes Projekt ein einzelner Eintrag. */
 export function stripMedia(): StripItem[] {
-  const items: StripItem[] = [];
-  for (const p of portfolioProjects) {
-    const base = { slug: p.slug, client: p.client, color: p.color };
-    items.push({ ...base, ratio: p.cover.ratio ?? "16/10", src: p.cover.src, alt: p.cover.alt, kind: "image" });
-    const extra: StripItem[] = [];
-    p.videos?.slice(0, 1).forEach((v) =>
-      extra.push({ ...base, ratio: v.ratio ?? "9/16", src: v.poster, alt: v.title, kind: "video" })
-    );
-    if (p.website?.mobile)
-      extra.push({ ...base, ratio: "9/16", src: p.website.mobile.src, alt: p.website.mobile.alt, kind: "image" });
-    [...(p.socialPosts ?? []), ...(p.images ?? []), ...(p.screens ?? [])]
-      .slice(0, 2 - extra.length)
-      .forEach((m) => extra.push({ ...base, ratio: m.ratio ?? "4/5", src: m.src, alt: m.alt, kind: "image" }));
-    items.push(...extra);
-  }
-  return items;
+  return portfolioProjects.map((p) => ({
+    slug: p.slug,
+    client: p.client,
+    color: p.color,
+    ratio: p.cover.ratio ?? "16/10",
+    src: p.cover.src,
+    alt: p.cover.alt,
+    kind: "image",
+  }));
 }
 
 /** Ratio-String → CSS aspect-ratio-Wert. */
