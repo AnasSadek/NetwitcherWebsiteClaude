@@ -156,11 +156,11 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     /* Featured-Galerie: grosses Bild + Thumbnail-Slider darunter */
     gallery: [
-      { label: "Anwesenheit & Noten", image: { src: "/portfolio/fekrahub/mockup-attendance.webp", alt: "FekraHub, Anwesenheit & Noten im Überblick", ratio: "4/3" } },
-      { label: "Unterrichtsplanung", image: { src: "/portfolio/fekrahub/mockup-lessons.webp", alt: "FekraHub, Unterrichtsplanung und Hausaufgaben", ratio: "4/3" } },
-      { label: "Kommunikation", image: { src: "/portfolio/fekrahub/mockup-communication.webp", alt: "FekraHub, Kommunikationszentrale", ratio: "4/3" } },
-      { label: "Berichte & Auswertungen", image: { src: "/portfolio/fekrahub/mockup-reports.webp", alt: "FekraHub, Berichte & Auswertungen", ratio: "4/3" } },
-      { label: "Rollen & Berechtigungen", image: { src: "/portfolio/fekrahub/mockup-roles.webp", alt: "FekraHub, Nutzerrollen & Berechtigungen", ratio: "4/3" } },
+      { label: "Anwesenheitsliste", image: { src: "/portfolio/fekrahub/gallery-attendance.webp", alt: "FekraHub, exportierte Anwesenheitsliste als PDF", ratio: "4/3" } },
+      { label: "Kommunikation", image: { src: "/portfolio/fekrahub/gallery-messages.webp", alt: "FekraHub, Nachrichten und Dateiversand", ratio: "4/3" } },
+      { label: "Kursunterlagen", image: { src: "/portfolio/fekrahub/gallery-course-files.webp", alt: "FekraHub, Kursunterlagen und Materialien", ratio: "4/3" } },
+      { label: "Rollen & Berechtigungen", image: { src: "/portfolio/fekrahub/gallery-roles.webp", alt: "FekraHub, Nutzerrollen & Berechtigungen", ratio: "4/3" } },
+      { label: "Kalender", image: { src: "/portfolio/fekrahub/gallery-calendar.webp", alt: "FekraHub, Kurskalender mit Filtern", ratio: "4/3" } },
     ],
     story: [
       {
