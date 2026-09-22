@@ -8,6 +8,63 @@ const strokeProps = {
   strokeLinejoin: "round" as const,
 };
 
+export type FeatureIconName = "users" | "calendar-check" | "book" | "message-circle" | "bar-chart" | "shield-check";
+
+/** Zweites, kleines Icon-Set im selben Strich-Stil wie {@link ServiceIcon},
+ *  für Feature-Karten ausserhalb der Leistungen-Seite. */
+export function FeatureIcon({
+  icon,
+  className = "h-6 w-6",
+}: {
+  icon: FeatureIconName;
+  className?: string;
+}) {
+  const paths: Record<FeatureIconName, React.ReactNode> = {
+    users: (
+      <>
+        <circle cx="9" cy="8.5" r="3" />
+        <path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5" />
+        <path d="M16 8.2a2.7 2.7 0 0 1 0 5.2M20.5 19.5c0-2.5-1.8-4.3-4-4.9" />
+      </>
+    ),
+    "calendar-check": (
+      <>
+        <rect x="4" y="5.5" width="16" height="14" rx="2" />
+        <path d="M8 3.5v4M16 3.5v4M4 10h16" />
+        <path d="m9 14.5 2 2 4-4" />
+      </>
+    ),
+    book: (
+      <>
+        <path d="M4 6a2 2 0 0 1 2-2h5.5v15H6a2 2 0 0 0-2 2V6Z" />
+        <path d="M20 6a2 2 0 0 0-2-2h-5.5v15H18a2 2 0 0 1 2 2V6Z" />
+      </>
+    ),
+    "message-circle": (
+      <>
+        <path d="M4 12a8 8 0 1 1 3.3 6.4L4 19.5l1.1-3.2A7.9 7.9 0 0 1 4 12Z" />
+      </>
+    ),
+    "bar-chart": (
+      <>
+        <path d="M4 20V10.5M10 20V4M16 20v-7M20 20H4" />
+      </>
+    ),
+    "shield-check": (
+      <>
+        <path d="M12 3.5 19 6v6c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-2.5Z" />
+        <path d="m9 12 2 2 4-4" />
+      </>
+    ),
+  };
+
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" {...strokeProps}>
+      {paths[icon]}
+    </svg>
+  );
+}
+
 export function ServiceIcon({
   icon,
   className = "h-7 w-7",

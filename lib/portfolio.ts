@@ -102,6 +102,19 @@ export type PortfolioProject = {
    *  `screenSections`/`screens` auf der Detailseite, wenn gesetzt). Erster
    *  Eintrag ist das Bild, das standardmässig gross angezeigt wird. */
   gallery?: { label: string; image: MediaImage }[];
+  /** Eigener Funktionen-Abschnitt (Eyebrow, Überschrift, Intro + Karten mit
+   *  Icon/Titel/Beschreibung), rein textbasiert — kein Bild. Rendert direkt
+   *  vor `gallery`/`screenSections`/`screens`, wenn gesetzt. */
+  features?: {
+    eyebrow?: string;
+    heading?: string;
+    intro?: string;
+    items: {
+      icon: "users" | "calendar-check" | "book" | "message-circle" | "bar-chart" | "shield-check";
+      title: string;
+      description: string;
+    }[];
+  };
   /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
   industry?: string;
   /** Kurze Story in Kapiteln, z. B. Ausgangslage · Ansatz · Umsetzung. */
@@ -154,6 +167,19 @@ export const portfolioProjects: PortfolioProject[] = [
         ratio: "16/10",
       },
     ],
+    features: {
+      eyebrow: "WARUM FEKRAHUB",
+      heading: "ZENTRALE FUNKTIONEN",
+      intro: "Alles, was Schulen für einen einfachen, vernetzten Alltag brauchen – in einer Plattform.",
+      items: [
+        { icon: "users", title: "Schülerverwaltung", description: "Schüler, Klassen und Profile zentral verwalten." },
+        { icon: "calendar-check", title: "Anwesenheit & Noten", description: "Anwesenheit erfassen und Leistungen übersichtlich verwalten." },
+        { icon: "book", title: "Unterricht & Aufgaben", description: "Unterricht, Hausaufgaben und Lerninhalte einfach organisieren." },
+        { icon: "message-circle", title: "Kommunikation", description: "Verwaltung, Lehrkräfte, Eltern und Schüler direkt verbinden." },
+        { icon: "bar-chart", title: "Berichte & Auswertungen", description: "Schuldaten übersichtlich auswerten und Berichte erstellen." },
+        { icon: "shield-check", title: "Rollen & Zugriffsrechte", description: "Zugriffe passend für Verwaltung, Lehrkräfte und Mitarbeitende steuern." },
+      ],
+    },
     /* Featured-Galerie: grosses Bild + Thumbnail-Slider darunter */
     gallery: [
       { label: "Anwesenheitsliste", image: { src: "/portfolio/fekrahub/gallery-attendance.webp", alt: "FekraHub, exportierte Anwesenheitsliste als PDF", ratio: "4/3" } },

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
 import { FeaturedGallery } from "@/components/portfolio/FeaturedGallery";
 import { PortfolioCTA } from "@/components/portfolio/PortfolioCTA";
+import { ProjectFeatures } from "@/components/portfolio/ProjectFeatures";
 import { ProjectVisual } from "@/components/portfolio/ProjectVisual";
 import {
   ImageGallery,
@@ -94,6 +95,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.story?.length ? <ProjectStory story={project.story} /> : null}
           {kind === "website" && project.website ? <WebsiteShowcase project={project} /> : null}
           {project.videos?.length ? <VideoShowcase project={project} /> : null}
+          {project.features ? <ProjectFeatures project={project} /> : null}
           {project.gallery?.length ? (
             <FeaturedGallery project={project} />
           ) : project.screenSections?.length ? (
