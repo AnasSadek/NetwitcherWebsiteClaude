@@ -7,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
 import type { PortfolioProject } from "@/lib/portfolio";
 import { projectKind } from "@/lib/portfolio";
+import { LaptopFrame, LaptopFrameThumb } from "./LaptopFrame";
 import { SectionTitle } from "./ProjectSections";
 
 /** Ab dieser Bewegung (px) gilt ein Pointer-Down als Drag, nicht als Klick. */
@@ -24,6 +25,7 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
   const items = project.gallery!;
   const hex = ARROW_COLORS[project.color];
   const software = projectKind(project) === "software";
+  const laptop = project.galleryFrame === "laptop";
 
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
@@ -126,18 +128,29 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0 h-full w-full cursor-zoom-in"
+                className={
+                  laptop
+                    ? "absolute inset-0 flex h-full w-full cursor-zoom-in items-center justify-center px-5 py-8 sm:px-10 sm:py-12 md:px-16 md:py-16"
+                    : "absolute inset-0 h-full w-full cursor-zoom-in"
+                }
               >
-                {items[active].image.src && (
-                  <Image
-                    src={items[active].image.src}
-                    alt={items[active].image.alt}
-                    fill
-                    sizes="(min-width: 1500px) 1400px, 100vw"
-                    priority={active === 0}
-                    className="object-contain p-2 sm:p-4"
-                  />
-                )}
+                {items[active].image.src &&
+                  (laptop ? (
+                    <LaptopFrame
+                      image={items[active].image}
+                      sizes="(min-width: 1500px) 900px, 90vw"
+                      priority={active === 0}
+                    />
+                  ) : (
+                    <Image
+                      src={items[active].image.src}
+                      alt={items[active].image.alt}
+                      fill
+                      sizes="(min-width: 1500px) 1400px, 100vw"
+                      priority={active === 0}
+                      className="object-contain p-2 sm:p-4"
+                    />
+                  ))}
               </motion.button>
             </AnimatePresence>
           </div>
@@ -190,16 +203,19 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
                       opacity: i === active ? 1 : 0.6,
                     }}
                   >
-                    {it.image.src && (
-                      <Image
-                        src={it.image.src}
-                        alt=""
-                        fill
-                        draggable={false}
-                        sizes="140px"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    )}
+                    {it.image.src &&
+                      (laptop ? (
+                        <LaptopFrameThumb image={it.image} sizes="140px" />
+                      ) : (
+                        <Image
+                          src={it.image.src}
+                          alt=""
+                          fill
+                          draggable={false}
+                          sizes="140px"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      ))}
                   </button>
                 ))}
               </div>

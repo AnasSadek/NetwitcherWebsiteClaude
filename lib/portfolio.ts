@@ -106,6 +106,9 @@ export type PortfolioProject = {
    *  `screenSections`/`screens` auf der Detailseite, wenn gesetzt). Erster
    *  Eintrag ist das Bild, das standardmässig gross angezeigt wird. */
   gallery?: { label: string; image: MediaImage }[];
+  /** Zeigt die `gallery`-Screenshots (grosses Bild + Thumbnails) innerhalb
+   *  eines Laptop-Bildschirm-Rahmens statt als plane Screenshots. */
+  galleryFrame?: "laptop";
   /** Eigener Funktionen-Abschnitt (Eyebrow, Überschrift, Intro + Karten mit
    *  Icon/Titel/Beschreibung), rein textbasiert — kein Bild. Rendert direkt
    *  vor `gallery`/`screenSections`/`screens`, wenn gesetzt. */
@@ -345,6 +348,7 @@ export const portfolioProjects: PortfolioProject[] = [
     industry: "Moving & Logistics",
     color: "pink",
     heroContain: true,
+    galleryFrame: "laptop",
     logo: "/portfolio/umzugly/logo.webp",
     cover: {
       src: "/portfolio/umzugly/image-Umzugly.png",
@@ -381,6 +385,7 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: "Zusatzleistungen", image: { src: "/portfolio/umzugly/gallery-additional-services.jpg", alt: "Umzugly, Auswahl von Zusatzleistungen wie Verpackung und Montage", ratio: "4/3" } },
       { label: "Preiskonfiguration", image: { src: "/portfolio/umzugly/gallery-pricing-config.jpg", alt: "Umzugly, Konfiguration von Preisen und Leistungen", ratio: "4/3" } },
       { label: "Einzugsort", image: { src: "/portfolio/umzugly/gallery-destination.jpg", alt: "Umzugly, Erfassung des Einzugsorts im Anfrageprozess", ratio: "4/3" } },
+      { label: "Zusatzleistungen (Einzug)", image: { src: "/portfolio/umzugly/gallery-move-in-services.jpg", alt: "Umzugly, Auswahl von Zusatzleistungen für den Einzug", ratio: "4/3" } },
       { label: "Servicegebiet", image: { src: "/portfolio/umzugly/gallery-service-area.jpg", alt: "Umzugly, Einstellung von Servicegebiet und maximaler Entfernung", ratio: "4/3" } },
       { label: "Anpassen", image: { src: "/portfolio/umzugly/gallery-customization.jpg", alt: "Umzugly, Anpassen von Kontaktformular und Dankesseite", ratio: "4/3" } },
       { label: "Terminwahl", image: { src: "/portfolio/umzugly/gallery-date-selection.jpg", alt: "Umzugly, Terminwahl und Zahlungsquelle im Anfrageprozess", ratio: "4/3" } },
