@@ -93,7 +93,10 @@ export function ProjectVisual({
     return (
       <div className="relative pb-[10%] pr-[10%]">
         {project.heroContain ? (
-          <div className="relative w-full" style={{ aspectRatio: ratioValue(main.ratio ?? "16/9") }}>
+          <div
+            className="relative w-full overflow-hidden rounded-2xl border border-line bg-paper-2 shadow-lift md:rounded-3xl"
+            style={{ aspectRatio: ratioValue(main.ratio ?? "16/9") }}
+          >
             {main.src && (
               <Image
                 src={main.src}
