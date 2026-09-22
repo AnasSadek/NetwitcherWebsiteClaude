@@ -109,8 +109,24 @@ export type PortfolioProject = {
     eyebrow?: string;
     heading?: string;
     intro?: string;
+    /** Eigener Akzentfarben-Zyklus (Hex) für die Karten, z. B. eine
+     *  Markenfarbe ausserhalb der 5 Logo-Stern-Farben. Fehlt er, wird der
+     *  Standard-Zyklus aus den Logo-Stern-Farben verwendet. */
+    accentColors?: string[];
     items: {
-      icon: "users" | "calendar-check" | "book" | "message-circle" | "bar-chart" | "shield-check";
+      icon:
+        | "users"
+        | "calendar-check"
+        | "book"
+        | "message-circle"
+        | "bar-chart"
+        | "shield-check"
+        | "inbox"
+        | "calendar"
+        | "sliders"
+        | "map-pin"
+        | "list-checks"
+        | "package";
       title: string;
       description: string;
     }[];
@@ -311,6 +327,78 @@ export const portfolioProjects: PortfolioProject[] = [
       { alt: "Rushdia Care, Fotografie", ratio: "4/5" },
       { alt: "Rushdia Care, Fotografie", ratio: "4/5" },
       { alt: "Rushdia Care, Fotografie", ratio: "3/2" },
+    ],
+  },
+  {
+    slug: "umzugly",
+    client: "Umzugly",
+    title: "Umzüge digital planen und verwalten",
+    description:
+      "Eine digitale Plattform, die den gesamten Umzugsprozess von der Anfrage und Datenerfassung bis zur Terminplanung und internen Verwaltung in einem zentralen System verbindet.",
+    year: 2025,
+    categories: ["software"],
+    services: ["UI/UX Design", "Webanwendung", "Buchungsprozess", "SaaS-Entwicklung"],
+    industry: "Moving & Logistics",
+    color: "pink",
+    logo: "/portfolio/umzugly/logo.webp",
+    cover: {
+      src: "/portfolio/umzugly/image-Umzugly.png",
+      alt: "Umzugly, Übersicht der Umzugsplattform",
+      ratio: "16/9",
+    },
+    /* Kompositionen (Auftaktbild, Featured-Bühne, Filmstreifen) */
+    screens: [
+      {
+        src: "/portfolio/umzugly/image-Umzugly.png",
+        alt: "Umzugly, Umzugsplattform auf Laptop, Tablet und Smartphone",
+        ratio: "16/9",
+      },
+    ],
+    features: {
+      eyebrow: "WARUM UMZUGLY",
+      heading: "ZENTRALE FUNKTIONEN",
+      intro: "Ein digitaler Workflow für Anfrage, Planung und Verwaltung.",
+      accentColors: ["#E30613", "#F2684B", "#E30613", "#F4718C", "#E30613", "#F2684B"],
+      items: [
+        { icon: "inbox", title: "Umzugsanfragen", description: "Alle Anfragen und Status zentral verwalten." },
+        { icon: "calendar", title: "Terminplanung", description: "Umzugstermine übersichtlich im Kalender organisieren." },
+        { icon: "sliders", title: "Flexible Preislogik", description: "Leistungen und Preise individuell konfigurieren." },
+        { icon: "map-pin", title: "Einsatzgebiet & Distanz", description: "Servicegebiete und Entfernungen flexibel festlegen." },
+        { icon: "list-checks", title: "Geführter Anfrageprozess", description: "Kunden Schritt für Schritt durch den Umzug führen." },
+        { icon: "package", title: "Zusatzleistungen", description: "Services wie Verpackung, Montage oder Reinigung erfassen." },
+      ],
+    },
+    /* Featured-Galerie: grosses Bild + Thumbnail-Slider darunter */
+    gallery: [
+      { label: "Anfrageverwaltung", image: { src: "/portfolio/umzugly/gallery-request-overview.jpg", alt: "Umzugly, Übersicht aller Umzugsanfragen mit Status", ratio: "4/3" } },
+      { label: "Umzugsdetails", image: { src: "/portfolio/umzugly/gallery-moving-details.jpg", alt: "Umzugly, geführte Erfassung von Auszugsort und Umzugsdetails", ratio: "4/3" } },
+      { label: "Terminkalender", image: { src: "/portfolio/umzugly/gallery-calendar.jpg", alt: "Umzugly, interner Kalender mit Umzugsterminen", ratio: "4/3" } },
+      { label: "Zusatzleistungen", image: { src: "/portfolio/umzugly/gallery-additional-services.jpg", alt: "Umzugly, Auswahl von Zusatzleistungen wie Verpackung und Montage", ratio: "4/3" } },
+      { label: "Preiskonfiguration", image: { src: "/portfolio/umzugly/gallery-pricing-config.jpg", alt: "Umzugly, Konfiguration von Preisen und Leistungen", ratio: "4/3" } },
+      { label: "Einzugsort", image: { src: "/portfolio/umzugly/gallery-destination.jpg", alt: "Umzugly, Erfassung des Einzugsorts im Anfrageprozess", ratio: "4/3" } },
+      { label: "Servicegebiet", image: { src: "/portfolio/umzugly/gallery-service-area.jpg", alt: "Umzugly, Einstellung von Servicegebiet und maximaler Entfernung", ratio: "4/3" } },
+      { label: "Anpassen", image: { src: "/portfolio/umzugly/gallery-customization.jpg", alt: "Umzugly, Anpassen von Kontaktformular und Dankesseite", ratio: "4/3" } },
+      { label: "Terminwahl", image: { src: "/portfolio/umzugly/gallery-date-selection.jpg", alt: "Umzugly, Terminwahl und Zahlungsquelle im Anfrageprozess", ratio: "4/3" } },
+      { label: "Kontaktdaten", image: { src: "/portfolio/umzugly/gallery-contact.jpg", alt: "Umzugly, Erfassung der Kontaktdaten", ratio: "4/3" } },
+      { label: "E-Mail-Bestätigung", image: { src: "/portfolio/umzugly/gallery-email-verification.jpg", alt: "Umzugly, Bestätigung der E-Mail-Adresse per Code", ratio: "4/3" } },
+    ],
+    story: [
+      {
+        heading: "Die Herausforderung",
+        body: "Umzugsanfragen enthalten viele variable Informationen – von Adressen und Wohnungsdetails bis zu Zusatzleistungen und Terminen. Diese Daten effizient zu erfassen und intern zu verwalten, wird schnell komplex.",
+      },
+      {
+        heading: "Die Lösung",
+        body: "Wir entwickelten eine digitale Plattform, die Kunden Schritt für Schritt durch ihre Umzugsanfrage führt und Unternehmen gleichzeitig eine zentrale Oberfläche für Anfragen, Termine und Konfigurationen bietet.",
+      },
+      {
+        heading: "Zentrale Funktionen",
+        body: "Digitale Anfrage · Umzugsdetails · Zusatzleistungen · Terminplanung · Preis- und Leistungskonfiguration · Verwaltungsdashboard",
+      },
+      {
+        heading: "Das Ergebnis",
+        body: "Ein durchgängiger digitaler Workflow, der die Anfrage für Kunden vereinfacht und die interne Bearbeitung von Umzügen übersichtlicher und effizienter macht.",
+      },
     ],
   },
 ];

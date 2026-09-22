@@ -8,7 +8,19 @@ const strokeProps = {
   strokeLinejoin: "round" as const,
 };
 
-export type FeatureIconName = "users" | "calendar-check" | "book" | "message-circle" | "bar-chart" | "shield-check";
+export type FeatureIconName =
+  | "users"
+  | "calendar-check"
+  | "book"
+  | "message-circle"
+  | "bar-chart"
+  | "shield-check"
+  | "inbox"
+  | "calendar"
+  | "sliders"
+  | "map-pin"
+  | "list-checks"
+  | "package";
 
 /** Zweites, kleines Icon-Set im selben Strich-Stil wie {@link ServiceIcon},
  *  für Feature-Karten ausserhalb der Leistungen-Seite. */
@@ -54,6 +66,48 @@ export function FeatureIcon({
       <>
         <path d="M12 3.5 19 6v6c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-2.5Z" />
         <path d="m9 12 2 2 4-4" />
+      </>
+    ),
+    inbox: (
+      <>
+        <path d="M4 13h4l1.5 2.5h5L16 13h4" />
+        <path d="M4 13V6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5V13" />
+        <path d="M4 13v4.5A1.5 1.5 0 0 0 5.5 19h13a1.5 1.5 0 0 0 1.5-1.5V13" />
+      </>
+    ),
+    calendar: (
+      <>
+        <rect x="4" y="5.5" width="16" height="14" rx="2" />
+        <path d="M8 3.5v4M16 3.5v4M4 10h16" />
+        <circle cx="9" cy="14.5" r="1.1" fill="currentColor" stroke="none" />
+        <circle cx="15" cy="14.5" r="1.1" fill="currentColor" stroke="none" />
+      </>
+    ),
+    sliders: (
+      <>
+        <path d="M5 19v-6M5 9V5M12 19v-4M12 11V5M19 19v-2M19 13V5" />
+        <circle cx="5" cy="11" r="1.8" />
+        <circle cx="12" cy="13" r="1.8" />
+        <circle cx="19" cy="15" r="1.8" />
+      </>
+    ),
+    "map-pin": (
+      <>
+        <path d="M12 21s7-7.2 7-12A7 7 0 0 0 5 9c0 4.8 7 12 7 12Z" />
+        <circle cx="12" cy="9" r="2.4" />
+      </>
+    ),
+    "list-checks": (
+      <>
+        <path d="M9 6h11M9 12h11M9 18h11" />
+        <path d="m4 6 1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2" />
+      </>
+    ),
+    package: (
+      <>
+        <path d="M3.5 8 12 3.5 20.5 8 12 12.5 3.5 8Z" />
+        <path d="M3.5 8v9L12 21.5 20.5 17V8" />
+        <path d="M12 12.5V21.5" />
       </>
     ),
   };

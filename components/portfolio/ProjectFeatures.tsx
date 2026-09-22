@@ -15,7 +15,8 @@ const ACCENT_CYCLE: AccentColor[] = ["sky", "mint", "violet", "pink", "sky", "mi
  * gesetzt ist — aktuell nur bei FekraHub, direkt vor der Produkt-Galerie.
  */
 export function ProjectFeatures({ project }: { project: PortfolioProject }) {
-  const { eyebrow, heading, intro, items } = project.features!;
+  const { eyebrow, heading, intro, items, accentColors } = project.features!;
+  const accents = accentColors ?? ACCENT_CYCLE.map((c) => ARROW_COLORS[c]);
 
   return (
     <section aria-labelledby="funktionen" className="py-14 md:py-20">
@@ -32,7 +33,7 @@ export function ProjectFeatures({ project }: { project: PortfolioProject }) {
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 md:mt-14 md:gap-6 lg:grid-cols-3">
           {items.map((item, i) => {
-            const hex = ARROW_COLORS[ACCENT_CYCLE[i % ACCENT_CYCLE.length]];
+            const hex = accents[i % accents.length];
             return (
               <Reveal key={item.title} delay={Math.min(i * 0.06, 0.3)}>
                 <div className="group relative h-full overflow-hidden rounded-[26px] border border-line bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lift">
