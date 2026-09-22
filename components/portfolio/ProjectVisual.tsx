@@ -1,5 +1,6 @@
+import Image from "next/image";
 import type { PortfolioProject } from "@/lib/portfolio";
-import { projectKind } from "@/lib/portfolio";
+import { projectKind, ratioValue } from "@/lib/portfolio";
 import { BrowserFrame, PhoneFrame } from "./Frames";
 import { Placeholder } from "./Placeholder";
 import { SmartImage } from "./SmartImage";
@@ -91,18 +92,36 @@ export function ProjectVisual({
     const [main, second] = project.screens;
     return (
       <div className="relative pb-[10%] pr-[10%]">
-        <div className="overflow-hidden rounded-2xl border border-line shadow-lift md:rounded-3xl">
-          <SmartImage
-            image={main}
-            color={project.color}
-            ratio="16/10"
-            sizes={sizes}
-            priority={priority}
-            monogram={m}
-            label={main.caption ?? "Screenshot folgt"}
-            rounded="rounded-none"
-          />
-        </div>
+        {project.heroContain ? (
+          <div
+            className="relative w-full overflow-hidden rounded-2xl border border-line bg-paper-2 shadow-lift md:rounded-3xl"
+            style={{ aspectRatio: ratioValue(main.ratio ?? "16/9") }}
+          >
+            {main.src && (
+              <Image
+                src={main.src}
+                alt={main.alt}
+                fill
+                sizes={sizes}
+                priority={priority}
+                className="object-contain p-6 sm:p-8 md:p-12"
+              />
+            )}
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-2xl border border-line shadow-lift md:rounded-3xl">
+            <SmartImage
+              image={main}
+              color={project.color}
+              ratio="16/10"
+              sizes={sizes}
+              priority={priority}
+              monogram={m}
+              label={main.caption ?? "Screenshot folgt"}
+              rounded="rounded-none"
+            />
+          </div>
+        )}
         {second && (
           <div className="absolute bottom-0 right-0 w-[46%] overflow-hidden rounded-xl border border-line shadow-lift md:rounded-2xl">
             <SmartImage

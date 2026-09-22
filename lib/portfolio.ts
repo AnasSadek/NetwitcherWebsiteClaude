@@ -86,6 +86,10 @@ export type PortfolioProject = {
   socialPosts?: MediaImage[];
   /** Software / Plattformen / Dashboards. */
   screens?: MediaImage[];
+  /** Zeigt das Auftaktbild (Composition aus `screens[0]`) vollständig via
+   *  `object-fit: contain` statt beschnitten via `cover` — für Bilder,
+   *  deren Seitenverhältnis nicht in das Standard-16/10-Raster passt. */
+  heroContain?: boolean;
   /** Kuratierte Erzähl-Kapitel der Case Study: Titel, optionaler Text und
    *  Bilder (auch reine Text-Kapitel sind erlaubt, `screens: []`). Ist dies
    *  gesetzt, ersetzt es den Screens-Abschnitt der Detailseite; `screens`
@@ -340,6 +344,7 @@ export const portfolioProjects: PortfolioProject[] = [
     services: ["UI/UX Design", "Webanwendung", "Buchungsprozess", "SaaS-Entwicklung"],
     industry: "Moving & Logistics",
     color: "pink",
+    heroContain: true,
     logo: "/portfolio/umzugly/logo.webp",
     cover: {
       src: "/portfolio/umzugly/image-Umzugly.png",
