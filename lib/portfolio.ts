@@ -155,14 +155,14 @@ export const portfolioProjects: PortfolioProject[] = [
     featured: true,
     logo: "/portfolio/fekrahub/logo.png",
     cover: {
-      src: "/portfolio/fekrahub/features-01.webp",
+      src: "/portfolio/fekrahub/hero-image-fekrahub.webp",
       alt: "FekraHub, Übersicht der Schulmanagement-Plattform",
       ratio: "16/10",
     },
     /* Kompositionen (Auftaktbild, Featured-Bühne, Filmstreifen) */
     screens: [
       {
-        src: "/portfolio/fekrahub/hero-devices.webp",
+        src: "/portfolio/fekrahub/hero-image-fekrahub.webp",
         alt: "FekraHub, Schulmanagement-Plattform auf Laptop, Tablet und Smartphone",
         ratio: "16/10",
       },
