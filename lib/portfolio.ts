@@ -517,9 +517,9 @@ export const portfolioProjects: PortfolioProject[] = [
     /* Kompositionen (Auftaktbild, Featured-Bühne, Filmstreifen) */
     screens: [
       {
-        src: "/portfolio/umzugly/image-Umzugly.png",
+        src: "/portfolio/umzugly/hero-umzugly-v2.webp",
         alt: "Umzugly, Umzugsplattform auf Laptop, Tablet und Smartphone",
-        ratio: "16/9",
+        ratio: "4/3",
       },
     ],
     features: {
