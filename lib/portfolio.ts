@@ -581,6 +581,68 @@ export const portfolioProjects: PortfolioProject[] = [
         "Technologie und Content greifen bei Umzugly ineinander: Die WebApp vereinfacht den Prozess, während Reels die Marke nach außen sichtbar und verständlich machen.",
     },
   },
+  {
+    slug: "falioun-academy",
+    client: "Falioun Academy",
+    title: "Content & Performance Marketing",
+    description:
+      "Falioun Academy verbindet praxisnahe Weiterbildung mit echter Zukunftsperspektive. Mit einem intensiven Solar-Installer-Programm, realem Praxistraining und professionellen Planungstools werden Teilnehmer Schritt für Schritt auf den Einstieg in die Solarbranche vorbereitet – vom ersten technischen Verständnis bis zur professionellen Installation und Wartung.",
+    year: 2025,
+    categories: ["social-video"],
+    services: ["Videoproduktion", "Performance Marketing"],
+    color: "sun",
+    heroContain: true,
+    logo: "/portfolio/falioun-academy/logo.webp",
+    cover: {
+      src: "/portfolio/falioun-academy/hero-falioun.webp",
+      alt: "Falioun Academy, Solar-Installer-Ausbildung",
+      ratio: "16/9",
+    },
+    /* Kompositionen (Auftaktbild) */
+    screens: [
+      {
+        src: "/portfolio/falioun-academy/hero-falioun.webp",
+        alt: "Falioun Academy, Solar-Installer-Ausbildung",
+        ratio: "16/9",
+      },
+    ],
+    screenSections: [
+      {
+        title: "Social Content & Sichtbarkeit",
+        body: [
+          "Kurze, dynamische Reels zeigen Training, Praxis und Karrierechancen bei Falioun Academy authentisch und verständlich.",
+          "Der Content macht das Ausbildungsangebot erlebbar und schafft Aufmerksamkeit für den Einstieg in die Solarbranche.",
+        ],
+        screens: [],
+        reels: [
+          { href: "https://www.instagram.com/reel/DV3rZmljuPk/" },
+          { href: "https://www.instagram.com/reel/DQUIAuTABPu/" },
+          { href: "https://www.instagram.com/reel/DO9L71Nitst/" },
+        ],
+      },
+    ],
+    servicesSection: {
+      eyebrow: "UNSERE LEISTUNGEN",
+      heading: "CONTENT UND PERFORMANCE FÜR MEHR SICHTBARKEIT",
+      intro:
+        "Für Falioun Academy haben wir visuelle Inhalte und performance-orientierte Kampagnen miteinander verbunden, um das Ausbildungsangebot verständlich zu präsentieren, Aufmerksamkeit zu schaffen und gezielt neue Teilnehmer zu erreichen.",
+      accentColors: ["#E4141C", "#D1A61E"],
+      items: [
+        {
+          icon: "video",
+          title: "Videoproduktion",
+          description: "Produktion dynamischer Videoformate und Reels, die Training, Praxis und Karrierechancen authentisch und verständlich vermitteln.",
+        },
+        {
+          icon: "target",
+          title: "Werbekampagnen & Meta Ads",
+          description: "Gezielte Performance-Kampagnen auf Facebook und Instagram, um relevante Zielgruppen zu erreichen und qualifizierte Interessenten für die Academy zu gewinnen.",
+        },
+      ],
+      closingStatement:
+        "Starker Content trifft auf gezielte Performance: Videos machen das Angebot erlebbar, während Meta Ads die richtigen Menschen genau dort erreichen, wo Aufmerksamkeit entsteht.",
+    },
+  },
 ];
 
 /* ------------------------------------------------------------------------
