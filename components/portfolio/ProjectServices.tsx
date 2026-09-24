@@ -14,16 +14,20 @@ export function ProjectServices({ project }: { project: PortfolioProject }) {
   const brandHex = ARROW_COLORS[project.color];
   const accents = accentColors ?? [brandHex];
   const introParagraphs = Array.isArray(intro) ? intro : intro ? [intro] : [];
-  /** Bei wenigen Karten (z. B. 2) wirkt ein volles 3er-Raster unausgewogen —
-   *  dann zentriert und auf 2 Spalten begrenzt statt über die volle Breite
-   *  gestreckt. Bei 4 Karten passen 4 Spalten balanciert in eine Zeile
-   *  (Tablet weiterhin 2 Spalten). Ab 3 (ausser 4) das gewohnte 3er-Raster. */
+  /** Bei einer einzelnen Karte: eine grosse, zentrierte Karte statt eines
+   *  2-Spalten-Rasters mit leerer zweiter Spalte. Bei wenigen Karten
+   *  (z. B. 2) wirkt ein volles 3er-Raster unausgewogen — dann zentriert
+   *  und auf 2 Spalten begrenzt statt über die volle Breite gestreckt. Bei
+   *  4 Karten passen 4 Spalten balanciert in eine Zeile (Tablet weiterhin
+   *  2 Spalten). Ab 3 (ausser 4) das gewohnte 3er-Raster. */
   const gridClass =
-    items.length <= 2
-      ? "mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2 md:mt-14 md:gap-6"
-      : items.length === 4
-        ? "mt-10 grid gap-5 sm:grid-cols-2 md:mt-14 md:gap-6 lg:grid-cols-4"
-        : "mt-10 grid gap-5 sm:grid-cols-2 md:mt-14 md:gap-6 lg:grid-cols-3";
+    items.length === 1
+      ? "mx-auto mt-10 grid max-w-md gap-5 md:mt-14"
+      : items.length <= 2
+        ? "mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2 md:mt-14 md:gap-6"
+        : items.length === 4
+          ? "mt-10 grid gap-5 sm:grid-cols-2 md:mt-14 md:gap-6 lg:grid-cols-4"
+          : "mt-10 grid gap-5 sm:grid-cols-2 md:mt-14 md:gap-6 lg:grid-cols-3";
 
   return (
     <section aria-labelledby="leistungen" className="py-14 md:py-20">

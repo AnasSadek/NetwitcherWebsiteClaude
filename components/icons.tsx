@@ -29,7 +29,8 @@ export type FeatureIconName =
   | "shopping-cart"
   | "laptop"
   | "monitor"
-  | "app-window";
+  | "app-window"
+  | "search";
 
 /** Zweites, kleines Icon-Set im selben Strich-Stil wie {@link ServiceIcon},
  *  für Feature-Karten ausserhalb der Leistungen-Seite. */
@@ -177,6 +178,12 @@ export function FeatureIcon({
         <path d="M3.5 9h17" />
         <circle cx="6.3" cy="6.7" r="0.6" fill="currentColor" stroke="none" />
         <circle cx="8.3" cy="6.7" r="0.6" fill="currentColor" stroke="none" />
+      </>
+    ),
+    search: (
+      <>
+        <circle cx="10.5" cy="10.5" r="6.5" />
+        <path d="m15.5 15.5 4.5 4.5" />
       </>
     ),
   };

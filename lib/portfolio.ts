@@ -163,7 +163,8 @@ export type PortfolioProject = {
         | "shopping-cart"
         | "laptop"
         | "monitor"
-        | "app-window";
+        | "app-window"
+        | "search";
       title: string;
       description: string;
     }[];
@@ -641,6 +642,48 @@ export const portfolioProjects: PortfolioProject[] = [
       ],
       closingStatement:
         "Starker Content trifft auf gezielte Performance: Videos machen das Angebot erlebbar, während Meta Ads die richtigen Menschen genau dort erreichen, wo Aufmerksamkeit entsteht.",
+    },
+  },
+  {
+    slug: "louic",
+    client: "LOUIC",
+    title: "Google Ads Kampagne",
+    description:
+      "LOUIC steht für schnelle, zuverlässige Abschlepp- und Transportservices rund um die Uhr. Mit 24/7-Erreichbarkeit, erfahrenen Fahrern und flexiblen Lösungen sorgt LOUIC dafür, dass Kunden bei Pannen, Unfällen oder Fahrzeugtransporten schnell und sicher weiterkommen.",
+    year: 2025,
+    categories: ["social-video"],
+    services: ["Google Ads", "Performance Marketing"],
+    color: "sun",
+    heroContain: true,
+    logo: "/portfolio/louic/logo.png",
+    cover: {
+      src: "/portfolio/louic/hero-louic.webp",
+      alt: "LOUIC Autotransporter, Abschleppfahrzeug im Einsatz",
+      ratio: "16/9",
+    },
+    /* Kompositionen (Auftaktbild) */
+    screens: [
+      {
+        src: "/portfolio/louic/hero-louic.webp",
+        alt: "LOUIC Autotransporter, Abschleppfahrzeug im Einsatz",
+        ratio: "16/9",
+      },
+    ],
+    servicesSection: {
+      eyebrow: "UNSERE LEISTUNGEN",
+      heading: "SICHTBAR, WENN SCHNELLE HILFE GEFRAGT IST",
+      intro:
+        "Für LOUIC setzen wir auf gezielte Google Ads, um Menschen genau in dem Moment zu erreichen, in dem sie aktiv nach Abschleppdienst, Pannenhilfe oder Fahrzeugtransport suchen.",
+      accentColors: ["#F5C518"],
+      items: [
+        {
+          icon: "search",
+          title: "Google Ads",
+          description: "Gezielte Suchkampagnen, die LOUIC genau dann sichtbar machen, wenn Menschen akut nach Abschleppdienst, Pannenhilfe oder Fahrzeugtransport suchen.",
+        },
+      ],
+      closingStatement:
+        "Mit Google Ads wird LOUIC im entscheidenden Moment gefunden – genau dann, wenn schnelle Hilfe gefragt ist.",
     },
   },
 ];
