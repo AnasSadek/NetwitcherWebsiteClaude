@@ -387,25 +387,74 @@ export const portfolioProjects: PortfolioProject[] = [
     client: "ABZIEL",
     title: "Social Media & Reels",
     description:
-      "Projektbeschreibung folgt: Kanal, Formate und Ziel der Content-Produktion für ABZIEL.",
+      "ABZiel verbindet Bildung, Integration und berufliche Entwicklung in einer starken digitalen Marke. Mit einem modernen Webauftritt, strategischem Social Media Marketing und performance-orientierten Kampagnen machen wir Angebote sichtbar, schaffen Vertrauen und bringen Menschen gezielt mit den passenden Bildungs- und Coachingangeboten zusammen.",
     year: 2025,
     categories: ["social-video"],
-    services: ["Social Media", "Reels", "Videoproduktion"],
-    color: "pink",
-    placeholder: true,
-    cover: { alt: "ABZIEL, Titelmotiv des Projekts", ratio: "4/5" },
-    videos: [
-      { title: "Reel 01", source: "local", ratio: "9/16" },
-      { title: "Reel 02", source: "local", ratio: "9/16" },
-      { title: "Reel 03", source: "local", ratio: "9/16" },
-      { title: "Werbefilm", source: "youtube", ratio: "16/9" },
+    services: ["Webdesign", "Social Media Marketing", "Performance Marketing"],
+    color: "sky",
+    logo: "/portfolio/abziel/logo.png",
+    cover: {
+      src: "/portfolio/abziel/hero-abziel.webp",
+      alt: "ABZiel, Website auf Laptop, Tablet und Smartphone",
+      ratio: "16/9",
+    },
+    /* Kompositionen (Auftaktbild) */
+    screens: [
+      {
+        src: "/portfolio/abziel/hero-abziel.webp",
+        alt: "ABZiel, Website auf Laptop, Tablet und Smartphone",
+        ratio: "16/9",
+      },
     ],
-    socialPosts: [
-      { alt: "ABZIEL, Social-Media-Post", ratio: "4/5" },
-      { alt: "ABZIEL, Social-Media-Post", ratio: "4/5" },
-      { alt: "ABZIEL, Social-Media-Post", ratio: "1/1" },
-      { alt: "ABZIEL, Social-Media-Post", ratio: "4/5" },
+    heroContain: true,
+    screenSections: [
+      {
+        title: "Social Content & Sichtbarkeit",
+        body: [
+          "Neben dem neuen Webauftritt wird ABZiel durch kreative Social-Media-Inhalte sichtbar gemacht.",
+          "Kurze, aufmerksamkeitsstarke Reels vermitteln Bildungs- und Coachingangebote verständlich und stärken die Verbindung zur Zielgruppe auf Instagram.",
+        ],
+        screens: [],
+        reels: [
+          { href: "https://www.instagram.com/reel/DMN4j9Wqxvm/" },
+          { href: "https://www.instagram.com/reel/DWy6YdfjOSL/" },
+          { href: "https://www.instagram.com/reel/DWg4J9GCsat/" },
+          { href: "https://www.instagram.com/reel/DUgi9cvDPwy/" },
+          { href: "https://www.instagram.com/reel/DbYulPnMAxo/" },
+        ],
+      },
     ],
+    servicesSection: {
+      eyebrow: "UNSERE LEISTUNGEN",
+      heading: "DIGITALE SICHTBARKEIT, DIE VERBINDET",
+      intro:
+        "Für ABZiel haben wir Webdesign, Social Media und Performance Marketing zu einem ganzheitlichen digitalen Auftritt verbunden – mit dem Ziel, Bildungsangebote sichtbar zu machen, Vertrauen aufzubauen und neue Zielgruppen effektiv zu erreichen.",
+      accentColors: ["#0F85C0", "#292952", "#AA2422", "#0F85C0"],
+      items: [
+        {
+          icon: "share",
+          title: "Social Media Marketing",
+          description: "Strategische Inhalte und laufende Kommunikation, die ABZiel sichtbar machen und eine starke Verbindung zur Zielgruppe schaffen.",
+        },
+        {
+          icon: "monitor",
+          title: "Webdesign & Entwicklung",
+          description: "Konzeption und Entwicklung eines modernen Webauftritts, der Angebote verständlich präsentiert und Nutzer gezielt zur Kontaktaufnahme führt.",
+        },
+        {
+          icon: "target",
+          title: "Meta Ads",
+          description: "Performance-Kampagnen auf Facebook und Instagram zur gezielten Ansprache neuer Interessenten und zur Steigerung relevanter Anfragen.",
+        },
+        {
+          icon: "trending-up",
+          title: "TikTok Ads",
+          description: "Kreative, plattformgerechte Kampagnen, die Aufmerksamkeit schaffen und neue Zielgruppen über TikTok erreichen.",
+        },
+      ],
+      closingStatement:
+        "Website, Content und Performance Marketing greifen bei ABZiel ineinander – für mehr Sichtbarkeit, mehr Vertrauen und eine stärkere digitale Verbindung zwischen Bildungsangeboten und den Menschen, die sie brauchen.",
+    },
     // links: [{ label: "Instagram", href: "https://instagram.com/…" }],
   },
   {
