@@ -496,29 +496,6 @@ export const portfolioProjects: PortfolioProject[] = [
     // links: [{ label: "Instagram", href: "https://instagram.com/…" }],
   },
   {
-    slug: "rushdia-care",
-    client: "Rushdia Care",
-    title: "Website & Fotografie",
-    description:
-      "Projektbeschreibung folgt: Website, Bildwelt und Ziel des Projekts für Rushdia Care.",
-    year: 2024,
-    categories: ["web", "photo"],
-    services: ["Webdesign", "Fotografie", "Texte"],
-    color: "sky",
-    placeholder: true,
-    cover: { alt: "Rushdia Care, Titelmotiv des Projekts", ratio: "16/10" },
-    website: {
-      desktop: { alt: "Rushdia Care, Website auf dem Desktop", ratio: "16/10" },
-      mobile: { alt: "Rushdia Care, Website auf dem Smartphone", ratio: "9/16" },
-    },
-    images: [
-      { alt: "Rushdia Care, Fotografie", ratio: "3/2" },
-      { alt: "Rushdia Care, Fotografie", ratio: "4/5" },
-      { alt: "Rushdia Care, Fotografie", ratio: "4/5" },
-      { alt: "Rushdia Care, Fotografie", ratio: "3/2" },
-    ],
-  },
-  {
     slug: "umzugly",
     client: "Umzugly",
     title: "Umzüge digital planen und verwalten",
