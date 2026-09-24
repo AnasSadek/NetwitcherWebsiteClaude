@@ -44,6 +44,7 @@ function Frame({ item, priority }: { item: StripItem; priority?: boolean }) {
           rounded="rounded-none"
           className="absolute inset-0 h-full"
           imgClassName="transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          fit={item.fit === "contain" ? "contain" : "cover"}
         />
       ) : (
         <Placeholder color={item.color} kind={item.kind} monogram={item.client.charAt(0)} label={false} />

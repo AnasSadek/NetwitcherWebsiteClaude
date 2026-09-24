@@ -109,6 +109,10 @@ export type PortfolioProject = {
   /** Zeigt die `gallery`-Screenshots (grosses Bild + Thumbnails) innerhalb
    *  eines Laptop-Bildschirm-Rahmens statt als plane Screenshots. */
   galleryFrame?: "laptop";
+  /** Zeigt das Cover-Bild in der Portfolio-Hero-Filmrolle vollständig via
+   *  `object-fit: contain` statt beschnitten via `cover` — für Cover-Bilder,
+   *  deren Seitenverhältnis nicht exakt in die Kachel passt. */
+  stripFit?: "contain";
   /** Eigener Funktionen-Abschnitt (Eyebrow, Überschrift, Intro + Karten mit
    *  Icon/Titel/Beschreibung), rein textbasiert — kein Bild. Rendert direkt
    *  vor `gallery`/`screenSections`/`screens`, wenn gesetzt. */
@@ -392,6 +396,7 @@ export const portfolioProjects: PortfolioProject[] = [
     categories: ["social-video"],
     services: ["Webdesign", "Social Media Marketing", "Performance Marketing"],
     color: "sky",
+    stripFit: "contain",
     logo: "/portfolio/abziel/logo.png",
     cover: {
       src: "/portfolio/abziel/hero-abziel.webp",
@@ -623,6 +628,7 @@ export type StripItem = {
   src?: string;
   alt: string;
   kind: "image" | "video";
+  fit?: "contain";
 };
 
 /** Medienauswahl für den Filmstreifen im Hero: genau eine Karte je Projekt
@@ -637,6 +643,7 @@ export function stripMedia(): StripItem[] {
     src: p.cover.src,
     alt: p.cover.alt,
     kind: "image",
+    fit: p.stripFit,
   }));
 }
 

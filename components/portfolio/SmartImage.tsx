@@ -21,6 +21,7 @@ export function SmartImage({
   imgClassName = "",
   rounded = "rounded-2xl",
   draggable,
+  fit = "cover",
 }: {
   image: MediaImage;
   color: AccentColor;
@@ -37,8 +38,12 @@ export function SmartImage({
   rounded?: string;
   /** `false` unterbindet das native Bild-Drag (z. B. in ziehbaren Filmstreifen). */
   draggable?: boolean;
+  /** `contain` zeigt das Bild vollständig ohne Beschnitt (z. B. wenn das
+   *  Seitenverhältnis der Kachel nicht zum Bild passt). Standard: `cover`. */
+  fit?: "cover" | "contain";
 }) {
   const r = ratio ?? image.ratio ?? "16/10";
+  const fitClass = fit === "contain" ? "object-contain" : "object-cover";
   return (
     <div
       className={`relative w-full overflow-hidden bg-paper-2 ${rounded} ${ratioClass ?? ""} ${className}`}
@@ -54,7 +59,7 @@ export function SmartImage({
             decoding="async"
             draggable={draggable}
             style={draggable === false ? ({ WebkitUserDrag: "none" } as React.CSSProperties) : undefined}
-            className={`absolute inset-0 h-full w-full object-cover ${imgClassName}`}
+            className={`absolute inset-0 h-full w-full ${fitClass} ${imgClassName}`}
           />
         ) : (
           <Image
@@ -65,7 +70,7 @@ export function SmartImage({
             priority={priority}
             draggable={draggable}
             style={draggable === false ? ({ WebkitUserDrag: "none" } as React.CSSProperties) : undefined}
-            className={`object-cover ${imgClassName}`}
+            className={`${fitClass} ${imgClassName}`}
           />
         )
       ) : (
