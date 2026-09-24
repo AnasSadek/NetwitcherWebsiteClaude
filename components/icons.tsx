@@ -30,7 +30,8 @@ export type FeatureIconName =
   | "laptop"
   | "monitor"
   | "app-window"
-  | "search";
+  | "search"
+  | "palette";
 
 /** Zweites, kleines Icon-Set im selben Strich-Stil wie {@link ServiceIcon},
  *  für Feature-Karten ausserhalb der Leistungen-Seite. */
@@ -184,6 +185,14 @@ export function FeatureIcon({
       <>
         <circle cx="10.5" cy="10.5" r="6.5" />
         <path d="m15.5 15.5 4.5 4.5" />
+      </>
+    ),
+    palette: (
+      <>
+        <path d="M12 3.5C7.3 3.5 3.5 7 3.5 11.3c0 3.4 2.3 4.7 4 4.7.8 0 1.3-.5 1.3-1.2 0-.5-.3-.8-.3-1.4 0-1.1.9-2 2-2h2.2c2.7 0 4.8-2 4.8-4.6 0-3.5-3-5.8-6.5-5.8Z" />
+        <circle cx="8" cy="9.3" r="1" fill="currentColor" stroke="none" />
+        <circle cx="11.7" cy="6.9" r="1" fill="currentColor" stroke="none" />
+        <circle cx="15.2" cy="9" r="1" fill="currentColor" stroke="none" />
       </>
     ),
   };

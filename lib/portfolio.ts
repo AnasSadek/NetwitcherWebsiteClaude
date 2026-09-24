@@ -1,3 +1,4 @@
+import { media } from "./media";
 import type { AccentColor } from "./services";
 
 /* ------------------------------------------------------------------------
@@ -72,6 +73,10 @@ export type PortfolioProject = {
   featured?: boolean;
   /** Optionales Kundenlogo (SVG/PNG, einfarbig weiß wirkt am besten). */
   logo?: string;
+  /** Rendert statt `logo` das echte Netwitcher-Markenzeichen
+   *  (`components/brand/Logo.tsx`, dieselben Vektoren wie im Header) — nur
+   *  fürs eigene Netwitcher-Case-Study sinnvoll. */
+  useBrandLogo?: boolean;
   cover: MediaImage;
   /** Website-Projekte: Screenshots werden in Browser-/Phone-Rahmen gezeigt. */
   website?: {
@@ -164,11 +169,34 @@ export type PortfolioProject = {
         | "laptop"
         | "monitor"
         | "app-window"
-        | "search";
+        | "search"
+        | "palette";
       title: string;
       description: string;
     }[];
     closingStatement?: string;
+  };
+  /** Eigener Reels-Abschnitt mit Eyebrow/Überschrift/Intro (anders als die
+   *  numerierten `screenSections`-Kapitel) — nutzt dieselbe ReelGallery/
+   *  Instagram-Embed-Karte. Rendert nach `servicesSection`. */
+  reelsSection?: {
+    eyebrow?: string;
+    heading?: string;
+    intro?: string;
+    reels: { href: string }[];
+  };
+  /** Kunden-Logowand: leitet die Logos automatisch aus `portfolioProjects`
+   *  ab (alle Projekte mit `logo`, ausser dem eigenen) — keine zweite,
+   *  separat zu pflegende Liste. Rendert nach `servicesSection`. */
+  clientsSection?: {
+    eyebrow?: string;
+    heading?: string;
+    intro?: string;
+  };
+  /** Grosse, zentrierte Marken-Aussage vor Next-Project/CTA. */
+  brandStatement?: {
+    heading: string;
+    body?: string;
   };
   /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
   industry?: string;
@@ -689,6 +717,81 @@ export const portfolioProjects: PortfolioProject[] = [
       ],
       closingStatement:
         "Mit Google Ads wird LOUIC im entscheidenden Moment gefunden – genau dann, wenn schnelle Hilfe gefragt ist.",
+    },
+  },
+  {
+    slug: "netwitcher",
+    client: "Netwitcher",
+    title: "Strategie, Kreativität und Technologie vereint",
+    description:
+      "Netwitcher ist mehr als eine Digitalagentur – wir verbinden Strategie, Kreativität und Technologie zu einem digitalen System, das Marken sichtbar macht und Wachstum schafft. Von Branding und Content über Social Media und Performance Marketing bis hin zu Websites entwickeln wir jeden Touchpoint mit einem klaren Ziel: Aufmerksamkeit in messbare Ergebnisse zu verwandeln.",
+    year: 2025,
+    categories: ["web", "design", "social-video"],
+    services: ["Webdesign", "Branding & Design", "Social Media", "Content & Video", "Performance Marketing"],
+    color: "violet",
+    featured: true,
+    useBrandLogo: true,
+    cover: {
+      src: media.studio.webp,
+      alt: media.studio.alt,
+      ratio: "16/9",
+    },
+    servicesSection: {
+      eyebrow: "WAS WIR FÜR NETWITCHER MACHEN",
+      heading: "EINE MARKE. EIN SYSTEM. ALLES AUS EINER HAND.",
+      intro:
+        "Netwitcher ist unser eigenes digitales Spielfeld. Hier verbinden wir Strategie, Design, Content, Technologie und Performance Marketing zu einer Marke, bei der jeder Touchpoint auf den nächsten einzahlt.",
+      accentColors: ["#2EE6C8", "#8B5CF6", "#F468A8", "#F5D33D", "#0FB9F2"],
+      items: [
+        {
+          icon: "monitor",
+          title: "Webdesign & Entwicklung",
+          description: "Konzeption und Entwicklung eines digitalen Auftritts, der unsere Marke klar positioniert und Besucher gezielt vom ersten Eindruck bis zur Anfrage führt.",
+        },
+        {
+          icon: "share",
+          title: "Social Media",
+          description: "Strategische Kommunikation und laufender Content, der unsere Marke sichtbar macht, Persönlichkeit zeigt und eine aktive Community aufbaut.",
+        },
+        {
+          icon: "video",
+          title: "Content & Videoproduktion",
+          description: "Fotos, Reels und Videos aus unserem eigenen Content-Studio – entwickelt, um Aufmerksamkeit zu erzeugen und Marken erlebbar zu machen.",
+        },
+        {
+          icon: "palette",
+          title: "Branding & Design",
+          description: "Eine konsistente visuelle Identität, die Logo, Farben, Typografie und Design zu einer unverwechselbaren Markenwelt verbindet.",
+        },
+        {
+          icon: "target",
+          title: "Meta Ads",
+          description: "Performance-orientierte Kampagnen auf Facebook und Instagram, die kreativen Content mit gezielter Reichweite und messbaren Ergebnissen verbinden.",
+        },
+      ],
+      closingStatement:
+        "Keine einzelnen Disziplinen, sondern ein verbundenes System: Branding schafft Wiedererkennung, Content erzeugt Aufmerksamkeit, Social Media baut Beziehungen auf, Ads skalieren Reichweite und die Website verwandelt Interesse in konkrete Anfragen.",
+    },
+    reelsSection: {
+      eyebrow: "AUS UNSEREM STUDIO",
+      heading: "CONTENT, DER NICHT WEITERGESWIPT WIRD",
+      intro: "Konzept, Kamera, Licht und Schnitt – unsere Reels entstehen dort, wo Strategie auf kreative Produktion trifft.",
+      reels: [
+        { href: "https://www.instagram.com/netwitcher/reel/Db3bvXEtfge/" },
+        { href: "https://www.instagram.com/netwitcher/reel/DZfsLwvCSSk/" },
+        { href: "https://www.instagram.com/netwitcher/reel/DYfGIh-NUQJ/" },
+        { href: "https://www.instagram.com/netwitcher/reel/DaVJaU8oWXE/" },
+      ],
+    },
+    clientsSection: {
+      eyebrow: "UNSERE KUNDEN",
+      heading: "MARKEN, DIE UNS IHR VERTRAUEN SCHENKEN",
+      intro:
+        "Von E-Commerce und Bildung bis Software, Services und lokalen Unternehmen – wir entwickeln digitale Lösungen für Marken mit ganz unterschiedlichen Zielen.",
+    },
+    brandStatement: {
+      heading: "MAGIC IN EVERY CLICK.",
+      body: "Von der ersten Idee bis zum letzten Klick entwickeln wir digitale Erlebnisse, bei denen Strategie, Kreativität und Technologie gemeinsam wirken.",
     },
   },
 ];

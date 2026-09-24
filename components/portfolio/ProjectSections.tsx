@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { BrandLogo } from "@/components/brand/Logo";
 import type { MediaImage, MediaVideo, PortfolioProject } from "@/lib/portfolio";
 import { getCategory, projectKind } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
@@ -59,15 +60,19 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
 
           <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:items-end">
             <div className="min-w-0 lg:col-span-8">
-              {project.logo && (
-                <Image
-                  src={project.logo}
-                  alt={`${project.client}, Logo`}
-                  width={224}
-                  height={112}
-                  priority
-                  className="mb-6 h-14 w-auto max-w-[220px] object-contain object-left md:h-16"
-                />
+              {project.useBrandLogo ? (
+                <BrandLogo starSize={40} wordmarkHeight={17} className="mb-6 text-ink" />
+              ) : (
+                project.logo && (
+                  <Image
+                    src={project.logo}
+                    alt={`${project.client}, Logo`}
+                    width={224}
+                    height={112}
+                    priority
+                    className="mb-6 h-14 w-auto max-w-[220px] object-contain object-left md:h-16"
+                  />
+                )
               )}
               <p className="flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.25em] text-ink-2">
                 <span className="h-2 w-2 rounded-full" style={{ backgroundColor: hex }} />
