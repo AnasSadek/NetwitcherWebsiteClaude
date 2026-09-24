@@ -777,10 +777,10 @@ export const portfolioProjects: PortfolioProject[] = [
       heading: "CONTENT, DER NICHT WEITERGESWIPT WIRD",
       intro: "Konzept, Kamera, Licht und Schnitt – unsere Reels entstehen dort, wo Strategie auf kreative Produktion trifft.",
       reels: [
-        { href: "https://www.instagram.com/netwitcher/reel/Db3bvXEtfge/" },
-        { href: "https://www.instagram.com/netwitcher/reel/DZfsLwvCSSk/" },
-        { href: "https://www.instagram.com/netwitcher/reel/DYfGIh-NUQJ/" },
-        { href: "https://www.instagram.com/netwitcher/reel/DaVJaU8oWXE/" },
+        { href: "https://www.instagram.com/reel/Db3bvXEtfge/" },
+        { href: "https://www.instagram.com/reel/DZfsLwvCSSk/" },
+        { href: "https://www.instagram.com/reel/DYfGIh-NUQJ/" },
+        { href: "https://www.instagram.com/reel/DaVJaU8oWXE/" },
       ],
     },
     clientsSection: {
