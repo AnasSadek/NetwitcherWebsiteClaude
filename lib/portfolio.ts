@@ -150,7 +150,16 @@ export type PortfolioProject = {
      *  Projekts einheitlich für alle Karten verwendet. */
     accentColors?: string[];
     items: {
-      icon: "shopping-bag" | "share" | "video" | "target" | "trending-up" | "shopping-cart" | "laptop";
+      icon:
+        | "shopping-bag"
+        | "share"
+        | "video"
+        | "target"
+        | "trending-up"
+        | "shopping-cart"
+        | "laptop"
+        | "monitor"
+        | "app-window";
       title: string;
       description: string;
     }[];
@@ -248,6 +257,32 @@ export const portfolioProjects: PortfolioProject[] = [
       },
     ],
     links: [{ label: "Mehr zu FekraHub", href: "/produkte/fekrahub" }],
+    servicesSection: {
+      eyebrow: "UNSERE LEISTUNGEN",
+      heading: "VON DER IDEE ZUR DIGITALEN PLATTFORM",
+      intro:
+        "Für FekraHub haben wir Markenauftritt, digitale Produktentwicklung und Content miteinander verbunden – von der Website bis zur leistungsfähigen Web Application und visuellen Kommunikation.",
+      accentColors: ["#0FB9F2", "#8B5CF6", "#0FB9F2"],
+      items: [
+        {
+          icon: "monitor",
+          title: "Webdesign & Entwicklung",
+          description: "Konzeption und Entwicklung einer modernen Website, die FekraHub klar positioniert und die Plattform verständlich präsentiert.",
+        },
+        {
+          icon: "app-window",
+          title: "Software / Web Application",
+          description: "Entwicklung einer zentralen Web Application für Schulverwaltung, Kommunikation, Unterricht und digitale Prozesse.",
+        },
+        {
+          icon: "video",
+          title: "Videoproduktion",
+          description: "Produktion visueller Inhalte und Videos, die Funktionen, Vorteile und Anwendungsmöglichkeiten von FekraHub verständlich vermitteln.",
+        },
+      ],
+      closingStatement:
+        "Design, Technologie und Content greifen bei FekraHub ineinander – für eine digitale Plattform, die nicht nur leistungsfähig funktioniert, sondern auch klar kommuniziert und professionell präsentiert wird.",
+    },
   },
   {
     slug: "frida-eu",
