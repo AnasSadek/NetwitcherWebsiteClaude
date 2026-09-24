@@ -14,6 +14,13 @@ export function ProjectServices({ project }: { project: PortfolioProject }) {
   const brandHex = ARROW_COLORS[project.color];
   const accents = accentColors ?? [brandHex];
   const introParagraphs = Array.isArray(intro) ? intro : intro ? [intro] : [];
+  /** Bei wenigen Karten (z. B. 2) wirkt ein volles 3er-Raster unausgewogen —
+   *  dann zentriert und auf 2 Spalten begrenzt statt über die volle Breite
+   *  gestreckt. Ab 3 Karten das gewohnte responsive 3er-Raster. */
+  const gridClass =
+    items.length <= 2
+      ? "mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2 md:mt-14 md:gap-6"
+      : "mt-10 grid gap-5 sm:grid-cols-2 md:mt-14 md:gap-6 lg:grid-cols-3";
 
   return (
     <section aria-labelledby="leistungen" className="py-14 md:py-20">
@@ -34,7 +41,7 @@ export function ProjectServices({ project }: { project: PortfolioProject }) {
           ))}
         </Reveal>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 md:mt-14 md:gap-6 lg:grid-cols-3">
+        <div className={gridClass}>
           {items.map((item, i) => {
             const hex = accents[i % accents.length];
             return (

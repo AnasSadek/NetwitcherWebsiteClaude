@@ -150,7 +150,7 @@ export type PortfolioProject = {
      *  Projekts einheitlich für alle Karten verwendet. */
     accentColors?: string[];
     items: {
-      icon: "shopping-bag" | "share" | "video" | "target" | "trending-up" | "shopping-cart";
+      icon: "shopping-bag" | "share" | "video" | "target" | "trending-up" | "shopping-cart" | "laptop";
       title: string;
       description: string;
     }[];
@@ -470,6 +470,27 @@ export const portfolioProjects: PortfolioProject[] = [
         body: "Ein durchgängiger digitaler Workflow, der die Anfrage für Kunden vereinfacht und die interne Bearbeitung von Umzügen übersichtlicher und effizienter macht.",
       },
     ],
+    servicesSection: {
+      eyebrow: "UNSERE LEISTUNGEN",
+      heading: "DIGITALES PRODUKT TRIFFT CONTENT",
+      intro:
+        "Für Umzugly haben wir Produktentwicklung und Content miteinander verbunden – mit einer individuellen WebApp für digitale Umzugsprozesse und aufmerksamkeitsstarken Reels für die Markenkommunikation.",
+      accentColors: ["#E30613"],
+      items: [
+        {
+          icon: "laptop",
+          title: "WebApp",
+          description: "Konzeption und Entwicklung einer digitalen WebApp, die Umzugsanfragen, Terminplanung und interne Prozesse in einem zentralen System vereint.",
+        },
+        {
+          icon: "video",
+          title: "Reels",
+          description: "Kurze, dynamische Videoformate, die Umzugly sichtbar machen, Leistungen verständlich präsentieren und Aufmerksamkeit in sozialen Netzwerken schaffen.",
+        },
+      ],
+      closingStatement:
+        "Technologie und Content greifen bei Umzugly ineinander: Die WebApp vereinfacht den Prozess, während Reels die Marke nach außen sichtbar und verständlich machen.",
+    },
   },
 ];
 

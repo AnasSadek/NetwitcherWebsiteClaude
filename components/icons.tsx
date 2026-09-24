@@ -26,7 +26,8 @@ export type FeatureIconName =
   | "video"
   | "target"
   | "trending-up"
-  | "shopping-cart";
+  | "shopping-cart"
+  | "laptop";
 
 /** Zweites, kleines Icon-Set im selben Strich-Stil wie {@link ServiceIcon},
  *  für Feature-Karten ausserhalb der Leistungen-Seite. */
@@ -154,6 +155,12 @@ export function FeatureIcon({
         <path d="M3.5 4h2l2.2 11.2a1.8 1.8 0 0 0 1.77 1.5h7.6a1.8 1.8 0 0 0 1.77-1.46L20.5 8H6.2" />
         <circle cx="9.5" cy="19.5" r="1.3" fill="currentColor" stroke="none" />
         <circle cx="17" cy="19.5" r="1.3" fill="currentColor" stroke="none" />
+      </>
+    ),
+    laptop: (
+      <>
+        <rect x="4.5" y="5" width="15" height="9.5" rx="1.2" />
+        <path d="M2.5 18.2h19a1 1 0 0 1-.9 1.3H3.4a1 1 0 0 1-.9-1.3Z" />
       </>
     ),
   };
