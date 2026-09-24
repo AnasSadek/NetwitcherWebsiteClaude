@@ -186,6 +186,10 @@ export type PortfolioProject = {
   /** Blendet die grosse Naechstes-Projekt-Buehne am Seitenende aus
    *  (z. B. wenn sie inhaltlich mit der Case Study kollidieren wuerde). */
   hideNextProject?: boolean;
+  /** Blendet die "DAS PRODUKT."-Anzeige der `screens` im Inhaltsbereich aus
+   *  (z. B. wenn `screens` nur fuer das Auftaktbild dient und keine zweite,
+   *  redundante Anzeige derselben Komposition gewuenscht ist). */
+  hideScreensShowcase?: boolean;
 };
 
 /* ------------------------------------------------------------------------
@@ -655,6 +659,7 @@ export const portfolioProjects: PortfolioProject[] = [
     services: ["Google Ads", "Performance Marketing"],
     color: "sun",
     heroContain: true,
+    hideScreensShowcase: true,
     logo: "/portfolio/louic/logo.png",
     cover: {
       src: "/portfolio/louic/hero-louic.webp",

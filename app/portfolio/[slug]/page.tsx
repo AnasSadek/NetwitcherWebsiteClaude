@@ -101,7 +101,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <FeaturedGallery project={project} />
           ) : project.screenSections?.length ? (
             <ScreenChapters project={project} />
-          ) : project.screens?.length ? (
+          ) : project.screens?.length && !project.hideScreensShowcase ? (
             <ScreensShowcase project={project} />
           ) : null}
           {project.images?.length ? <ImageGallery project={project} /> : null}
