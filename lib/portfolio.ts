@@ -510,7 +510,7 @@ export const portfolioProjects: PortfolioProject[] = [
     galleryFrame: "laptop",
     logo: "/portfolio/umzugly/logo.webp",
     cover: {
-      src: "/portfolio/umzugly/image-Umzugly.png",
+      src: "/portfolio/umzugly/hero-umzugly-v2.webp",
       alt: "Umzugly, Übersicht der Umzugsplattform",
       ratio: "16/9",
     },
