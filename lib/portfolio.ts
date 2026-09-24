@@ -138,6 +138,24 @@ export type PortfolioProject = {
       description: string;
     }[];
   };
+  /** Eigener Leistungen-Abschnitt (Eyebrow, Überschrift, Intro-Absätze,
+   *  Karten mit Icon/Titel/Beschreibung, optionale Abschluss-Aussage) —
+   *  unabhängig von `features`: rendert am Seitenende, nach dem übrigen
+   *  Projektinhalt und vor Next-Project/CTA. */
+  servicesSection?: {
+    eyebrow?: string;
+    heading?: string;
+    intro?: string | string[];
+    /** Eigener Akzentfarben-Zyklus (Hex). Fehlt er, wird `color` des
+     *  Projekts einheitlich für alle Karten verwendet. */
+    accentColors?: string[];
+    items: {
+      icon: "shopping-bag" | "share" | "video" | "target" | "trending-up" | "shopping-cart";
+      title: string;
+      description: string;
+    }[];
+    closingStatement?: string;
+  };
   /** Branche des Kunden, erscheint in den Projekt-Metadaten. */
   industry?: string;
   /** Kurze Story in Kapiteln, z. B. Ausgangslage · Ansatz · Umsetzung. */
@@ -286,6 +304,48 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     hideNextProject: true,
     links: [{ label: "Website besuchen", href: "https://fridaeu.com" }],
+    servicesSection: {
+      eyebrow: "UNSERE LEISTUNGEN",
+      heading: "VON E-COMMERCE BIS PERFORMANCE MARKETING",
+      intro: [
+        "Für FridaEU haben wir nicht nur einen Online-Shop entwickelt, sondern ein ganzheitliches digitales Ökosystem aufgebaut, das Marke, Content, Commerce und Performance Marketing miteinander verbindet.",
+        "Von der technischen E-Commerce-Basis über Social Content bis hin zu Paid Ads und Social Commerce begleiten wir die Marke entlang der gesamten digitalen Customer Journey.",
+      ],
+      items: [
+        {
+          icon: "shopping-bag",
+          title: "E-Commerce Online Shop",
+          description: "Ein conversion-orientierter Online-Shop, der Produktentdeckung, Markenwelt und einen einfachen Kaufprozess miteinander verbindet.",
+        },
+        {
+          icon: "share",
+          title: "Social Media Marketing",
+          description: "Strategische Social-Media-Kommunikation für mehr Sichtbarkeit, Markenbindung und eine aktive Community.",
+        },
+        {
+          icon: "video",
+          title: "Video & Reels Produktion",
+          description: "Kreative Videoformate und Reels, die Produkte emotional inszenieren und Aufmerksamkeit in sozialen Netzwerken erzeugen.",
+        },
+        {
+          icon: "target",
+          title: "Meta Ads",
+          description: "Performance-Kampagnen auf Facebook und Instagram mit Fokus auf Reichweite, Produktentdeckung und Conversions.",
+        },
+        {
+          icon: "trending-up",
+          title: "TikTok Ads",
+          description: "Plattformgerechte Kampagnen, die kreative Inhalte mit performance-orientierter Ausspielung verbinden.",
+        },
+        {
+          icon: "shopping-cart",
+          title: "TikTok Shop",
+          description: "Aufbau und Integration von Social Commerce, damit Produkte direkt dort entdeckt und gekauft werden können, wo Content konsumiert wird.",
+        },
+      ],
+      closingStatement:
+        "Nicht einzelne Maßnahmen, sondern ein vernetztes System: Shop, Content, Social Media und Paid Ads greifen ineinander und machen FridaEU digital sichtbar, erlebbar und kaufbar.",
+    },
   },
   {
     slug: "abziel",

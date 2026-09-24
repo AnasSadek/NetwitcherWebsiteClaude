@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { FeaturedGallery } from "@/components/portfolio/FeaturedGallery";
 import { PortfolioCTA } from "@/components/portfolio/PortfolioCTA";
 import { ProjectFeatures } from "@/components/portfolio/ProjectFeatures";
+import { ProjectServices } from "@/components/portfolio/ProjectServices";
 import { ProjectVisual } from "@/components/portfolio/ProjectVisual";
 import {
   ImageGallery,
@@ -109,6 +110,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.results?.length ? <ProjectResults project={project} /> : null}
           {project.testimonial ? <ProjectTestimonial project={project} /> : null}
           <ProjectLinks project={project} />
+          {project.servicesSection ? <ProjectServices project={project} /> : null}
         </div>
 
         {project.hideNextProject ? null : <NextProject next={next} prev={prev} />}

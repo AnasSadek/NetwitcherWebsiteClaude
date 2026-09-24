@@ -20,7 +20,13 @@ export type FeatureIconName =
   | "sliders"
   | "map-pin"
   | "list-checks"
-  | "package";
+  | "package"
+  | "shopping-bag"
+  | "share"
+  | "video"
+  | "target"
+  | "trending-up"
+  | "shopping-cart";
 
 /** Zweites, kleines Icon-Set im selben Strich-Stil wie {@link ServiceIcon},
  *  für Feature-Karten ausserhalb der Leistungen-Seite. */
@@ -108,6 +114,46 @@ export function FeatureIcon({
         <path d="M3.5 8 12 3.5 20.5 8 12 12.5 3.5 8Z" />
         <path d="M3.5 8v9L12 21.5 20.5 17V8" />
         <path d="M12 12.5V21.5" />
+      </>
+    ),
+    "shopping-bag": (
+      <>
+        <path d="M6 8h12l-1 12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 8Z" />
+        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+      </>
+    ),
+    share: (
+      <>
+        <circle cx="18" cy="5" r="2.2" />
+        <circle cx="6" cy="12" r="2.2" />
+        <circle cx="18" cy="19" r="2.2" />
+        <path d="m8 10.8 8-4.6M8 13.2l8 4.6" />
+      </>
+    ),
+    video: (
+      <>
+        <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h9A1.5 1.5 0 0 1 16 8.5v7A1.5 1.5 0 0 1 14.5 17h-9A1.5 1.5 0 0 1 4 15.5v-7Z" />
+        <path d="m16 10.5 4-2.3v7.6l-4-2.3" />
+      </>
+    ),
+    target: (
+      <>
+        <circle cx="12" cy="12" r="7.5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+      </>
+    ),
+    "trending-up": (
+      <>
+        <path d="M4 16.5 10 10l3.5 3.5L20 6.5" />
+        <path d="M14.5 6.5H20v5.5" />
+      </>
+    ),
+    "shopping-cart": (
+      <>
+        <path d="M3.5 4h2l2.2 11.2a1.8 1.8 0 0 0 1.77 1.5h7.6a1.8 1.8 0 0 0 1.77-1.46L20.5 8H6.2" />
+        <circle cx="9.5" cy="19.5" r="1.3" fill="currentColor" stroke="none" />
+        <circle cx="17" cy="19.5" r="1.3" fill="currentColor" stroke="none" />
       </>
     ),
   };
