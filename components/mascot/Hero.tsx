@@ -17,17 +17,25 @@ export function Hero({ locale = "de" }: { locale?: Locale }) {
     >
       <div className="mx-auto w-full max-w-[1560px] px-4 pb-10 sm:px-6 lg:pb-14">
         <div className="relative">
-          {/* Copy: mobil oben, ab lg Overlay links auf der Bühne. Die
-              Bildkomposition (Maskottchen + schwebende Karten) ist fixe
-              Grafik und bleibt unverändert — dir="ltr" hält die Textbox
-              deshalb bewusst physisch links, wo im Rendering der freie
-              Raum ist; dir="rtl" innen sorgt trotzdem für korrekt
-              rechtsbündigen arabischen Fliesstext. */}
+          {/* Copy: mobil oben, ab lg Overlay auf der Bühne. Die
+              Bildkomposition (Maskottchen) ist fixe Grafik und bleibt
+              unverändert — für Deutsch hält dir="ltr" die Textbox bewusst
+              physisch links, wo im Rendering der freie Raum ist. Für
+              Arabisch tauschen Textbox und Service-Karten (siehe
+              HeroStage) bewusst die Seiten: Text rechts, Karten links,
+              Charakter bleibt exakt mittig — daher hier dir="rtl", was
+              die Textbox über die normale flex-start-Logik automatisch
+              rechts positioniert, plus passend gespiegeltes Padding. */}
           <div
-            dir="ltr"
-            className="relative z-10 mx-auto mb-6 max-w-xl text-center lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20 lg:mx-0 lg:mb-0 lg:flex lg:max-w-none lg:items-center lg:text-left"
+            dir={locale === "ar" ? "rtl" : "ltr"}
+            className={`relative z-10 mx-auto mb-6 max-w-xl text-center lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20 lg:mx-0 lg:mb-0 lg:flex lg:max-w-none lg:items-center ${
+              locale === "ar" ? "lg:text-right" : "lg:text-left"
+            }`}
           >
-            <div dir={locale === "ar" ? "rtl" : "ltr"} className="lg:max-w-xl lg:pl-12 xl:pl-16">
+            <div
+              dir={locale === "ar" ? "rtl" : "ltr"}
+              className={`lg:max-w-xl ${locale === "ar" ? "lg:pr-12 xl:pr-16" : "lg:pl-12 xl:pl-16"}`}
+            >
               <p className="font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3 lg:text-white/70">
                 {locale === "ar" ? "وكالة رقمية · برلين" : "Digital Agency · Berlin"}
               </p>

@@ -568,8 +568,16 @@ export function HeroStage({ locale = "de" }: { locale?: Locale } = {}) {
         )}
       </AnimatePresence>
 
-      {/* ---------- Schwebende Service-Karten rechts (Desktop) ---------- */}
-      <div className="pointer-events-none absolute inset-y-0 right-10 z-20 hidden w-[300px] flex-col justify-center gap-4 lg:flex xl:right-14">
+      {/* ---------- Schwebende Service-Karten (Desktop) ----------
+          Deutsch: rechts, spiegelbildlich zur linksstehenden Textbox.
+          Arabisch: links, weil dort für AR die Textbox weicht (siehe
+          Hero.tsx) — der Charakter in der Mitte bleibt in beiden
+          Sprachen unverändert an seiner Position. */}
+      <div
+        className={`pointer-events-none absolute inset-y-0 z-20 hidden w-[300px] flex-col justify-center gap-4 lg:flex ${
+          locale === "ar" ? "left-10 xl:left-14" : "right-10 xl:right-14"
+        }`}
+      >
         <MagneticCard
           href={withLocale("/studio", locale)}
           color={ARROW_COLORS.pink}
