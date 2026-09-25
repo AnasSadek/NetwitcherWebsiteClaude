@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 import type { Service } from "@/lib/services";
 import { ARROW_COLORS, ARROW_PATH } from "./arrows";
 import { ServiceIcon } from "./icons";
@@ -23,14 +24,16 @@ const accentBorder: Record<Service["color"], string> = {
 export function ServiceCard({
   service,
   delay = 0,
+  locale = "de",
 }: {
   service: Service;
   delay?: number;
+  locale?: Locale;
 }) {
   return (
     <Reveal delay={delay} className="h-full">
       <Link
-        href={service.href}
+        href={withLocale(service.href, locale)}
         className={`group relative flex h-full flex-col overflow-hidden rounded border border-line bg-white p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 ${accentBorder[service.color]}`}
       >
         <div
@@ -77,7 +80,7 @@ export function ServiceCard({
             height="10"
             viewBox="0 0 100 100"
             aria-hidden="true"
-            className="transition-transform duration-200 group-hover:translate-x-1"
+            className="transition-transform duration-200 rtl:-scale-x-100 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
           >
             <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
           </svg>

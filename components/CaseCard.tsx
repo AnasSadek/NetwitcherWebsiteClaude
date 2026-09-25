@@ -1,9 +1,16 @@
 import Link from "next/link";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 import type { CaseStudy } from "@/lib/cases";
 import { ARROW_COLORS, ARROW_PATH } from "./arrows";
 import { Reveal } from "./Reveal";
 
-export function CaseCard({ item, delay = 0 }: { item: CaseStudy; delay?: number }) {
+const LABELS = {
+  de: { challenge: "Herausforderung", solution: "Lösung", result: "Ergebnis", cta: "Ähnliches Projekt starten" },
+  ar: { challenge: "التحدي", solution: "الحل", result: "النتيجة", cta: "ابدأ مشروعاً مشابهاً" },
+} as const;
+
+export function CaseCard({ item, delay = 0, locale = "de" }: { item: CaseStudy; delay?: number; locale?: Locale }) {
+  const t = LABELS[locale];
   const accent = ARROW_COLORS[item.color];
   return (
     <Reveal as="article" delay={delay} className="h-full">
@@ -34,15 +41,15 @@ export function CaseCard({ item, delay = 0 }: { item: CaseStudy; delay?: number 
           <h3 className="text-lg font-bold leading-snug">{item.title}</h3>
           <div className="space-y-3 text-sm leading-relaxed">
             <p>
-              <span className="font-heading text-[11px] font-bold uppercase tracking-widest text-ink">Herausforderung · </span>
+              <span className="font-heading text-[11px] font-bold uppercase tracking-widest text-ink">{t.challenge} · </span>
               <span className="text-ink-3">{item.challenge}</span>
             </p>
             <p>
-              <span className="font-heading text-[11px] font-bold uppercase tracking-widest text-ink">Lösung · </span>
+              <span className="font-heading text-[11px] font-bold uppercase tracking-widest text-ink">{t.solution} · </span>
               <span className="text-ink-3">{item.solution}</span>
             </p>
             <p>
-              <span className="font-heading text-[11px] font-bold uppercase tracking-widest text-ink">Ergebnis · </span>
+              <span className="font-heading text-[11px] font-bold uppercase tracking-widest text-ink">{t.result} · </span>
               <span className="italic text-ink-3">{item.result}</span>
             </p>
           </div>
@@ -54,12 +61,12 @@ export function CaseCard({ item, delay = 0 }: { item: CaseStudy; delay?: number 
             ))}
           </ul>
           <Link
-            href={`/kontakt?service=${encodeURIComponent(item.category)}`}
+            href={withLocale(`/kontakt?service=${encodeURIComponent(item.category)}`, locale)}
             className="group/link inline-flex items-center gap-2 font-heading text-xs font-bold uppercase tracking-widest transition-colors"
             style={{ color: accent }}
           >
-            Ähnliches Projekt starten
-            <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform duration-200 group-hover/link:translate-x-1">
+            {t.cta}
+            <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform duration-200 rtl:-scale-x-100 group-hover/link:translate-x-1 rtl:group-hover/link:-translate-x-1">
             <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
           </svg>
           </Link>

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ButtonLink } from "./Button";
 import { Reveal } from "./Reveal";
 import { BrandStar } from "./brand/Logo";
+import { getDict } from "@/lib/i18n/dictionary";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 import { whatsappHref } from "@/lib/site";
 
 /**
@@ -10,29 +12,32 @@ import { whatsappHref } from "@/lib/site";
  * kein schwebendes Logo, keine drei gleichwertigen Pillen.
  */
 export function FinalCTA({
-  title = "Was willst du als Nächstes produzieren?",
-  text = "Erzähl uns kurz, was ansteht. Wir sagen dir ehrlich, was sich lohnt und was nicht.",
+  title,
+  text,
+  locale = "de",
 }: {
   title?: string;
   text?: string;
+  locale?: Locale;
 }) {
+  const t = getDict(locale);
   return (
     <section className="border-t border-line py-24 md:py-32" aria-labelledby="final-cta">
       <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
         <Reveal>
           <BrandStar size={56} className="mx-auto mb-8" />
           <h2 id="final-cta" className="font-heading text-3xl font-black tracking-tight md:text-4xl">
-            {title}
+            {title ?? t.cta.defaultTitle}
           </h2>
-          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-ink-3">{text}</p>
+          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-ink-3">{text ?? t.cta.defaultText}</p>
           <div className="mt-9 flex flex-col items-center gap-5">
-            <ButtonLink href="/kontakt">Erstgespräch buchen</ButtonLink>
+            <ButtonLink href={withLocale("/kontakt", locale)}>{t.footer.bookIntroCta}</ButtonLink>
             <p className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-3">
               <Link
-                href="/kontakt?service=Fotoshooting"
+                href={withLocale("/kontakt?service=Fotoshooting", locale)}
                 className="underline-offset-4 transition-colors hover:text-ink hover:underline"
               >
-                Studio anfragen
+                {t.cta.studioRequestLink}
               </Link>
               <a
                 href={whatsappHref()}
@@ -40,7 +45,7 @@ export function FinalCTA({
                 rel="noopener noreferrer"
                 className="underline-offset-4 transition-colors hover:text-ink hover:underline"
               >
-                WhatsApp schreiben
+                {t.cta.whatsappWrite}
               </a>
             </p>
           </div>

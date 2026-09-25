@@ -16,7 +16,7 @@ export function SectionHeading({
   /** Seitentitel bekommen "h1", Abschnittstitel bleiben "h2". */
   as?: "h1" | "h2";
 }) {
-  const alignCls = align === "center" ? "text-center mx-auto" : "text-left";
+  const alignCls = align === "center" ? "text-center mx-auto" : "text-left rtl:text-right";
   return (
     <Reveal className={`max-w-3xl ${align === "center" ? "mx-auto" : ""}`}>
       <div className={alignCls}>

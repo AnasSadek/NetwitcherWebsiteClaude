@@ -109,6 +109,12 @@ export type Dictionary = {
     playVideo: (title: string) => string;
     videoComingSoon: (title: string) => string;
   };
+  cta: {
+    defaultTitle: string;
+    defaultText: string;
+    studioRequestLink: string;
+    whatsappWrite: string;
+  };
 };
 
 export const de: Dictionary = {
@@ -224,6 +230,12 @@ export const de: Dictionary = {
     instagramFallbackLink: "Beitrag auf Instagram ansehen",
     playVideo: (title) => `${title} abspielen`,
     videoComingSoon: (title) => `${title}, Video folgt`,
+  },
+  cta: {
+    defaultTitle: "Was willst du als Nächstes produzieren?",
+    defaultText: "Erzähl uns kurz, was ansteht. Wir sagen dir ehrlich, was sich lohnt und was nicht.",
+    studioRequestLink: "Studio anfragen",
+    whatsappWrite: "WhatsApp schreiben",
   },
 };
 
@@ -343,6 +355,12 @@ export const ar: Dictionary = {
     instagramFallbackLink: "مشاهدة المنشور على إنستغرام",
     playVideo: (title) => `تشغيل ${title}`,
     videoComingSoon: (title) => `${title}، الفيديو قريباً`,
+  },
+  cta: {
+    defaultTitle: "ما الذي ترغب في إنتاجه تالياً؟",
+    defaultText: "أخبرنا بإيجاز عمّا تحتاجه. سنخبرك بصراحة بما يستحق التنفيذ وما لا يستحق.",
+    studioRequestLink: "طلب جلسة استوديو",
+    whatsappWrite: "راسلنا عبر واتساب",
   },
 };
 
