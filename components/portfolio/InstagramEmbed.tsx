@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 
 /* Instagram-Embed-Skript: einmal pro Seite geladen, danach für jedes
    neu gemountete Embed erneut verarbeitet (auch nach Next.js-Client-
@@ -45,9 +47,10 @@ function loadEmbedJs(): Promise<boolean> {
  * geladen; `Embeds.process()` läuft nach jedem Mount erneut, damit auch
  * Client-Side-Navigationen korrekt initialisieren.
  */
-export function InstagramEmbed({ href }: { href: string }) {
+export function InstagramEmbed({ href, locale = "de" }: { href: string; locale?: Locale }) {
   const ref = useRef<HTMLDivElement>(null);
   const url = href.replace(/\/+$/, "");
+  const t = getDict(locale);
 
   useEffect(() => {
     let dead = false;
@@ -80,7 +83,7 @@ export function InstagramEmbed({ href }: { href: string }) {
         }}
       >
         <a href={`${url}/`} target="_blank" rel="noopener noreferrer">
-          Beitrag auf Instagram ansehen
+          {t.portfolio.instagramFallbackLink}
         </a>
       </blockquote>
     </div>

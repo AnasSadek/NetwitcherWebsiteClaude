@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
+import { getDict } from "@/lib/i18n/dictionary";
 import { FeaturedGallery } from "@/components/portfolio/FeaturedGallery";
 import { PortfolioCTA } from "@/components/portfolio/PortfolioCTA";
 import { ProjectBrandStatement } from "@/components/portfolio/ProjectBrandStatement";
@@ -51,22 +52,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-/** Thema für den Anfrage-Dialog, passend zur Projektkategorie. */
-const CTA_TOPIC: Record<string, string> = {
-  web: "Website",
-  ecommerce: "Shop",
-  "social-video": "Social Media",
-  photo: "Fotoshooting",
-  design: "Branding",
-  software: "Software",
-  ai: "Software",
-};
-
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
 
+  const t = getDict("de");
   const kind = projectKind(project);
   const { prev, next } = adjacentProjects(project.slug);
 
@@ -86,42 +77,42 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <article>
-        <ProjectHeader project={project} />
+        <ProjectHeader project={project} locale="de" />
 
         {/* Auftaktbild: die Komposition des Projekts, gross */}
         <div className="mx-auto mt-12 max-w-[1500px] px-5 sm:px-8 md:mt-16">
           <Reveal>
-            <ProjectVisual project={project} priority sizes="(min-width: 1500px) 1400px, 100vw" />
+            <ProjectVisual project={project} priority sizes="(min-width: 1500px) 1400px, 100vw" locale="de" />
           </Reveal>
         </div>
 
         <div className="mt-6 md:mt-10">
-          {project.story?.length ? <ProjectStory story={project.story} /> : null}
-          {kind === "website" && project.website ? <WebsiteShowcase project={project} /> : null}
-          {project.videos?.length ? <VideoShowcase project={project} /> : null}
-          {project.features ? <ProjectFeatures project={project} /> : null}
+          {project.story?.length ? <ProjectStory story={project.story} locale="de" /> : null}
+          {kind === "website" && project.website ? <WebsiteShowcase project={project} locale="de" /> : null}
+          {project.videos?.length ? <VideoShowcase project={project} locale="de" /> : null}
+          {project.features ? <ProjectFeatures project={project} locale="de" /> : null}
           {project.gallery?.length ? (
-            <FeaturedGallery project={project} />
+            <FeaturedGallery project={project} locale="de" />
           ) : project.screenSections?.length ? (
-            <ScreenChapters project={project} />
+            <ScreenChapters project={project} locale="de" />
           ) : project.screens?.length && !project.hideScreensShowcase ? (
-            <ScreensShowcase project={project} />
+            <ScreensShowcase project={project} locale="de" />
           ) : null}
-          {project.images?.length ? <ImageGallery project={project} /> : null}
-          {project.socialPosts?.length ? <SocialGallery project={project} /> : null}
-          {project.posters?.length ? <PosterGallery project={project} /> : null}
-          {project.results?.length ? <ProjectResults project={project} /> : null}
+          {project.images?.length ? <ImageGallery project={project} locale="de" /> : null}
+          {project.socialPosts?.length ? <SocialGallery project={project} locale="de" /> : null}
+          {project.posters?.length ? <PosterGallery project={project} locale="de" /> : null}
+          {project.results?.length ? <ProjectResults project={project} locale="de" /> : null}
           {project.testimonial ? <ProjectTestimonial project={project} /> : null}
-          <ProjectLinks project={project} />
+          <ProjectLinks project={project} locale="de" />
           {project.servicesSection ? <ProjectServices project={project} /> : null}
-          {project.reelsSection ? <ProjectReels project={project} /> : null}
-          {project.clientsSection ? <ProjectClients project={project} /> : null}
+          {project.reelsSection ? <ProjectReels project={project} locale="de" /> : null}
+          {project.clientsSection ? <ProjectClients project={project} locale="de" /> : null}
           {project.brandStatement ? <ProjectBrandStatement project={project} /> : null}
         </div>
 
-        {project.hideNextProject ? null : <NextProject next={next} prev={prev} />}
+        {project.hideNextProject ? null : <NextProject next={next} prev={prev} locale="de" />}
       </article>
-      <PortfolioCTA service={CTA_TOPIC[project.categories[0]]} />
+      <PortfolioCTA service={project.categories[0] ? t.portfolio.ctaTopics[project.categories[0]] : undefined} locale="de" />
     </>
   );
 }

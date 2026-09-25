@@ -1,6 +1,8 @@
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS } from "@/components/arrows";
 import { FeatureIcon } from "@/components/icons";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { PortfolioProject } from "@/lib/portfolio";
 import type { AccentColor } from "@/lib/services";
 
@@ -14,9 +16,10 @@ const ACCENT_CYCLE: AccentColor[] = ["sky", "mint", "violet", "pink", "sky", "mi
  * ein responsives Karten-Raster. Rendert nur, wenn `project.features`
  * gesetzt ist — aktuell nur bei FekraHub, direkt vor der Produkt-Galerie.
  */
-export function ProjectFeatures({ project }: { project: PortfolioProject }) {
+export function ProjectFeatures({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const { eyebrow, heading, intro, items, accentColors } = project.features!;
   const accents = accentColors ?? ACCENT_CYCLE.map((c) => ARROW_COLORS[c]);
+  const t = getDict(locale);
 
   return (
     <section aria-labelledby="funktionen" className="py-14 md:py-20">
@@ -26,7 +29,7 @@ export function ProjectFeatures({ project }: { project: PortfolioProject }) {
             <p className="font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3">{eyebrow}</p>
           )}
           <h2 id="funktionen" className="mt-4 font-boxi text-2xl leading-none text-ink md:text-4xl">
-            {heading ?? "ZENTRALE FUNKTIONEN"}
+            {heading ?? t.portfolio.defaultFeaturesHeading}
           </h2>
           {intro && <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-2">{intro}</p>}
         </Reveal>

@@ -3,6 +3,7 @@ import { Reveal } from "@/components/Reveal";
 import { Media } from "@/components/ui/Media";
 import { ButtonLink } from "@/components/Button";
 import { media } from "@/lib/media";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 
 /**
  * „Aus dem Studio" — echte Produktionsaufnahmen als redaktioneller Spread.
@@ -10,24 +11,39 @@ import { media } from "@/lib/media";
  * die Labels benennen, was tatsächlich zu sehen ist.
  */
 
-const SHOTS = [
-  { asset: media.reels, label: "Reel-Produktion", aspect: "aspect-[4/5]", offset: "" },
-  { asset: media.studio, label: "Set & Licht, Studio Berlin", aspect: "aspect-[4/3]", offset: "md:mt-14" },
-  { asset: media.product, label: "Produktfotografie", aspect: "aspect-[4/5]", offset: "md:mt-6" },
-  { asset: media.studioClose, label: "Kamera am Produkttisch", aspect: "aspect-square", offset: "md:mt-20" },
-] as const;
+const LABELS_DE = {
+  reels: "Reel-Produktion",
+  studio: "Set & Licht, Studio Berlin",
+  product: "Produktfotografie",
+  studioClose: "Kamera am Produkttisch",
+};
 
-export function Showcase() {
+const LABELS_AR = {
+  reels: "إنتاج الريلز",
+  studio: "الإضاءة والتجهيز، استوديو برلين",
+  product: "تصوير المنتجات",
+  studioClose: "الكاميرا على طاولة التصوير",
+};
+
+export function Showcase({ locale = "de" }: { locale?: Locale }) {
+  const L = locale === "ar" ? LABELS_AR : LABELS_DE;
+  const SHOTS = [
+    { asset: media.reels, label: L.reels, aspect: "aspect-[4/5]", offset: "" },
+    { asset: media.studio, label: L.studio, aspect: "aspect-[4/3]", offset: "md:mt-14" },
+    { asset: media.product, label: L.product, aspect: "aspect-[4/5]", offset: "md:mt-6" },
+    { asset: media.studioClose, label: L.studioClose, aspect: "aspect-square", offset: "md:mt-20" },
+  ] as const;
+
   return (
     <section className="relative py-24 md:py-32" aria-labelledby="showcase">
       <div className="mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 id="showcase" className="font-boxi text-3xl leading-[1.1] text-ink md:text-5xl">
-              AUS DEM STUDIO.
+              {locale === "ar" ? "من الاستوديو." : "AUS DEM STUDIO."}
             </h2>
-            <ButtonLink href="/portfolio" variant="ghost">
-              Portfolio ansehen
+            <ButtonLink href={withLocale("/portfolio", locale)} variant="ghost">
+              {locale === "ar" ? "عرض الأعمال" : "Portfolio ansehen"}
             </ButtonLink>
           </div>
         </Reveal>
@@ -53,12 +69,25 @@ export function Showcase() {
 
         <Reveal delay={0.1}>
           <p className="mt-10 max-w-xl text-base leading-relaxed text-ink-2">
-            Alles hier ist bei uns entstanden: eigenes Studio, eigenes Licht,
-            eigener Schnitt. Konkrete Kundencases zeigen wir dir gern im{" "}
-            <Link href="/kontakt#termin" className="font-semibold text-ink underline underline-offset-4 hover:text-violet">
-              Erstgespräch
-            </Link>
-            .
+            {locale === "ar" ? (
+              <>
+                كل ما تراه هنا صُنع لدينا: استوديو خاص، إضاءة خاصة، مونتاج خاص. يسعدنا أن نعرض
+                لك أمثلة حقيقية من أعمال عملائنا في{" "}
+                <Link href={withLocale("/kontakt#termin", locale)} className="font-semibold text-ink underline underline-offset-4 hover:text-violet">
+                  مكالمة التعارف
+                </Link>
+                .
+              </>
+            ) : (
+              <>
+                Alles hier ist bei uns entstanden: eigenes Studio, eigenes Licht,
+                eigener Schnitt. Konkrete Kundencases zeigen wir dir gern im{" "}
+                <Link href="/kontakt#termin" className="font-semibold text-ink underline underline-offset-4 hover:text-violet">
+                  Erstgespräch
+                </Link>
+                .
+              </>
+            )}
           </p>
         </Reveal>
       </div>

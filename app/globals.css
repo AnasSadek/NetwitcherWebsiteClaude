@@ -40,6 +40,14 @@
   --font-heading: var(--font-oxanium), system-ui, sans-serif;
   --font-body: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
 
+  /* Arabisch: EP Boxi/Oxanium/Nunito sind reine Lateinschrift-Fonts ohne
+     arabische Glyphen. Cairo (geometrisch, kräftig, fuer Ueberschriften)
+     und Tajawal (ruhiger, fuer Fliesstext) sind die arabischen Pendants —
+     aktiviert ueber [dir="rtl"] weiter unten, damit Deutsch unveraendert
+     bleibt. */
+  --font-arabic-heading: var(--font-cairo), "Segoe UI", system-ui, sans-serif;
+  --font-arabic-body: var(--font-tajawal), "Segoe UI", system-ui, sans-serif;
+
   --radius-card: 28px;
   --radius-pill: 999px;
 
@@ -100,6 +108,27 @@
     outline: 3px solid var(--color-violet);
     outline-offset: 3px;
     border-radius: 6px;
+  }
+
+  /* Arabische Bühne: eigener Font-Stack, grosszügigere Zeilenhöhe/
+     Laufweite (arabische Schrift braucht mehr vertikalen Raum als die
+     sehr enge Lateinschrift-Hierarchie) und deaktivierte Lateinschrift-
+     Worttrennung. Nur unter [dir="rtl"] aktiv — Deutsch bleibt exakt wie
+     zuvor. */
+  [dir="rtl"] {
+    --font-boxi: var(--font-arabic-heading);
+    --font-heading: var(--font-arabic-heading);
+    --font-body: var(--font-arabic-body);
+    letter-spacing: 0;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] .font-boxi,
+  [dir="rtl"] .font-heading {
+    letter-spacing: 0;
+    font-weight: 700;
   }
 }
 

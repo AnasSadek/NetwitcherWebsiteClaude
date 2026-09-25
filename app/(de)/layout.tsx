@@ -4,13 +4,14 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { site } from "@/lib/site";
-import "./globals.css";
+import { de as t } from "@/lib/i18n/dictionary";
+import "../globals.css";
 
 // EP Boxi Bold – der offizielle Netwitcher-Display-Font, für Deutsch
 // nachgerüstet: Ä/Ö/Ü wurden aus den Original-Outlines + quadratischen
 // Punkten (Geometrie des Punkt-Glyphs) komponiert. Nur Versalien.
 const epboxi = localFont({
-  src: "./fonts/epboxi-display.woff2",
+  src: "../fonts/epboxi-display.woff2",
   variable: "--font-epboxi",
   weight: "700",
   display: "swap",
@@ -19,7 +20,7 @@ const epboxi = localFont({
 // Oxanium – umlautsicherer Zweit-Display-Font für gemischt gesetzte
 // Überschriften der Unterseiten (EP-Boxi ist reine Versalschrift).
 const oxanium = localFont({
-  src: "./fonts/oxanium.woff2",
+  src: "../fonts/oxanium.woff2",
   variable: "--font-oxanium",
   weight: "400 800",
   display: "swap",
@@ -27,7 +28,7 @@ const oxanium = localFont({
 
 // Nunito Sans – lizenzfreier Ersatz für den Marken-Body-Font „Ballega".
 const nunito = localFont({
-  src: "./fonts/nunito-sans.woff2",
+  src: "../fonts/nunito-sans.woff2",
   variable: "--font-nunito",
   weight: "300 800",
   display: "swap",
@@ -59,6 +60,10 @@ export const metadata: Metadata = {
       "Content, der auffällt. Marketing, das verkauft. Fotos, Reels, Kampagnen und Webseiten aus Berlin.",
   },
   robots: { index: true, follow: true },
+  alternates: {
+    canonical: "/",
+    languages: { de: "/", ar: "/ar" },
+  },
 };
 
 const jsonLd = {
@@ -96,7 +101,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de" className={`${epboxi.variable} ${oxanium.variable} ${nunito.variable}`}>
+    <html lang="de" dir="ltr" className={`${epboxi.variable} ${oxanium.variable} ${nunito.variable}`}>
       <body>
         <script
           type="application/ld+json"
@@ -106,12 +111,12 @@ export default function RootLayout({
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:text-sm"
         >
-          Zum Inhalt springen
+          {t.common.skipToContent}
         </a>
-        <Header />
+        <Header locale="de" />
         <main id="main">{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <Footer locale="de" />
+        <WhatsAppButton locale="de" />
       </body>
     </html>
   );

@@ -1,16 +1,22 @@
 import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import { portfolioProjects, type PortfolioProject } from "@/lib/portfolio";
+import { portfolioProjectsAr } from "@/lib/portfolio.ar";
 
 /**
- * Kunden-Logowand: leitet sich automatisch aus `portfolioProjects` ab (alle
- * Projekte mit echtem `logo`-Asset, ausser dem eigenen), damit keine zweite,
- * separat zu pflegende Kundenliste entsteht. Rendert nur, wenn
- * `project.clientsSection` gesetzt ist — aktuell nur bei Netwitcher selbst.
+ * Kunden-Logowand: leitet sich automatisch aus den Portfolio-Projekten der
+ * jeweiligen Sprache ab (alle Projekte mit echtem `logo`-Asset, ausser dem
+ * eigenen), damit keine zweite, separat zu pflegende Kundenliste entsteht.
+ * Rendert nur, wenn `project.clientsSection` gesetzt ist — aktuell nur bei
+ * Netwitcher selbst.
  */
-export function ProjectClients({ project }: { project: PortfolioProject }) {
+export function ProjectClients({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
+  const t = getDict(locale);
   const { eyebrow, heading, intro } = project.clientsSection!;
-  const clients = portfolioProjects.filter((p) => p.logo && p.slug !== project.slug);
+  const allProjects = locale === "ar" ? portfolioProjectsAr : portfolioProjects;
+  const clients = allProjects.filter((p) => p.logo && p.slug !== project.slug);
 
   if (!clients.length) return null;
 
@@ -36,7 +42,7 @@ export function ProjectClients({ project }: { project: PortfolioProject }) {
                 <div className="relative h-full w-full">
                   <Image
                     src={c.logo!}
-                    alt={`${c.client}, Logo`}
+                    alt={t.portfolio.logoAlt(c.client)}
                     fill
                     sizes="(min-width: 1024px) 200px, 33vw"
                     className="object-contain"

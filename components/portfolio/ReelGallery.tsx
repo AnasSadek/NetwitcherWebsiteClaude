@@ -1,4 +1,5 @@
 import { ARROW_COLORS } from "@/components/arrows";
+import type { Locale } from "@/lib/i18n/locale";
 import type { AccentColor } from "@/lib/services";
 import { InstagramEmbed } from "./InstagramEmbed";
 
@@ -27,7 +28,7 @@ const LAYOUT_4: { tilt: number; lift: number; dominant?: boolean; row2?: boolean
   { tilt: 2, lift: 15 },
 ];
 
-export function ReelGallery({ reels, color }: { reels: { href: string }[]; color: AccentColor }) {
+export function ReelGallery({ reels, color, locale = "de" }: { reels: { href: string }[]; color: AccentColor; locale?: Locale }) {
   const hex = ARROW_COLORS[color];
   const isQuad = reels.length === 4;
   const layout = isQuad ? LAYOUT_4 : LAYOUT_5;
@@ -73,7 +74,7 @@ export function ReelGallery({ reels, color }: { reels: { href: string }[]; color
                   "min-[1200px]:hover:[transform:rotate(calc(var(--tilt)*0.25))_translateY(var(--lift))_scale(1.02)]",
                 ].join(" ")}
               >
-                <InstagramEmbed href={v.href} />
+                <InstagramEmbed href={v.href} locale={locale} />
               </div>
             </li>
           );

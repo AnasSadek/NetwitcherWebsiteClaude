@@ -35,7 +35,7 @@ function Chevron({ color = "currentColor" }: { color?: string }) {
       height="11"
       viewBox="0 0 100 100"
       aria-hidden="true"
-      className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
+      className="shrink-0 transition-transform duration-200 ease-out rtl:-scale-x-100 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
     >
       <path d={ARROW_PATH} fill={color} transform="rotate(90 50 50)" />
     </svg>

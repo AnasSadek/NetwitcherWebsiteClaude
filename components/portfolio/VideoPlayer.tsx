@@ -2,6 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { MediaVideo } from "@/lib/portfolio";
 import { ratioValue } from "@/lib/portfolio";
 import type { AccentColor } from "@/lib/services";
@@ -40,6 +42,7 @@ export function VideoPlayer({
   monogram,
   className = "",
   rounded = "rounded-2xl",
+  locale = "de",
 }: {
   video: MediaVideo;
   color: AccentColor;
@@ -47,6 +50,7 @@ export function VideoPlayer({
   monogram?: string;
   className?: string;
   rounded?: string;
+  locale?: Locale;
 }) {
   const id = useId();
   const [active, setActive] = useState(false);
@@ -54,6 +58,7 @@ export function VideoPlayer({
   const ratio = video.ratio ?? "9/16";
   const hasSource = Boolean(video.src);
   const hex = ARROW_COLORS[color];
+  const t = getDict(locale);
 
   useEffect(() => {
     const onActivate = (e: Event) => {
@@ -121,8 +126,8 @@ export function VideoPlayer({
             type="button"
             onClick={play}
             disabled={!hasSource}
-            aria-label={hasSource ? `${video.title} abspielen` : `${video.title}, Video folgt`}
-            className="absolute inset-0 flex items-end justify-between p-4 text-left disabled:cursor-default"
+            aria-label={hasSource ? t.portfolio.playVideo(video.title) : t.portfolio.videoComingSoon(video.title)}
+            className="absolute inset-0 flex items-end justify-between p-4 text-left rtl:text-right disabled:cursor-default"
           >
             <span className="min-w-0">
               <span className="block truncate font-heading text-sm font-bold text-white">{video.title}</span>

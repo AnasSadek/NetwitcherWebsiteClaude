@@ -4,24 +4,30 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { BrandStar, BrandWordmark } from "./brand/Logo";
-import { leistungenServices } from "@/lib/services";
+import { getDict } from "@/lib/i18n/dictionary";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
+import { navServicesAr, navServicesDe } from "@/lib/i18n/nav-services";
 import { ARROW_PATH } from "./arrows";
 
-const navItems = [
-  { href: "/leistungen", label: "Leistungen", dropdown: true },
-  { href: "/studio", label: "Studio" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/ueber-uns", label: "Über uns" },
-  { href: "/blog", label: "Blog" },
-];
-
-export function Header() {
+export function Header({ locale = "de" }: { locale?: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
   const reduce = useReducedMotion();
+  const t = getDict(locale);
+  const navServices = locale === "ar" ? navServicesAr : navServicesDe;
+  const L = (href: string) => withLocale(href, locale);
+
+  const navItems = [
+    { href: L("/leistungen"), match: "/leistungen", label: t.nav.services, dropdown: true },
+    { href: L("/studio"), match: "/studio", label: t.nav.studio },
+    { href: L("/portfolio"), match: "/portfolio", label: t.nav.portfolio },
+    { href: L("/ueber-uns"), match: "/ueber-uns", label: t.nav.about },
+    { href: L("/blog"), match: "/blog", label: t.nav.blog },
+  ];
 
   // Sentinel statt Scroll-Listener: feuert nur beim Übertritt.
   useEffect(() => {
@@ -50,12 +56,12 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="group flex items-center gap-2.5" aria-label="Netwitcher, Startseite">
+        <Link href={L("/")} className="group flex items-center gap-2.5" aria-label={t.nav.homeAriaLabel}>
           <BrandStar size={38} className="transition-transform duration-500 group-hover:rotate-[36deg]" />
           <BrandWordmark height={14} className="text-ink" />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label={t.nav.mainNavAriaLabel}>
           {navItems.map((item) =>
             item.dropdown ? (
               <div
@@ -69,7 +75,7 @@ export function Header() {
                   aria-expanded={servicesOpen}
                   onFocus={() => setServicesOpen(true)}
                   className={`rounded-full px-3.5 py-2.5 text-sm font-semibold transition-colors ${
-                    pathname.startsWith("/leistungen")
+                    pathname.startsWith(L(item.match))
                       ? "text-ink"
                       : "text-ink-3 hover:text-ink"
                   }`}
@@ -92,15 +98,15 @@ export function Header() {
                     >
                       <div className="rounded-card border border-line bg-white p-2 shadow-lift">
                         <Link
-                          href="/studio"
+                          href={L("/studio")}
                           className="block rounded-xl px-4 py-2.5 text-sm font-bold text-pink transition-colors hover:bg-paper-2"
                         >
-                          Content Creation & Studio Berlin
+                          {t.nav.studioDropdownLabel}
                         </Link>
-                        {leistungenServices.map((s) => (
+                        {navServices.map((s) => (
                           <Link
                             key={s.slug}
-                            href={s.href}
+                            href={L(s.href)}
                             className="block rounded-xl px-4 py-2.5 text-sm font-medium text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink"
                           >
                             {s.navTitle}
@@ -128,19 +134,22 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <div className="hidden sm:block">
+            <LanguageSwitcher locale={locale} dict={t} />
+          </div>
           <Link
-            href="/kontakt"
+            href={L("/kontakt")}
             className={`hidden rounded-full px-5 py-2.5 font-heading text-xs font-bold tracking-wide transition-colors duration-200 sm:inline-flex ${
               "bg-ink text-white hover:bg-deep-2"
             }`}
           >
-            Projekt starten
+            {t.nav.contactCta}
           </Link>
           <button
             type="button"
             onClick={() => setMobileOpen((o) => !o)}
             aria-expanded={mobileOpen}
-            aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-label={mobileOpen ? t.nav.menuClose : t.nav.menuOpen}
             className={`flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-full border lg:hidden ${
               "border-line bg-white/70"
             }`}
@@ -158,7 +167,7 @@ export function Header() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            aria-label="Mobile Navigation"
+            aria-label={t.nav.mobileNavAriaLabel}
             className={`overflow-hidden border-t backdrop-blur-xl lg:hidden ${
               "border-line bg-paper/95"
             }`}
@@ -176,13 +185,16 @@ export function Header() {
                 </Link>
               ))}
               <Link
-                href="/kontakt"
+                href={L("/kontakt")}
                 className={`mt-3 block rounded-full px-5 py-3 text-center font-heading text-sm font-bold ${
                   "bg-ink text-white"
                 }`}
               >
-                Projekt starten
+                {t.nav.contactCta}
               </Link>
+              <div className="mt-3 flex justify-center sm:hidden">
+                <LanguageSwitcher locale={locale} dict={t} variant="mobile" />
+              </div>
             </div>
           </motion.nav>
         )}

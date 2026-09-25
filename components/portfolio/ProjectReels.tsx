@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/Reveal";
+import type { Locale } from "@/lib/i18n/locale";
 import type { PortfolioProject } from "@/lib/portfolio";
 import { ReelGallery } from "./ReelGallery";
 
@@ -10,7 +11,7 @@ import { ReelGallery } from "./ReelGallery";
  * Embed, gleiche schwebende, leicht gedrehte Präsentation). Rendert nur,
  * wenn `project.reelsSection` gesetzt ist.
  */
-export function ProjectReels({ project }: { project: PortfolioProject }) {
+export function ProjectReels({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const { eyebrow, heading, intro, reels } = project.reelsSection!;
   return (
     <section aria-labelledby="reels" className="py-14 md:py-20">
@@ -28,7 +29,7 @@ export function ProjectReels({ project }: { project: PortfolioProject }) {
         </Reveal>
 
         <div className="mt-10 md:mt-14">
-          <ReelGallery reels={reels} color={project.color} />
+          <ReelGallery reels={reels} color={project.color} locale={locale} />
         </div>
       </div>
     </section>

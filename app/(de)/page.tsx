@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <Universe />
-      <Journey />
-      <Showcase />
-      <Finale />
+      <Hero locale="de" />
+      <Universe locale="de" />
+      <Journey locale="de" />
+      <Showcase locale="de" />
+      <Finale locale="de" />
     </>
   );
 }

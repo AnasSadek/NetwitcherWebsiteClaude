@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { PortfolioProject } from "@/lib/portfolio";
 import { projectKind } from "@/lib/portfolio";
 import { LaptopFrame, LaptopFrameThumb } from "./LaptopFrame";
@@ -21,11 +23,12 @@ const DRAG_THRESHOLD = 6;
  * Events, wie im Portfolio-Filmstreifen) plus Pfeile; Mobile: natives
  * Touch-Scrollen, unverändert.
  */
-export function FeaturedGallery({ project }: { project: PortfolioProject }) {
+export function FeaturedGallery({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const items = project.gallery!;
   const hex = ARROW_COLORS[project.color];
   const software = projectKind(project) === "software";
   const laptop = project.galleryFrame === "laptop";
+  const t = getDict(locale);
 
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
@@ -109,7 +112,7 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
       <div className="mx-auto max-w-[1500px] px-5 sm:px-8">
         <SectionTitle
           id="produkt"
-          title={software ? "DAS PRODUKT." : "DAS ERLEBNIS."}
+          title={software ? t.portfolio.productSectionTitle : t.portfolio.experienceSectionTitle}
           kicker={project.tech?.length ? project.tech.join(" · ") : undefined}
         />
         <Reveal>
@@ -123,7 +126,7 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
                 key={active}
                 type="button"
                 onClick={() => setLightbox(true)}
-                aria-label={`${items[active].image.alt} vergrössern`}
+                aria-label={t.portfolio.enlargeImage(items[active].image.alt)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -161,10 +164,10 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
               type="button"
               onClick={() => select(Math.max(active - 1, 0))}
               disabled={active === 0}
-              aria-label="Vorheriges Bild"
-              className="absolute -left-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white shadow-soft transition-opacity disabled:pointer-events-none disabled:opacity-0 md:flex"
+              aria-label={t.portfolio.prevImageAria}
+              className="absolute -left-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white shadow-soft transition-opacity disabled:pointer-events-none disabled:opacity-0 md:flex rtl:left-auto rtl:-right-2"
             >
-              <svg width="9" height="9" viewBox="0 0 100 100" aria-hidden="true">
+              <svg width="9" height="9" viewBox="0 0 100 100" aria-hidden="true" className="rtl:-scale-x-100">
                 <path d={ARROW_PATH} fill="currentColor" transform="rotate(180 50 50)" />
               </svg>
             </button>
@@ -172,10 +175,10 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
               type="button"
               onClick={() => select(Math.min(active + 1, items.length - 1))}
               disabled={active === items.length - 1}
-              aria-label="Nächstes Bild"
-              className="absolute -right-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white shadow-soft transition-opacity disabled:pointer-events-none disabled:opacity-0 md:flex"
+              aria-label={t.portfolio.nextImageAria}
+              className="absolute -right-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white shadow-soft transition-opacity disabled:pointer-events-none disabled:opacity-0 md:flex rtl:right-auto rtl:-left-2"
             >
-              <svg width="9" height="9" viewBox="0 0 100 100" aria-hidden="true">
+              <svg width="9" height="9" viewBox="0 0 100 100" aria-hidden="true" className="rtl:-scale-x-100">
                 <path d={ARROW_PATH} fill="currentColor" />
               </svg>
             </button>
@@ -234,8 +237,8 @@ export function FeaturedGallery({ project }: { project: PortfolioProject }) {
           <button
             type="button"
             onClick={() => setLightbox(false)}
-            aria-label="Schliessen"
-            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            aria-label={t.portfolio.closeAria}
+            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 rtl:right-auto rtl:left-5"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

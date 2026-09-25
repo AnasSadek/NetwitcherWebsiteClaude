@@ -1,5 +1,7 @@
 import { Reveal } from "@/components/Reveal";
 import { BrandStar } from "@/components/brand/Logo";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { StripItem } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
 import { FilmStrip } from "./FilmStrip";
@@ -8,7 +10,8 @@ import { FilmStrip } from "./FilmStrip";
  * Knapper Auftakt: eine Zeile Typografie, dann sofort Arbeit.
  * Kein Vollbild-Hero, der die erste Ansicht verschenkt.
  */
-export function PortfolioHero({ items, count }: { items: StripItem[]; count: number }) {
+export function PortfolioHero({ items, count, locale = "de" }: { items: StripItem[]; count: number; locale?: Locale }) {
+  const t = getDict(locale);
   return (
     <header className="relative overflow-hidden pt-28 md:pt-36">
       <div
@@ -25,25 +28,30 @@ export function PortfolioHero({ items, count }: { items: StripItem[]; count: num
             <div className="min-w-0 flex-1">
               <p className="flex items-center gap-3 font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3">
                 <BrandStar size={18} />
-                Portfolio · Netwitcher Berlin
+                {locale === "ar" ? "أعمالنا · نتويتشر برلين" : "Portfolio · Netwitcher Berlin"}
               </p>
               <div className="mt-5">
                 <BoxiTitle
                   as="h1"
-                  lines={["ARBEIT, DIE", { text: "MAN SIEHT.", sweep: true }]}
+                  lines={locale === "ar" ? [{ text: "أعمال تُرى.", sweep: true }] : ["ARBEIT, DIE", { text: "MAN SIEHT.", sweep: true }]}
                   max="7.5rem"
                   min="2rem"
                   fitLines
                   className="text-ink"
+                  locale={locale}
                 />
               </div>
             </div>
-            <div className="max-w-sm shrink-0 lg:w-[360px] lg:pb-3 lg:text-right">
+            <div className="max-w-sm shrink-0 lg:w-[360px] lg:pb-3 lg:text-right rtl:lg:text-left">
               <p className="text-base leading-relaxed text-ink-2 sm:text-lg">
-                Websites, Content, Kampagnen und Software für Marken, die mehr wollen.
+                {locale === "ar"
+                  ? "مواقع ومحتوى وحملات وبرمجيات لعلامات تجارية تطمح لأكثر."
+                  : "Websites, Content, Kampagnen und Software für Marken, die mehr wollen."}
               </p>
               <p className="mt-4 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
-                {count} {count === 1 ? "Projekt" : "Projekte"} · Auswahl
+                {locale === "ar"
+                  ? `${count} ${count === 1 ? t.portfolio.projectCountSingular : t.portfolio.projectCountPlural} · مختارة`
+                  : `${count} ${count === 1 ? t.portfolio.projectCountSingular : t.portfolio.projectCountPlural} · Auswahl`}
               </p>
             </div>
           </div>

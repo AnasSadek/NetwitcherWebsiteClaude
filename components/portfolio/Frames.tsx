@@ -1,3 +1,5 @@
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { MediaImage } from "@/lib/portfolio";
 import type { AccentColor } from "@/lib/services";
 import { SmartImage } from "./SmartImage";
@@ -11,6 +13,7 @@ export function BrowserFrame({
   priority,
   monogram,
   className = "",
+  locale = "de",
 }: {
   image: MediaImage;
   color: AccentColor;
@@ -19,7 +22,9 @@ export function BrowserFrame({
   priority?: boolean;
   monogram?: string;
   className?: string;
+  locale?: Locale;
 }) {
+  const t = getDict(locale);
   const host = url ? url.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
   return (
     <div
@@ -42,7 +47,7 @@ export function BrowserFrame({
           sizes={sizes}
           priority={priority}
           monogram={monogram}
-          label="Desktop-Screenshot folgt"
+          label={t.portfolio.screenshotFollowsDesktop}
           rounded="rounded-none"
         />
       </div>
@@ -57,7 +62,8 @@ export function PhoneFrame({
   sizes,
   monogram,
   className = "",
-  label = "Mobile-Screenshot folgt",
+  label,
+  locale = "de",
 }: {
   image: MediaImage;
   color: AccentColor;
@@ -65,7 +71,9 @@ export function PhoneFrame({
   monogram?: string;
   className?: string;
   label?: string;
+  locale?: Locale;
 }) {
+  const resolvedLabel = label ?? getDict(locale).portfolio.screenshotFollowsMobile;
   return (
     <div
       className={`relative rounded-[2rem] border border-ink/80 bg-ink p-1.5 shadow-lift md:rounded-[2.4rem] md:p-2 ${className}`}
@@ -80,7 +88,7 @@ export function PhoneFrame({
         ratio="9/16"
         sizes={sizes}
         monogram={monogram}
-        label={label}
+        label={resolvedLabel}
         rounded="rounded-[1.6rem] md:rounded-[1.9rem]"
       />
     </div>

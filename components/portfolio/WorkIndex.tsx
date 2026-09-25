@@ -4,6 +4,8 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { ARROW_COLORS } from "@/components/arrows";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { PortfolioCategory, PortfolioProject } from "@/lib/portfolio";
 import type { AccentColor } from "@/lib/services";
 import { FeatureSpread, WorkTile } from "./WorkItems";
@@ -85,9 +87,10 @@ function isFilter(v: string | null, chips: CategoryChip[]): v is Filter {
   return v === "all" || chips.some((c) => c.id === v);
 }
 
-function Index({ projects, categories }: { projects: PortfolioProject[]; categories: CategoryChip[] }) {
+function Index({ projects, categories, locale = "de" }: { projects: PortfolioProject[]; categories: CategoryChip[]; locale?: Locale }) {
   const params = useSearchParams();
   const reduce = useReducedMotion();
+  const t = getDict(locale);
   const initial = params.get("f");
   const [filter, setFilter] = useState<Filter>(isFilter(initial, categories) ? initial : "all");
 
@@ -106,7 +109,7 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
   const items = useMemo(() => arrange(visible, true), [visible]);
 
   const chips: { id: Filter; label: string; count: number; color?: AccentColor }[] = [
-    { id: "all", label: "Alle", count: projects.length },
+    { id: "all", label: t.portfolio.allFilter, count: projects.length },
     ...categories,
   ];
 
@@ -115,7 +118,7 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
   return (
     <section id="arbeiten" aria-labelledby="arbeiten-heading" className="scroll-mt-24">
       <h2 id="arbeiten-heading" className="sr-only">
-        Projekte
+        {t.nav.portfolio}
       </h2>
 
       {/* Filterleiste, klebt unter dem Header */}
@@ -123,7 +126,7 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
         <div className="mx-auto max-w-[1500px]">
           <div
             role="group"
-            aria-label="Projekte filtern"
+            aria-label={t.portfolio.filterAriaLabel}
             className="no-scrollbar flex gap-2 overflow-x-auto px-5 py-3 sm:px-8"
           >
             {chips.map((c) => {
@@ -153,7 +156,7 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
               );
             })}
             <span aria-live="polite" className="sr-only">
-              {visible.length} {visible.length === 1 ? "Projekt" : "Projekte"}
+              {visible.length} {visible.length === 1 ? t.portfolio.projectCountSingular : t.portfolio.projectCountPlural}
             </span>
           </div>
         </div>
@@ -173,9 +176,9 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
                 className={it.type === "spread" ? "md:col-span-12" : SPAN_CLASS[it.span]}
               >
                 {it.type === "spread" ? (
-                  <FeatureSpread project={it.project} flip={it.flip} priority={i === 0} />
+                  <FeatureSpread project={it.project} flip={it.flip} priority={i === 0} locale={locale} />
                 ) : (
-                  <WorkTile project={it.project} ratioClass={RATIO_CLASS[it.span]} sizes={SIZES[it.span]} />
+                  <WorkTile project={it.project} ratioClass={RATIO_CLASS[it.span]} sizes={SIZES[it.span]} locale={locale} />
                 )}
               </motion.div>
             ))}
@@ -184,13 +187,13 @@ function Index({ projects, categories }: { projects: PortfolioProject[]; categor
       </LayoutGroup>
 
       {visible.length === 0 && (
-        <p className="mt-16 text-center text-ink-3">In dieser Kategorie zeigen wir bald erste Projekte.</p>
+        <p className="mt-16 text-center text-ink-3">{t.portfolio.emptyCategory}</p>
       )}
     </section>
   );
 }
 
-export function WorkIndex(props: { projects: PortfolioProject[]; categories: CategoryChip[] }) {
+export function WorkIndex(props: { projects: PortfolioProject[]; categories: CategoryChip[]; locale?: Locale }) {
   return (
     <Suspense fallback={<div className="mt-14 min-h-[60vh]" aria-hidden="true" />}>
       <Index {...props} />

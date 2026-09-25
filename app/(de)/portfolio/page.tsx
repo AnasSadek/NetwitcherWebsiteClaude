@@ -44,15 +44,15 @@ export default function PortfolioPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <PortfolioHero items={stripMedia()} count={portfolioProjects.length} />
+      <PortfolioHero items={stripMedia()} count={portfolioProjects.length} locale="de" />
       <div className="mx-auto max-w-[1500px] px-5 pt-14 sm:px-8 md:pt-20">
-        <WorkIndex projects={portfolioProjects} categories={categoriesInUse()} />
+        <WorkIndex projects={portfolioProjects} categories={categoriesInUse()} locale="de" />
       </div>
       <div className="mt-24 md:mt-32">
-        <ClientStrip projects={portfolioProjects} />
+        <ClientStrip projects={portfolioProjects} locale="de" />
       </div>
-      <ServiceSpectrum />
-      <PortfolioCTA />
+      <ServiceSpectrum locale="de" />
+      <PortfolioCTA locale="de" />
     </>
   );
 }

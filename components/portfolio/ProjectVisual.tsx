@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { PortfolioProject } from "@/lib/portfolio";
 import { projectKind, ratioValue } from "@/lib/portfolio";
 import { BrowserFrame, PhoneFrame } from "./Frames";
@@ -19,18 +21,21 @@ export function ProjectVisual({
   project,
   priority = false,
   sizes = "(min-width: 1024px) 60vw, 100vw",
+  locale = "de",
 }: {
   project: PortfolioProject;
   priority?: boolean;
   sizes?: string;
+  locale?: Locale;
 }) {
   const kind = projectKind(project);
   const m = mono(project.client);
+  const t = getDict(locale);
 
   if (kind === "website" && project.website) {
     const { desktop, mobile, url } = project.website;
     return (
-      <div className="relative pr-[14%] pb-[8%] sm:pr-[18%]">
+      <div className="relative pr-[14%] pb-[8%] sm:pr-[18%] rtl:pr-0 rtl:pl-[14%] sm:rtl:pl-[18%]">
         <BrowserFrame
           image={desktop ?? project.cover}
           color={project.color}
@@ -38,13 +43,15 @@ export function ProjectVisual({
           sizes={sizes}
           priority={priority}
           monogram={m}
+          locale={locale}
         />
-        <div className="absolute bottom-0 right-0 w-[30%] max-w-[210px] sm:w-[27%]">
+        <div className="absolute bottom-0 right-0 w-[30%] max-w-[210px] sm:w-[27%] rtl:right-auto rtl:left-0">
           <PhoneFrame
             image={mobile ?? { alt: `${project.client}, mobile Ansicht` }}
             color={project.color}
             sizes="(min-width: 1024px) 14vw, 30vw"
             monogram={m}
+            locale={locale}
           />
         </div>
       </div>
@@ -91,7 +98,7 @@ export function ProjectVisual({
   if (kind === "software" && project.screens?.length) {
     const [main, second] = project.screens;
     return (
-      <div className="relative pb-[10%] pr-[10%]">
+      <div className="relative pb-[10%] pr-[10%] rtl:pr-0 rtl:pl-[10%]">
         {project.heroContain ? (
           <div
             className="relative w-full overflow-hidden rounded-2xl border border-line bg-paper-2 shadow-lift md:rounded-3xl"
@@ -117,19 +124,19 @@ export function ProjectVisual({
               sizes={sizes}
               priority={priority}
               monogram={m}
-              label={main.caption ?? "Screenshot folgt"}
+              label={main.caption ?? t.portfolio.screenshotComingSoon}
               rounded="rounded-none"
             />
           </div>
         )}
         {second && (
-          <div className="absolute bottom-0 right-0 w-[46%] overflow-hidden rounded-xl border border-line shadow-lift md:rounded-2xl">
+          <div className="absolute bottom-0 right-0 w-[46%] overflow-hidden rounded-xl border border-line shadow-lift md:rounded-2xl rtl:right-auto rtl:left-0">
             <SmartImage
               image={second}
               color={project.color}
               ratio={second.ratio === "9/16" ? "9/16" : "16/10"}
               sizes="(min-width: 1024px) 28vw, 46vw"
-              label={second.caption ?? "Screenshot folgt"}
+              label={second.caption ?? t.portfolio.screenshotComingSoon}
               rounded="rounded-none"
               className={second.ratio === "9/16" ? "max-h-[70%]" : ""}
             />
@@ -141,7 +148,7 @@ export function ProjectVisual({
 
   const companion = project.images?.[0] ?? project.posters?.[0] ?? project.socialPosts?.[0];
   return (
-    <div className="relative pb-[8%] pr-[12%]">
+    <div className="relative pb-[8%] pr-[12%] rtl:pr-0 rtl:pl-[12%]">
       <SmartImage
         image={project.cover}
         color={project.color}
@@ -158,7 +165,7 @@ export function ProjectVisual({
           ratio="4/5"
           sizes="(min-width: 1024px) 18vw, 36vw"
           rounded="rounded-xl md:rounded-2xl"
-          className="absolute bottom-0 right-0 w-[34%] border border-line shadow-lift"
+          className="absolute bottom-0 right-0 w-[34%] border border-line shadow-lift rtl:right-auto rtl:left-0"
         />
       )}
     </div>

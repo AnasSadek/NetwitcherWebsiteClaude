@@ -13,6 +13,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { ARROW_PATH, ARROW_COLORS, STAR_ORDER } from "@/components/arrows";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 import { HeadTurn, lensAt, type HeadTurnManifest } from "./HeadTurn";
 import headTurnManifest from "./headturn.manifest.json";
 
@@ -79,6 +80,7 @@ function MagneticCard({
   color,
   title,
   text,
+  goLabel,
   parallax,
   enabled,
 }: {
@@ -86,6 +88,7 @@ function MagneticCard({
   color: string;
   title: string;
   text: string;
+  goLabel: string;
   parallax: MotionValue<string>;
   enabled: boolean;
 }) {
@@ -117,7 +120,7 @@ function MagneticCard({
           <p className="mt-3 font-heading text-base font-extrabold text-white">{title}</p>
           <p className="mt-1 text-sm leading-snug text-white/65">{text}</p>
           <span className="mt-3 inline-flex rounded-full bg-white px-3.5 py-1 font-heading text-[11px] font-bold uppercase tracking-wider text-ink">
-            Go
+            {goLabel}
           </span>
         </Link>
       </motion.div>
@@ -127,7 +130,7 @@ function MagneticCard({
 
 type Phase = "asleep" | "waking" | "awake";
 
-export function HeroStage() {
+export function HeroStage({ locale = "de" }: { locale?: Locale } = {}) {
   const reduce = useMediaFlag("(prefers-reduced-motion: reduce)");
   const coarse = useMediaFlag("(pointer: coarse)");
   const wide = useMediaFlag("(min-width: 1024px)");
@@ -542,7 +545,7 @@ export function HeroStage() {
               <button
                 type="button"
                 onClick={shoot}
-                aria-label="WITCH macht ein Foto"
+                aria-label={locale === "ar" ? "ويتش يلتقط صورة" : "WITCH macht ein Foto"}
                 className="absolute inset-0 z-10 cursor-pointer rounded-[32px] focus-visible:outline-offset-[-6px] md:rounded-[40px]"
               />
             </motion.div>
@@ -568,18 +571,20 @@ export function HeroStage() {
       {/* ---------- Schwebende Service-Karten rechts (Desktop) ---------- */}
       <div className="pointer-events-none absolute inset-y-0 right-10 z-20 hidden w-[300px] flex-col justify-center gap-4 lg:flex xl:right-14">
         <MagneticCard
-          href="/studio"
+          href={withLocale("/studio", locale)}
           color={ARROW_COLORS.pink}
-          title="Content & Studio"
-          text="Foto, Video und Reels aus dem Studio Berlin"
+          title={locale === "ar" ? "المحتوى والاستوديو" : "Content & Studio"}
+          text={locale === "ar" ? "صور وفيديوهات وريلز من استوديو برلين" : "Foto, Video und Reels aus dem Studio Berlin"}
+          goLabel={locale === "ar" ? "عرض" : "Go"}
           parallax={card1}
           enabled={pointer}
         />
         <MagneticCard
-          href="/leistungen/performance-marketing"
+          href={withLocale("/leistungen/performance-marketing", locale)}
           color={ARROW_COLORS.sky}
-          title="Social & Ads"
-          text="Meta, TikTok und Google, organisch und bezahlt"
+          title={locale === "ar" ? "سوشيال ميديا وإعلانات" : "Social & Ads"}
+          text={locale === "ar" ? "Meta وTikTok وGoogle، عضوي ومدفوع" : "Meta, TikTok und Google, organisch und bezahlt"}
+          goLabel={locale === "ar" ? "عرض" : "Go"}
           parallax={card2}
           enabled={pointer}
         />

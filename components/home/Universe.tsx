@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 
 /**
  * „Fünf Farben, ein Universum" — die Disziplinen als Logo-System.
@@ -19,7 +20,7 @@ type Field = {
   big?: boolean;
 };
 
-const FIELDS: Field[] = [
+const FIELDS_DE: Field[] = [
   {
     color: "pink",
     bg: "#fdeef5",
@@ -64,12 +65,57 @@ const FIELDS: Field[] = [
   },
 ];
 
-function FieldCard({ f, delay }: { f: Field; delay: number }) {
+const FIELDS_AR: Field[] = [
+  {
+    color: "pink",
+    bg: "#fdeef5",
+    title: "المحتوى والاستوديو",
+    copy: "صور وفيديوهات وريلز من استوديونا الخاص في برلين. تخطيط وإنتاج ومونتاج كامل.",
+    items: ["تصوير المنتجات", "ريلز وفيديوهات قصيرة", "فيديوهات إعلانية", "الإخراج الإبداعي"],
+    href: "/studio",
+    big: true,
+  },
+  {
+    color: "sky",
+    bg: "#e9f7fd",
+    title: "سوشيال ميديا وإعلانات",
+    copy: "نوصل المحتوى إلى الأشخاص المناسبين: بشكل عضوي ومدفوع.",
+    items: ["إدارة السوشيال ميديا", "إعلانات Meta", "إعلانات TikTok", "إعلانات Google"],
+    href: "/leistungen/performance-marketing",
+    big: true,
+  },
+  {
+    color: "mint",
+    bg: "#e9fbf7",
+    title: "مواقع ومتاجر إلكترونية",
+    copy: "مواقع ومتاجر إلكترونية مبنية لتحقيق نتائج ملموسة.",
+    items: ["تصميم المواقع", "صفحات هبوط", "متاجر إلكترونية"],
+    href: "/leistungen/webdesign-ecommerce",
+  },
+  {
+    color: "violet",
+    bg: "#f1ecfd",
+    title: "برمجيات وذكاء اصطناعي",
+    copy: "أدوات وبوابات وأتمتة مصممة خصيصاً لاحتياجاتك.",
+    items: ["تطوير البرمجيات", "أتمتة بالذكاء الاصطناعي", "الدعم الفني"],
+    href: "/leistungen/softwareentwicklung",
+  },
+  {
+    color: "sun",
+    bg: "#fdf8e4",
+    title: "الهوية البصرية والتصميم",
+    copy: "شعار ونظام تصميم ومطبوعات تجعل علامتك لا تُنسى.",
+    items: ["الهوية البصرية", "أنظمة التصميم", "الطباعة"],
+    href: "/leistungen/branding-design",
+  },
+];
+
+function FieldCard({ f, delay, locale, moreLabel }: { f: Field; delay: number; locale: Locale; moreLabel: string }) {
   const hex = ARROW_COLORS[f.color];
   return (
     <Reveal delay={delay} className={f.big ? "md:col-span-3" : "md:col-span-2"}>
       <Link
-        href={f.href}
+        href={withLocale(f.href, locale)}
         className="group relative flex h-full flex-col overflow-hidden rounded-card p-7 transition-transform duration-300 hover:-translate-y-1 md:p-8"
         style={{ background: f.bg }}
       >
@@ -79,7 +125,7 @@ function FieldCard({ f, delay }: { f: Field; delay: number }) {
           height={f.big ? 150 : 110}
           viewBox="0 0 100 100"
           aria-hidden="true"
-          className="absolute -right-6 -top-6 opacity-[0.16] transition-transform duration-500 group-hover:rotate-[14deg] group-hover:scale-110"
+          className="absolute -right-6 -top-6 opacity-[0.16] transition-transform duration-500 group-hover:rotate-[14deg] group-hover:scale-110 rtl:right-auto rtl:-left-6"
         >
           <path d={ARROW_PATH} fill={hex} />
         </svg>
@@ -102,13 +148,13 @@ function FieldCard({ f, delay }: { f: Field; delay: number }) {
           ))}
         </ul>
         <span className="mt-auto inline-flex items-center gap-2 pt-6 font-heading text-xs font-bold uppercase tracking-[0.15em] text-ink">
-          Mehr dazu
+          {moreLabel}
           <svg
             width="10"
             height="10"
             viewBox="0 0 100 100"
             aria-hidden="true"
-            className="transition-transform duration-200 group-hover:translate-x-1"
+            className="transition-transform duration-200 group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
           >
             <path d={ARROW_PATH} fill={hex} transform="rotate(90 50 50)" />
           </svg>
@@ -118,28 +164,36 @@ function FieldCard({ f, delay }: { f: Field; delay: number }) {
   );
 }
 
-export function Universe() {
+export function Universe({ locale = "de" }: { locale?: Locale }) {
+  const fields = locale === "ar" ? FIELDS_AR : FIELDS_DE;
+  const moreLabel = locale === "ar" ? "اكتشف المزيد" : "Mehr dazu";
   return (
     <section className="relative py-24 md:py-32" aria-labelledby="universum">
       <div className="mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
           <div className="max-w-2xl">
             <h2 id="universum" className="font-boxi text-3xl leading-[1.1] text-ink md:text-5xl">
-              FÜNF FARBEN.
-              <br />
-              EIN UNIVERSUM.
+              {locale === "ar" ? (
+                <>خمسة ألوان. عالم واحد.</>
+              ) : (
+                <>
+                  FÜNF FARBEN.
+                  <br />
+                  EIN UNIVERSUM.
+                </>
+              )}
             </h2>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-2">
-              Jeder Arm unseres Sterns steht für eine Disziplin. Zusammen sind
-              sie ein System: Content entsteht, wird verbreitet und landet dort,
-              wo aus Aufmerksamkeit Anfragen werden.
+              {locale === "ar"
+                ? "كل ذراع من نجمتنا يمثل تخصصاً. معاً يشكلون نظاماً متكاملاً: يُصنع المحتوى، يُنشر، ويصل إلى حيث يتحول الاهتمام إلى طلبات حقيقية."
+                : "Jeder Arm unseres Sterns steht für eine Disziplin. Zusammen sind sie ein System: Content entsteht, wird verbreitet und landet dort, wo aus Aufmerksamkeit Anfragen werden."}
             </p>
           </div>
         </Reveal>
 
         <div className="mt-12 grid gap-5 md:grid-cols-6">
-          {FIELDS.map((f, i) => (
-            <FieldCard key={f.title} f={f} delay={i * 0.06} />
+          {fields.map((f, i) => (
+            <FieldCard key={f.title} f={f} delay={i * 0.06} locale={locale} moreLabel={moreLabel} />
           ))}
         </div>
       </div>

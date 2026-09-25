@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import type { Locale } from "@/lib/i18n/locale";
 
 /**
  * „Vom Blick zum Klick" — der Weg, den jede Marke bei uns geht.
@@ -11,7 +12,7 @@ import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
  * Die Pfeil-Bullets sind die echten Logo-Arme in Erzählreihenfolge.
  */
 
-const STEPS: { color: keyof typeof ARROW_COLORS; title: string; copy: string }[] = [
+const STEPS_DE: { color: keyof typeof ARROW_COLORS; title: string; copy: string }[] = [
   {
     color: "pink",
     title: "Auffallen",
@@ -34,10 +35,34 @@ const STEPS: { color: keyof typeof ARROW_COLORS; title: string; copy: string }[]
   },
 ];
 
-export function Journey() {
+const STEPS_AR: { color: keyof typeof ARROW_COLORS; title: string; copy: string }[] = [
+  {
+    color: "pink",
+    title: "الإبهار",
+    copy: "فكرة وإنتاج: صور وريلز وفيديوهات توقف المتابع أثناء التصفح.",
+  },
+  {
+    color: "sky",
+    title: "الانتشار",
+    copy: "السوشيال ميديا والإعلانات توصل المحتوى إلى الأشخاص المناسبين.",
+  },
+  {
+    color: "mint",
+    title: "الوصول",
+    copy: "موقع أو صفحة هبوط أو متجر: وجهة تحوّل الزيارة إلى نية حقيقية للشراء.",
+  },
+  {
+    color: "violet",
+    title: "التأثير",
+    copy: "طلبات ومواعيد ومبيعات. نتائج تُقاس، لا تُشعر فقط.",
+  },
+];
+
+export function Journey({ locale = "de" }: { locale?: Locale }) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const [drawn, setDrawn] = useState(false);
+  const steps = locale === "ar" ? STEPS_AR : STEPS_DE;
 
   useEffect(() => {
     const el = ref.current;
@@ -65,13 +90,20 @@ export function Journey() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 id="journey" className="font-boxi text-3xl leading-[1.1] text-ink md:text-5xl">
-              VOM BLICK
-              <br />
-              ZUM KLICK.
+              {locale === "ar" ? (
+                <>من النظرة إلى النقرة.</>
+              ) : (
+                <>
+                  VOM BLICK
+                  <br />
+                  ZUM KLICK.
+                </>
+              )}
             </h2>
             <p className="max-w-sm text-base leading-relaxed text-ink-2">
-              Kein Bauchladen, ein Weg. Jede Leistung zahlt auf die nächste
-              Station ein.
+              {locale === "ar"
+                ? "لا تشتت، بل مسار واحد. كل خدمة تبني على التي تليها."
+                : "Kein Bauchladen, ein Weg. Jede Leistung zahlt auf die nächste Station ein."}
             </p>
           </div>
         </Reveal>
@@ -80,23 +112,23 @@ export function Journey() {
           {/* Verbindungslinie, zeichnet sich einmal */}
           <div
             aria-hidden="true"
-            className="absolute left-[13px] top-4 hidden h-[3px] w-[calc(100%-26px)] origin-left rounded-full brand-sweep md:block"
+            className="absolute left-[13px] top-4 hidden h-[3px] w-[calc(100%-26px)] origin-left rounded-full brand-sweep md:block rtl:origin-right rtl:left-auto rtl:right-[13px]"
             style={{
               transform: drawn || reduce ? "scaleX(1)" : "scaleX(0)",
               transition: reduce ? "none" : "transform 1100ms cubic-bezier(0.23,1,0.32,1) 150ms",
             }}
           />
           <ol className="grid gap-10 md:grid-cols-4 md:gap-6">
-            {STEPS.map((s, i) => (
+            {steps.map((s, i) => (
               <Reveal as="li" key={s.title} delay={0.12 + i * 0.14} className="relative">
                 <div className="flex items-center gap-3 md:block">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-paper-2">
-                    <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true" className="rtl:-scale-x-100">
                       <path d={ARROW_PATH} fill={ARROW_COLORS[s.color]} transform="rotate(90 50 50)" />
                     </svg>
                   </span>
                   <h3 className="font-heading text-xl font-extrabold tracking-tight text-ink md:mt-5">
-                    <span className="mr-2 text-sm font-bold text-ink-3">0{i + 1}</span>
+                    <span className="mr-2 rtl:mr-0 rtl:ml-2 text-sm font-bold text-ink-3">0{i + 1}</span>
                     {s.title}
                   </h3>
                 </div>

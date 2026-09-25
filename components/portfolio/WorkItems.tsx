@@ -2,18 +2,13 @@
 
 import Link from "next/link";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { getDict } from "@/lib/i18n/dictionary";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 import type { PortfolioProject } from "@/lib/portfolio";
 import { getCategory, projectKind } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
 import { ProjectVisual } from "./ProjectVisual";
 import { SmartImage } from "./SmartImage";
-
-const KIND_LABEL = {
-  website: "Website",
-  video: "Video & Social",
-  software: "Software",
-  visual: "Design & Foto",
-} as const;
 
 function Chevron({ color }: { color: string }) {
   return (
@@ -22,7 +17,7 @@ function Chevron({ color }: { color: string }) {
       height="12"
       viewBox="0 0 100 100"
       aria-hidden="true"
-      className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+      className="transition-transform duration-300 ease-out rtl:-scale-x-100 group-hover:translate-x-1.5 rtl:group-hover:-translate-x-1.5"
     >
       <path d={ARROW_PATH} fill={color} transform="rotate(90 50 50)" />
     </svg>
@@ -66,14 +61,17 @@ export function WorkTile({
   project,
   ratioClass,
   sizes,
+  locale = "de",
 }: {
   project: PortfolioProject;
   ratioClass: string;
   sizes: string;
+  locale?: Locale;
 }) {
   const kind = projectKind(project);
+  const t = getDict(locale);
   return (
-    <Link href={`/portfolio/${project.slug}`} className="group block rounded-3xl focus-visible:outline-offset-8">
+    <Link href={withLocale(`/portfolio/${project.slug}`, locale)} className="group block rounded-3xl focus-visible:outline-offset-8">
       <div className="relative overflow-hidden rounded-2xl md:rounded-3xl">
         <SmartImage
           image={project.cover}
@@ -84,14 +82,14 @@ export function WorkTile({
           rounded="rounded-2xl md:rounded-3xl"
           imgClassName="transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
         />
-        <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-black/40 px-3 py-1 font-heading text-[10px] font-bold uppercase tracking-[0.2em] text-white/85 backdrop-blur-md">
-          {KIND_LABEL[kind]}
+        <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-black/40 px-3 py-1 font-heading text-[10px] font-bold uppercase tracking-[0.2em] text-white/85 backdrop-blur-md rtl:right-auto rtl:left-4">
+          {t.portfolio.kindLabels[kind]}
         </span>
         <span
-          className="pointer-events-none absolute bottom-4 right-4 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full bg-white text-ink opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+          className="pointer-events-none absolute bottom-4 right-4 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full bg-white text-ink opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 rtl:right-auto rtl:left-4"
           aria-hidden="true"
         >
-          <svg width="13" height="13" viewBox="0 0 100 100">
+          <svg width="13" height="13" viewBox="0 0 100 100" className="rtl:-scale-x-100">
             <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
           </svg>
         </span>
@@ -101,7 +99,7 @@ export function WorkTile({
         />
       </div>
       <Caption project={project} />
-      <span className="sr-only">Projekt ansehen</span>
+      <span className="sr-only">{t.portfolio.viewProject}</span>
     </Link>
   );
 }
@@ -111,13 +109,16 @@ export function FeatureSpread({
   project,
   flip = false,
   priority = false,
+  locale = "de",
 }: {
   project: PortfolioProject;
   flip?: boolean;
   priority?: boolean;
+  locale?: Locale;
 }) {
   const hex = ARROW_COLORS[project.color];
   const cats = project.categories.map((c) => getCategory(c).label);
+  const t = getDict(locale);
   return (
     <article
       className="relative overflow-hidden rounded-[28px] border border-line bg-white shadow-soft md:rounded-[40px]"
@@ -136,7 +137,7 @@ export function FeatureSpread({
             <span className="text-ink-3">{project.year}</span>
           </p>
           <div className="mt-5">
-            <BoxiTitle as="h3" lines={[project.title]} max="2.9rem" min="1.1rem" className="text-ink" />
+            <BoxiTitle as="h3" lines={[project.title]} max="2.9rem" min="1.1rem" className="text-ink" locale={locale} />
           </div>
           <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-2 md:text-base">
             {project.description}
@@ -153,10 +154,10 @@ export function FeatureSpread({
           </ul>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link
-              href={`/portfolio/${project.slug}`}
+              href={withLocale(`/portfolio/${project.slug}`, locale)}
               className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-6 py-3 font-heading text-sm font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
             >
-              Projekt ansehen
+              {t.portfolio.viewProject}
               <Chevron color="currentColor" />
             </Link>
             {project.website?.url && (
@@ -166,7 +167,7 @@ export function FeatureSpread({
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 font-heading text-xs font-bold uppercase tracking-[0.18em] text-ink-2 transition-colors hover:text-ink"
               >
-                Website besuchen
+                {t.portfolio.visitWebsite}
                 <Chevron color={hex} />
               </a>
             )}
@@ -178,8 +179,8 @@ export function FeatureSpread({
 
         <div className={`min-w-0 lg:col-span-7 ${flip ? "lg:order-1" : ""}`}>
           <Link
-            href={`/portfolio/${project.slug}`}
-            aria-label={`${project.client}: ${project.title} ansehen`}
+            href={withLocale(`/portfolio/${project.slug}`, locale)}
+            aria-label={`${project.client}: ${project.title}`}
             className="group block rounded-3xl transition-transform duration-500 ease-out hover:-translate-y-1 focus-visible:outline-offset-8"
           >
             <ProjectVisual project={project} priority={priority} />

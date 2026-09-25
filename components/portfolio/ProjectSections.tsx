@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
 import { BrandLogo } from "@/components/brand/Logo";
+import { getDict } from "@/lib/i18n/dictionary";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 import type { MediaImage, MediaVideo, PortfolioProject } from "@/lib/portfolio";
 import { getCategory, projectKind } from "@/lib/portfolio";
 import { BoxiTitle } from "./BoxiTitle";
@@ -13,6 +15,22 @@ import { VideoPlayer } from "./VideoPlayer";
 
 /* Gemeinsame Bausteine der Case-Study-Seite. Jeder Abschnitt rendert nur,
    wenn das Projekt die passenden Daten hat – die Seite baut sich selbst. */
+
+/** Pfeil-Icon, das im hover die Leserichtung entlangwandert und in RTL
+ *  gespiegelt wird (siehe components/Button.tsx's Chevron, gleiches Muster). */
+function ArrowGlyph({ color = "currentColor", size = 10 }: { color?: string; size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+      className="transition-transform rtl:-scale-x-100 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
+    >
+      <path d={ARROW_PATH} fill={color} transform="rotate(90 50 50)" />
+    </svg>
+  );
+}
 
 export function SectionTitle({ kicker, title, id }: { kicker?: string; title: string; id: string }) {
   return (
@@ -37,8 +55,9 @@ const Wrap = ({ children, id }: { children: React.ReactNode; id?: string }) => (
 
 /* ------------------------------ Kopf ---------------------------------- */
 
-export function ProjectHeader({ project }: { project: PortfolioProject }) {
+export function ProjectHeader({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const hex = ARROW_COLORS[project.color];
+  const t = getDict(locale);
   return (
     <header className="relative overflow-hidden pt-28 md:pt-36">
       <div
@@ -48,9 +67,9 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
       />
       <div className="relative mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
-          <nav aria-label="Brotkrumen" className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
-            <Link href="/portfolio" className="transition-colors hover:text-ink">
-              Portfolio
+          <nav aria-label={t.portfolio.breadcrumbAriaLabel} className="flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-[0.25em] text-ink-3">
+            <Link href={withLocale("/portfolio", locale)} className="transition-colors hover:text-ink">
+              {t.nav.portfolio}
             </Link>
             <span aria-hidden="true" className="text-ink/25">
               /
@@ -66,11 +85,11 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                 project.logo && (
                   <Image
                     src={project.logo}
-                    alt={`${project.client}, Logo`}
+                    alt={t.portfolio.logoAlt(project.client)}
                     width={224}
                     height={112}
                     priority
-                    className="mb-6 h-14 w-auto max-w-[220px] object-contain object-left md:h-16"
+                    className="mb-6 h-14 w-auto max-w-[220px] object-contain object-left md:h-16 rtl:object-right"
                   />
                 )
               )}
@@ -81,14 +100,14 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                 <span className="text-ink-3">{project.year}</span>
               </p>
               <div className="mt-5">
-                <BoxiTitle as="h1" lines={[project.title]} max="5.5rem" min="1.375rem" className="text-ink" />
+                <BoxiTitle as="h1" lines={[project.title]} max="5.5rem" min="1.375rem" className="text-ink" locale={locale} />
               </div>
             </div>
             <div className="lg:col-span-4 lg:pb-2">
               <p className="text-base leading-relaxed text-ink-2 md:text-lg">{project.description}</p>
               {project.placeholder && (
                 <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-heading text-[10px] font-bold uppercase tracking-[0.2em] text-ink-3">
-                  Vorschau · Inhalte folgen
+                  {t.portfolio.previewBadge}
                 </p>
               )}
             </div>
@@ -96,11 +115,11 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
 
           <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-6 md:grid-cols-4">
             <div>
-              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">Leistungen</dt>
+              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">{t.portfolio.servicesLabel}</dt>
               <dd className="mt-2 text-sm font-semibold text-ink-2">{project.services.join(", ")}</dd>
             </div>
             <div>
-              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">Bereich</dt>
+              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">{t.portfolio.areaLabel}</dt>
               <dd className="mt-2 text-sm font-semibold text-ink-2">
                 {[project.industry, ...project.categories.map((c) => getCategory(c).label)]
                   .filter(Boolean)
@@ -108,7 +127,7 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
               </dd>
             </div>
             <div>
-              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">Jahr</dt>
+              <dt className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-ink-3">{t.portfolio.yearLabel}</dt>
               <dd className="mt-2 text-sm font-semibold text-ink-2">{project.year}</dd>
             </div>
             <div className="flex items-end md:justify-end">
@@ -119,10 +138,8 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
                 >
-                  Website besuchen
-                  <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                    <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
-                  </svg>
+                  {t.portfolio.visitWebsite}
+                  <ArrowGlyph />
                 </a>
               ) : project.links?.[0] ? (
                 project.links[0].href.startsWith("http") ? (
@@ -133,9 +150,7 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                     className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
                   >
                     {project.links[0].label}
-                    <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                      <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
-                    </svg>
+                    <ArrowGlyph />
                   </a>
                 ) : (
                   <Link
@@ -143,9 +158,7 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
                     className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-5 py-2.5 font-heading text-xs font-bold tracking-wide text-white transition-colors hover:bg-ink-2"
                   >
                     {project.links[0].label}
-                    <svg width="10" height="10" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                      <path d={ARROW_PATH} fill="currentColor" transform="rotate(90 50 50)" />
-                    </svg>
+                    <ArrowGlyph />
                   </Link>
                 )
               ) : null}
@@ -159,11 +172,12 @@ export function ProjectHeader({ project }: { project: PortfolioProject }) {
 
 /* ------------------------------ Story --------------------------------- */
 
-export function ProjectStory({ story }: { story: NonNullable<PortfolioProject["story"]> }) {
+export function ProjectStory({ story, locale = "de" }: { story: NonNullable<PortfolioProject["story"]>; locale?: Locale }) {
+  const t = getDict(locale);
   return (
     <Wrap id="story">
       <h2 id="story" className="sr-only">
-        Über das Projekt
+        {t.portfolio.aboutProject}
       </h2>
       <div className="grid gap-10 md:grid-cols-12">
         {story.map((s, i) => (
@@ -181,12 +195,13 @@ export function ProjectStory({ story }: { story: NonNullable<PortfolioProject["s
 
 /* ------------------------------ Website ------------------------------- */
 
-export function WebsiteShowcase({ project }: { project: PortfolioProject }) {
+export function WebsiteShowcase({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const w = project.website!;
   const m = project.client.charAt(0);
+  const t = getDict(locale);
   return (
     <Wrap id="website">
-      <SectionTitle id="website" title="DIE WEBSITE." kicker={w.url?.replace(/^https?:\/\//, "")} />
+      <SectionTitle id="website" title={t.portfolio.websiteSectionTitle} kicker={w.url?.replace(/^https?:\/\//, "")} />
       <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
         <Reveal className="lg:col-span-9">
           <BrowserFrame image={w.desktop ?? project.cover} color={project.color} url={w.url} sizes="(min-width: 1500px) 1100px, 100vw" monogram={m} />
@@ -204,10 +219,8 @@ export function WebsiteShowcase({ project }: { project: PortfolioProject }) {
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2.5 rounded-full border-2 border-ink/15 px-6 py-3 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:border-ink/40 hover:bg-ink/5"
             >
-              Website besuchen
-              <svg width="11" height="11" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                <path d={ARROW_PATH} fill={ARROW_COLORS[project.color]} transform="rotate(90 50 50)" />
-              </svg>
+              {t.portfolio.visitWebsite}
+              <ArrowGlyph color={ARROW_COLORS[project.color]} size={11} />
             </a>
           </div>
         </Reveal>
@@ -218,20 +231,21 @@ export function WebsiteShowcase({ project }: { project: PortfolioProject }) {
 
 /* ------------------------------ Video --------------------------------- */
 
-export function VideoShowcase({ project }: { project: PortfolioProject }) {
+export function VideoShowcase({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const videos = project.videos ?? [];
   const reels = videos.filter((v) => (v.ratio ?? "9/16") === "9/16" || v.ratio === "4/5");
   const wide = videos.filter((v) => !reels.includes(v));
   const m = project.client.charAt(0);
+  const t = getDict(locale);
   return (
     <Wrap id="video">
-      <SectionTitle id="video" title={reels.length ? "REELS & VIDEOS." : "VIDEO."} kicker="Tippen zum Abspielen" />
+      <SectionTitle id="video" title={reels.length ? t.portfolio.videosSectionTitle : t.portfolio.videoSectionTitle} kicker={t.portfolio.tapToPlay} />
       {reels.length > 0 && (
         <div className="-mx-5 sm:-mx-8">
           <ul className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:px-8 md:gap-6">
             {reels.map((v, i) => (
               <li key={v.title + i} className="w-[72%] shrink-0 snap-center sm:w-[44%] md:w-[30%] lg:w-[22%] xl:w-[19%]">
-                <VideoPlayer video={v} color={project.color} monogram={m} rounded="rounded-2xl md:rounded-3xl" />
+                <VideoPlayer video={v} color={project.color} monogram={m} rounded="rounded-2xl md:rounded-3xl" locale={locale} />
               </li>
             ))}
           </ul>
@@ -241,7 +255,7 @@ export function VideoShowcase({ project }: { project: PortfolioProject }) {
         <div className={`grid gap-6 ${reels.length ? "mt-10" : ""} ${wide.length > 1 ? "md:grid-cols-2" : ""}`}>
           {wide.map((v, i) => (
             <Reveal key={v.title + i}>
-              <VideoPlayer video={v} color={project.color} monogram={m} sizes="(min-width: 1500px) 1400px, 100vw" rounded="rounded-2xl md:rounded-3xl" />
+              <VideoPlayer video={v} color={project.color} monogram={m} sizes="(min-width: 1500px) 1400px, 100vw" rounded="rounded-2xl md:rounded-3xl" locale={locale} />
             </Reveal>
           ))}
         </div>
@@ -267,33 +281,36 @@ function Masonry({ items, color, monogram, sizes }: { items: MediaImage[]; color
   );
 }
 
-export function ImageGallery({ project }: { project: PortfolioProject }) {
+export function ImageGallery({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
+  const t = getDict(locale);
   return (
     <Wrap id="bilder">
-      <SectionTitle id="bilder" title="BILDER." kicker={`${project.images!.length} Motive`} />
+      <SectionTitle id="bilder" title={t.portfolio.imagesSectionTitle} kicker={t.portfolio.motivesCount(project.images!.length)} />
       <Masonry items={project.images!} color={project.color} monogram={project.client.charAt(0)} sizes="(min-width: 768px) 33vw, 50vw" />
     </Wrap>
   );
 }
 
-export function PosterGallery({ project }: { project: PortfolioProject }) {
+export function PosterGallery({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
+  const t = getDict(locale);
   return (
     <Wrap id="print">
-      <SectionTitle id="print" title="POSTER & PRINT." />
+      <SectionTitle id="print" title={t.portfolio.printSectionTitle} />
       <Masonry items={project.posters!} color={project.color} monogram={project.client.charAt(0)} sizes="(min-width: 768px) 33vw, 50vw" />
     </Wrap>
   );
 }
 
-export function SocialGallery({ project }: { project: PortfolioProject }) {
+export function SocialGallery({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const m = project.client.charAt(0);
+  const t = getDict(locale);
   return (
     <Wrap id="social">
-      <SectionTitle id="social" title="SOCIAL MEDIA." kicker="Feed-Auswahl" />
+      <SectionTitle id="social" title={t.portfolio.socialSectionTitle} kicker={t.portfolio.feedSelection} />
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-5 lg:grid-cols-4">
         {project.socialPosts!.map((img, i) => (
           <Reveal as="li" key={i} delay={Math.min(i * 0.05, 0.25)}>
-            <SmartImage image={img} color={project.color} ratio={img.ratio ?? "4/5"} sizes="(min-width: 1024px) 25vw, 50vw" monogram={m} rounded="rounded-xl md:rounded-2xl" label="Post folgt" />
+            <SmartImage image={img} color={project.color} ratio={img.ratio ?? "4/5"} sizes="(min-width: 1024px) 25vw, 50vw" monogram={m} rounded="rounded-xl md:rounded-2xl" label={t.portfolio.postComingSoon} />
           </Reveal>
         ))}
       </ul>
@@ -303,14 +320,15 @@ export function SocialGallery({ project }: { project: PortfolioProject }) {
 
 /* ------------------------------ Software ------------------------------ */
 
-export function ScreensShowcase({ project }: { project: PortfolioProject }) {
+export function ScreensShowcase({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const screens = project.screens!;
   const m = project.client.charAt(0);
+  const t = getDict(locale);
   const wide = screens.filter((s) => s.ratio !== "9/16");
   const phones = screens.filter((s) => s.ratio === "9/16");
   return (
     <Wrap id="produkt">
-      <SectionTitle id="produkt" title="DAS PRODUKT." kicker={project.tech?.length ? project.tech.join(" · ") : undefined} />
+      <SectionTitle id="produkt" title={t.portfolio.productSectionTitle} kicker={project.tech?.length ? project.tech.join(" · ") : undefined} />
       <div className="grid gap-6 md:grid-cols-12 md:gap-8">
         {wide.map((s, i) => (
           <Reveal key={i} delay={0.05} className={i === 0 ? "md:col-span-12" : "md:col-span-6"}>
@@ -322,7 +340,7 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
                   ratio="16/10"
                   sizes={i === 0 ? "(min-width: 1500px) 1400px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
                   monogram={m}
-                  label={s.caption ? `${s.caption} · Screenshot folgt` : "Screenshot folgt"}
+                  label={s.caption ? `${s.caption} · ${t.portfolio.screenshotComingSoon}` : t.portfolio.screenshotComingSoon}
                   rounded="rounded-none"
                 />
               </div>
@@ -337,7 +355,7 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
             {phones.map((s, i) => (
               <Reveal key={i} delay={i * 0.08} className="w-[58%] max-w-[260px] sm:w-[40%] md:w-[24%]">
                 <figure>
-                  <PhoneFrame image={s} color={project.color} sizes="(min-width: 768px) 24vw, 58vw" monogram={m} label={s.caption ? `${s.caption} · folgt` : undefined} />
+                  <PhoneFrame image={s} color={project.color} sizes="(min-width: 768px) 24vw, 58vw" monogram={m} label={s.caption ? `${s.caption} · ${t.portfolio.comingSoon}` : undefined} />
                   {s.caption && (
                     <figcaption className="mt-3 text-center font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-ink-3">{s.caption}</figcaption>
                   )}
@@ -354,9 +372,10 @@ export function ScreensShowcase({ project }: { project: PortfolioProject }) {
 /** Kuratierte Erzähl-Kapitel: Titel, optionaler Text und Bilder in der
  *  Bildsprache von ScreensShowcase. Reine Text-Kapitel (ohne Bilder)
  *  laufen — wie die Story — gebündelt in einem zweispaltigen Raster. */
-export function ScreenChapters({ project }: { project: PortfolioProject }) {
+export function ScreenChapters({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const sections = project.screenSections!;
   const m = project.client.charAt(0);
+  const t = getDict(locale);
   const software = projectKind(project) === "software";
   const paras = (b?: string | string[]) => (b == null ? [] : Array.isArray(b) ? b : [b]);
 
@@ -378,7 +397,7 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
     <Wrap id="produkt">
       <SectionTitle
         id="produkt"
-        title={software ? "DAS PRODUKT." : "DAS ERLEBNIS."}
+        title={software ? t.portfolio.productSectionTitle : t.portfolio.experienceSectionTitle}
         kicker={project.tech?.length ? project.tech.join(" · ") : undefined}
       />
       {blocks.map((block, bi) => {
@@ -433,7 +452,7 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
                           ratio={r}
                           sizes={full ? (narrow ? "(min-width: 1500px) 930px, (min-width: 768px) 66vw, 100vw" : "(min-width: 1500px) 1400px, 100vw") : "(min-width: 768px) 50vw, 100vw"}
                           monogram={m}
-                          label={s.caption ? `${s.caption} · Screenshot folgt` : "Screenshot folgt"}
+                          label={s.caption ? `${s.caption} · ${t.portfolio.screenshotComingSoon}` : t.portfolio.screenshotComingSoon}
                           rounded="rounded-none"
                         />
                       </div>
@@ -447,7 +466,7 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
             </div>
             {sec.reels?.length ? (
               <Reveal className={sec.screens.length ? "mt-10 md:mt-14" : ""}>
-                <ReelGallery reels={sec.reels} color={project.color} />
+                <ReelGallery reels={sec.reels} color={project.color} locale={locale} />
               </Reveal>
             ) : null}
           </div>
@@ -459,11 +478,12 @@ export function ScreenChapters({ project }: { project: PortfolioProject }) {
 
 /* ------------------------------ Ergebnisse ---------------------------- */
 
-export function ProjectResults({ project }: { project: PortfolioProject }) {
+export function ProjectResults({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const hex = ARROW_COLORS[project.color];
+  const t = getDict(locale);
   return (
     <Wrap id="ergebnisse">
-      <SectionTitle id="ergebnisse" title="ERGEBNIS." />
+      <SectionTitle id="ergebnisse" title={t.portfolio.resultsSectionTitle} />
       <dl className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
         {project.results!.map((r, i) => (
           <Reveal key={r.label} delay={i * 0.06} className="bg-white p-7 md:p-9">
@@ -478,7 +498,7 @@ export function ProjectResults({ project }: { project: PortfolioProject }) {
   );
 }
 
-export function ProjectTestimonial({ project }: { project: PortfolioProject }) {
+export function ProjectTestimonial({ project }: { project: PortfolioProject; locale?: Locale }) {
   const t = project.testimonial!;
   return (
     <Wrap id="stimme">
@@ -497,10 +517,11 @@ export function ProjectTestimonial({ project }: { project: PortfolioProject }) {
   );
 }
 
-export function ProjectLinks({ project }: { project: PortfolioProject }) {
+export function ProjectLinks({ project, locale = "de" }: { project: PortfolioProject; locale?: Locale }) {
   const hex = ARROW_COLORS[project.color];
+  const t = getDict(locale);
   const links = [
-    ...(project.website?.url ? [{ label: "Website besuchen", href: project.website.url }] : []),
+    ...(project.website?.url ? [{ label: t.portfolio.visitWebsite, href: project.website.url }] : []),
     ...(project.links ?? []),
   ];
   if (!links.length) return null;
@@ -512,11 +533,7 @@ export function ProjectLinks({ project }: { project: PortfolioProject }) {
             const ext = l.href.startsWith("http");
             const cls =
               "group inline-flex items-center gap-2.5 rounded-full border-2 border-ink/15 px-6 py-3 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:border-ink/40 hover:bg-ink/5";
-            const arrow = (
-              <svg width="11" height="11" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                <path d={ARROW_PATH} fill={hex} transform="rotate(90 50 50)" />
-              </svg>
-            );
+            const arrow = <ArrowGlyph color={hex} size={11} />;
             return (
               <li key={l.href}>
                 {ext ? (
@@ -539,29 +556,31 @@ export function ProjectLinks({ project }: { project: PortfolioProject }) {
 
 /* ------------------------------ Nächstes Projekt ---------------------- */
 
-export function NextProject({ next, prev }: { next: PortfolioProject; prev: PortfolioProject }) {
+export function NextProject({ next, prev, locale = "de" }: { next: PortfolioProject; prev: PortfolioProject; locale?: Locale }) {
   const hex = ARROW_COLORS[next.color];
+  const t = getDict(locale);
+  const prevArrow = locale === "ar" ? "→" : "←";
   return (
     <section className="py-14 md:py-20" aria-labelledby="next">
       <div className="mx-auto max-w-[1500px] px-5 sm:px-8">
         <Reveal>
           <div className="mb-6 flex items-center justify-between gap-4">
             <p id="next" className="font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3">
-              Nächstes Projekt
+              {t.portfolio.nextProjectLabel}
             </p>
             <div className="flex items-center gap-5 font-heading text-[11px] font-bold uppercase tracking-[0.2em]">
               {prev.slug !== next.slug && (
-                <Link href={`/portfolio/${prev.slug}`} className="text-ink-3 transition-colors hover:text-ink">
-                  ← {prev.client}
+                <Link href={withLocale(`/portfolio/${prev.slug}`, locale)} className="text-ink-3 transition-colors hover:text-ink">
+                  {prevArrow} {prev.client}
                 </Link>
               )}
-              <Link href="/portfolio" className="text-ink-3 transition-colors hover:text-ink">
-                Alle Projekte
+              <Link href={withLocale("/portfolio", locale)} className="text-ink-3 transition-colors hover:text-ink">
+                {t.portfolio.allProjectsLabel}
               </Link>
             </div>
           </div>
           <Link
-            href={`/portfolio/${next.slug}`}
+            href={withLocale(`/portfolio/${next.slug}`, locale)}
             className="group relative block overflow-hidden rounded-[28px] border border-line bg-white shadow-soft md:rounded-[40px]"
             style={{ backgroundImage: `radial-gradient(70% 80% at 100% 0%, ${hex}14, transparent 60%)` }}
           >
@@ -572,13 +591,11 @@ export function NextProject({ next, prev }: { next: PortfolioProject; prev: Port
                   {next.client}
                 </p>
                 <div className="mt-4">
-                  <BoxiTitle as="p" lines={[next.title]} max="3.75rem" min="1.1rem" className="text-ink" />
+                  <BoxiTitle as="p" lines={[next.title]} max="3.75rem" min="1.1rem" className="text-ink" locale={locale} />
                 </div>
                 <span className="mt-8 inline-flex items-center gap-2.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-ink-2 transition-colors group-hover:text-ink">
-                  Ansehen
-                  <svg width="11" height="11" viewBox="0 0 100 100" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">
-                    <path d={ARROW_PATH} fill={hex} transform="rotate(90 50 50)" />
-                  </svg>
+                  {t.portfolio.viewLabel}
+                  <ArrowGlyph color={hex} size={11} />
                 </span>
               </div>
               <div className="md:col-span-5">

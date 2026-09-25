@@ -1,4 +1,6 @@
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { getDict } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/locale";
 import type { AccentColor } from "@/lib/services";
 
 /**
@@ -13,6 +15,7 @@ export function Placeholder({
   kind = "image",
   monogram,
   className = "",
+  locale = "de",
 }: {
   color?: AccentColor;
   label?: string | false;
@@ -20,7 +23,9 @@ export function Placeholder({
   kind?: "image" | "video";
   monogram?: string;
   className?: string;
+  locale?: Locale;
 }) {
+  const t = getDict(locale);
   const hex = ARROW_COLORS[color];
   return (
     <div
@@ -41,15 +46,15 @@ export function Placeholder({
       </svg>
       {monogram && (
         <span
-          className="absolute left-4 top-4 font-boxi text-[clamp(1.25rem,4cqw,2.5rem)] leading-none text-ink/20 sm:left-5 sm:top-5"
+          className="absolute left-4 top-4 font-boxi text-[clamp(1.25rem,4cqw,2.5rem)] leading-none text-ink/20 sm:left-5 sm:top-5 rtl:left-auto rtl:right-4 sm:rtl:right-5"
         >
           {monogram}
         </span>
       )}
       {label !== false && (
-        <span className="absolute bottom-4 left-4 flex items-center gap-2 font-heading text-[10px] font-bold uppercase tracking-[0.22em] text-ink-3 sm:bottom-5 sm:left-5">
+        <span className="absolute bottom-4 left-4 flex items-center gap-2 font-heading text-[10px] font-bold uppercase tracking-[0.22em] text-ink-3 sm:bottom-5 sm:left-5 rtl:left-auto rtl:right-4 sm:rtl:right-5">
           <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: hex }} />
-          {label ?? (kind === "video" ? "Video folgt" : "Bild folgt")}
+          {label ?? (kind === "video" ? t.portfolio.mediaComingSoonVideo : t.portfolio.mediaComingSoonImage)}
           {ratio && <span className="text-ink/30">· {ratio}</span>}
         </span>
       )}
