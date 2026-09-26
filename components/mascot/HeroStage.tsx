@@ -609,7 +609,7 @@ export function HeroStage({ locale = "de" }: { locale?: Locale } = {}) {
             exit={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(-6px)" }}
             transition={{ duration: 0.18, ease: easeOut }}
           >
-            {shot ? "✦ Magic in Every Click" : "Witch · Head of Attention"}
+            {shot ? "✦ Magic in Every Click" : locale === "ar" ? "ويتش · قائد لفت الانتباه" : "Witch · Head of Attention"}
           </motion.span>
         </AnimatePresence>
       </div>
