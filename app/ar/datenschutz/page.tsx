@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
+import { Ltr } from "@/components/Ltr";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -10,6 +11,11 @@ export const metadata: Metadata = {
 
 // TODO: Platzhalter prüfen/ergänzen und die Erklärung an die tatsächlich
 // eingesetzten Dienste (Hosting, Analytics, Pixel, Calendly) anpassen.
+// Identischer Platzhalter-Status wie in der deutschen Version, siehe
+// app/(de)/datenschutz/page.tsx — hier wurden bewusst keine Daten erfunden:
+// 1) Name des Hosting-Anbieters (Abschnitt "الاستضافة")
+// 2) Angaben zu Analytics-/Marketing-Tools, falls im Einsatz (Abschnitt
+//    "أدوات التحليل والتسويق"), sonst Abschnitt entfernen
 export default function DatenschutzPageAr() {
   return (
     <LegalPage title="سياسة الخصوصية">
@@ -22,13 +28,16 @@ export default function DatenschutzPageAr() {
 
       <h2>2. الجهة المسؤولة</h2>
       <p>
-        {site.legalName}
+        <Ltr>{site.legalName}</Ltr>
         <br />
-        {site.street}، {site.zip} {site.city}
+        <Ltr>{site.street}</Ltr>، <Ltr>{site.zip} {site.city}</Ltr>
         <br />
-        الهاتف: {site.phone}
+        الهاتف: <Ltr>{site.phone}</Ltr>
         <br />
-        البريد الإلكتروني: <a href={`mailto:${site.email}`}>{site.email}</a>
+        البريد الإلكتروني:{" "}
+        <a href={`mailto:${site.email}`}>
+          <Ltr>{site.email}</Ltr>
+        </a>
       </p>
 
       <h2>3. جمع البيانات على هذا الموقع</h2>
@@ -36,29 +45,33 @@ export default function DatenschutzPageAr() {
       <p>
         يقوم مزوّد استضافة الموقع بجمع وتخزين المعلومات تلقائياً فيما يُسمى
         بملفات سجلّ الخادم، التي يرسلها متصفحك تلقائياً: نوع المتصفح
-        وإصداره، نظام التشغيل المستخدم، عنوان URL المُحيل (Referrer)، اسم
-        المضيف للجهاز الذي يتصل بالموقع، وقت طلب الخادم، وعنوان IP. لا يتم
-        دمج هذه البيانات مع مصادر بيانات أخرى. يستند هذا الجمع إلى Art. 6
-        Abs. 1 lit. f DSGVO (مصلحة مشروعة في العرض التقني الخالي من الأخطاء
-        وتحسين الموقع).
+        وإصداره، نظام التشغيل المستخدم، عنوان <Ltr>URL</Ltr> المُحيل (
+        <Ltr>Referrer</Ltr>)، اسم المضيف للجهاز الذي يتصل بالموقع، وقت طلب
+        الخادم، وعنوان <Ltr>IP</Ltr>. لا يتم دمج هذه البيانات مع مصادر بيانات
+        أخرى. يستند هذا الجمع إلى <Ltr>Art. 6 Abs. 1 lit. f DSGVO</Ltr> (مصلحة
+        مشروعة في العرض التقني الخالي من الأخطاء وتحسين الموقع).
       </p>
       <h3>نموذج التواصل والتواصل عبر البريد الإلكتروني أو الهاتف أو واتساب</h3>
       <p>
         عند التواصل معنا عبر نموذج الاتصال أو البريد الإلكتروني أو الهاتف أو
         واتساب، يتم تخزين بياناتك، بما في ذلك بيانات التواصل التي تقدّمها
         لدينا، بغرض معالجة الطلب ولإمكانية الرد على أي استفسارات لاحقة. لا
-        نقوم بمشاركة هذه البيانات دون موافقتك. تتم المعالجة استناداً إلى Art.
-        6 Abs. 1 lit. b DSGVO (تمهيد للتعاقد) أو Art. 6 Abs. 1 lit. f DSGVO
-        (مصلحة مشروعة في معالجة الطلبات بفعالية). عند استخدام واتساب، تسري
-        إضافياً إشعارات الخصوصية الخاصة بشركة WhatsApp Ireland Ltd.
+        نقوم بمشاركة هذه البيانات دون موافقتك. تتم المعالجة استناداً إلى{" "}
+        <Ltr>Art. 6 Abs. 1 lit. b DSGVO</Ltr> (تمهيد للتعاقد) أو{" "}
+        <Ltr>Art. 6 Abs. 1 lit. f DSGVO</Ltr> (مصلحة مشروعة في معالجة الطلبات
+        بفعالية). عند استخدام واتساب، تسري إضافياً إشعارات الخصوصية الخاصة
+        بشركة <Ltr>WhatsApp Ireland Ltd.</Ltr>
       </p>
-      <h3>حجز المواعيد (Calendly)</h3>
+      <h3>
+        حجز المواعيد (<Ltr>Calendly</Ltr>)
+      </h3>
       <p>
-        لحجز جلسات التعارف الأولى، نستخدم رابطاً لخدمة Calendly (شركة
-        Calendly LLC، الولايات المتحدة الأمريكية). عند حجز موعد هناك، تقوم
-        Calendly بمعالجة البيانات التي تُدخلها (مثل الاسم، عنوان البريد
-        الإلكتروني، الموعد المطلوب). تجد التفاصيل في سياسة الخصوصية الخاصة
-        بـ Calendly. الأساس القانوني هو Art. 6 Abs. 1 lit. b DSGVO.
+        لحجز جلسات التعارف الأولى، نستخدم رابطاً لخدمة <Ltr>Calendly</Ltr>{" "}
+        (شركة <Ltr>Calendly LLC</Ltr>، الولايات المتحدة الأمريكية). عند حجز
+        موعد هناك، تقوم <Ltr>Calendly</Ltr> بمعالجة البيانات التي تُدخلها
+        (مثل الاسم، عنوان البريد الإلكتروني، الموعد المطلوب). تجد التفاصيل في
+        سياسة الخصوصية الخاصة بـ <Ltr>Calendly</Ltr>. الأساس القانوني هو{" "}
+        <Ltr>Art. 6 Abs. 1 lit. b DSGVO</Ltr>.
       </p>
 
       <h2>4. الاستضافة</h2>
@@ -66,32 +79,49 @@ export default function DatenschutzPageAr() {
         يتم استضافة هذا الموقع لدى مزوّد خدمة خارجي ([أدخل اسم مزوّد
         الاستضافة]). يتم تخزين البيانات الشخصية التي تُجمع على هذا الموقع
         على خوادم مزوّد الاستضافة. يتم استخدام مزوّد الاستضافة لصالح تقديم
-        آمن وسريع وفعّال لعروضنا عبر الإنترنت (Art. 6 Abs. 1 lit. f DSGVO).
-        تم إبرام اتفاقية معالجة بيانات بالنيابة مع مزوّد الاستضافة.
+        آمن وسريع وفعّال لعروضنا عبر الإنترنت (
+        <Ltr>Art. 6 Abs. 1 lit. f DSGVO</Ltr>). تم إبرام اتفاقية معالجة
+        بيانات بالنيابة مع مزوّد الاستضافة.
       </p>
 
       <h2>5. أدوات التحليل والتسويق</h2>
       <p>
-        [في حال استخدامها: أضف هنا بيانات حول Google Analytics أو Meta Pixel
-        أو TikTok Pixel أو ما شابه، بما في ذلك الأساس القانوني (الموافقة عبر
-        لافتة موافقة، Art. 6 Abs. 1 lit. a DSGVO)، ومدة التخزين، وإمكانية
-        سحب الموافقة. في حال عدم استخدام مثل هذه الأدوات، يمكن حذف هذا
-        القسم.]
+        [في حال استخدامها: أضف هنا بيانات حول <Ltr>Google Analytics</Ltr> أو{" "}
+        <Ltr>Meta Pixel</Ltr> أو <Ltr>TikTok Pixel</Ltr> أو ما شابه، بما في
+        ذلك الأساس القانوني (الموافقة عبر لافتة موافقة،{" "}
+        <Ltr>Art. 6 Abs. 1 lit. a DSGVO</Ltr>)، ومدة التخزين، وإمكانية سحب
+        الموافقة. في حال عدم استخدام مثل هذه الأدوات، يمكن حذف هذا القسم.]
       </p>
 
       <h2>6. حقوقك</h2>
       <p>لك الحق في أي وقت، في إطار الأحكام القانونية السارية، فيما يلي:</p>
       <ul>
-        <li>الحصول على معلومات حول بياناتك الشخصية المخزَّنة (Art. 15 DSGVO)</li>
-        <li>تصحيح البيانات غير الصحيحة (Art. 16 DSGVO)</li>
-        <li>حذف بياناتك (Art. 17 DSGVO)</li>
-        <li>تقييد المعالجة (Art. 18 DSGVO)</li>
-        <li>نقل البيانات (Art. 20 DSGVO)</li>
-        <li>الاعتراض على المعالجة (Art. 21 DSGVO)</li>
-        <li>سحب الموافقات الممنوحة بأثر مستقبلي (Art. 7 Abs. 3 DSGVO)</li>
         <li>
-          تقديم شكوى لدى هيئة رقابية (Art. 77 DSGVO)، والجهة المختصة هي
-          مفوضة برلين لحماية البيانات وحرية المعلومات
+          الحصول على معلومات حول بياناتك الشخصية المخزَّنة (
+          <Ltr>Art. 15 DSGVO</Ltr>)
+        </li>
+        <li>
+          تصحيح البيانات غير الصحيحة (<Ltr>Art. 16 DSGVO</Ltr>)
+        </li>
+        <li>
+          حذف بياناتك (<Ltr>Art. 17 DSGVO</Ltr>)
+        </li>
+        <li>
+          تقييد المعالجة (<Ltr>Art. 18 DSGVO</Ltr>)
+        </li>
+        <li>
+          نقل البيانات (<Ltr>Art. 20 DSGVO</Ltr>)
+        </li>
+        <li>
+          الاعتراض على المعالجة (<Ltr>Art. 21 DSGVO</Ltr>)
+        </li>
+        <li>
+          سحب الموافقات الممنوحة بأثر مستقبلي (
+          <Ltr>Art. 7 Abs. 3 DSGVO</Ltr>)
+        </li>
+        <li>
+          تقديم شكوى لدى هيئة رقابية (<Ltr>Art. 77 DSGVO</Ltr>)، والجهة
+          المختصة هي مفوضة برلين لحماية البيانات وحرية المعلومات
         </li>
       </ul>
 
@@ -104,11 +134,13 @@ export default function DatenschutzPageAr() {
         الاحتفاظ الضريبية أو التجارية).
       </p>
 
-      <h2>8. التشفير بواسطة SSL أو TLS</h2>
+      <h2>
+        8. التشفير بواسطة <Ltr>SSL</Ltr> أو <Ltr>TLS</Ltr>
+      </h2>
       <p>
         يستخدم هذا الموقع لأسباب أمنية ولحماية نقل المحتويات السرية تشفيراً
-        من نوع SSL أو TLS. يمكنك التعرف على الاتصال المشفَّر من خلال رمز
-        القفل في شريط عنوان المتصفح لديك.
+        من نوع <Ltr>SSL</Ltr> أو <Ltr>TLS</Ltr>. يمكنك التعرف على الاتصال
+        المشفَّر من خلال رمز القفل في شريط عنوان المتصفح لديك.
       </p>
     </LegalPage>
   );
