@@ -18,7 +18,7 @@ export function PortfolioCTA({ service, locale = "de" }: { service?: string; loc
     : withLocale("/kontakt", locale);
   const wa = whatsappHref(
     locale === "ar"
-      ? "مرحباً نتويتشر! أعجبتني أعمالكم في الـ Portfolio وأود التحدث عن مشروع."
+      ? "مرحبًا نتويتشر! أعجبتني أعمالكم وأود التحدث عن مشروع."
       : "Hallo Netwitcher! Ich habe euer Portfolio gesehen und würde gern über ein Projekt sprechen."
   );
   return (

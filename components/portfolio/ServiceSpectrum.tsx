@@ -37,7 +37,7 @@ const ROWS_DE: Row[] = [
 ];
 
 const ROWS_AR: Row[] = [
-  { label: "سوشيال ميديا", group: "المحتوى", color: "pink", category: "social-video", href: "/leistungen/social-media-management" },
+  { label: "وسائل التواصل الاجتماعي", group: "المحتوى", color: "pink", category: "social-video", href: "/leistungen/social-media-management" },
   { label: "إنتاج الفيديو", group: "المحتوى", color: "pink", category: "social-video", href: "/leistungen/foto-videoproduktion" },
   { label: "ريلز وأفلام إعلانية", group: "المحتوى", color: "pink", category: "social-video", href: "/studio" },
   { label: "التصوير الفوتوغرافي", group: "الاستوديو", color: "sun", category: "photo", href: "/studio" },
