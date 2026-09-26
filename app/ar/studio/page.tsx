@@ -130,10 +130,10 @@ export default function StudioPageAr() {
               </Reveal>
               <Reveal delay={0.2}>
                 <div className="flex flex-1 flex-col justify-center rounded border border-line bg-white p-8 backdrop-blur">
-                  <h2 className="font-heading text-xl font-bold">
+                  <h2 className="font-heading text-xl font-bold text-ink">
                     أرسل منتجك، واستلم المحتوى
                   </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-3">
+                  <p className="mt-3 text-sm leading-relaxed text-ink-2">
                     لا داعي للحضور إلى برلين لجلسة التصوير: أرسل لنا منتجك، ونتولى نحن
                     تصميم الديكور والإنتاج والمعالجة وإعادة الشحن. خلال أيام قليلة
                     ستجد في بريدك محتوى جاهزاً للحملات.

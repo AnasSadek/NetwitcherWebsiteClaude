@@ -129,10 +129,10 @@ export default function StudioPage() {
               </Reveal>
               <Reveal delay={0.2}>
                 <div className="flex flex-1 flex-col justify-center rounded border border-line bg-white p-8 backdrop-blur">
-                  <h2 className="font-heading text-xl font-bold">
+                  <h2 className="font-heading text-xl font-bold text-ink">
                     Produkt einsenden, Content zurückbekommen
                   </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-3">
+                  <p className="mt-3 text-sm leading-relaxed text-ink-2">
                     Du musst für ein Shooting nicht nach Berlin kommen: Sende uns dein
                     Produkt, wir übernehmen Set-Design, Produktion, Nachbearbeitung und
                     Rückversand. Innerhalb weniger Tage hast du kampagnenfertigen
