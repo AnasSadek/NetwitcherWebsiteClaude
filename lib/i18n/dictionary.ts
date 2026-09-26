@@ -261,10 +261,7 @@ export const ar: Dictionary = {
     menuClose: "إغلاق القائمة",
   },
   footer: {
-    // Markenclaim bleibt als feststehender Slogan auf Englisch — genau wie
-    // im deutschen Original (site.slogan, Netwitchers eigene Brand-
-    // Statement-Zeile) nie übersetzt wird.
-    tagline: "Magic in Every Click",
+    tagline: "سحرٌ في كل نقرة.",
     description:
       "وكالة رقمية واستوديو محتوى في برلين. ننتج محتوى يلفت الانتباه وحملات تجلب لك العملاء.",
     servicesHeading: "الخدمات",
