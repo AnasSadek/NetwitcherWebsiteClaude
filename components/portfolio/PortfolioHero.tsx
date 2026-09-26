@@ -59,7 +59,7 @@ export function PortfolioHero({ items, count, locale = "de" }: { items: StripIte
       </div>
 
       <div className="relative mx-auto mt-10 max-w-[1500px] px-5 sm:px-8 md:mt-14">
-        <FilmStrip items={items} />
+        <FilmStrip items={items} locale={locale} />
       </div>
     </header>
   );

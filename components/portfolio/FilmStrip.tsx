@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
+import { withLocale, type Locale } from "@/lib/i18n/locale";
 import type { StripItem } from "@/lib/portfolio";
 import { ratioValue } from "@/lib/portfolio";
 import { Placeholder } from "./Placeholder";
@@ -24,10 +25,10 @@ const AUTOPLAY_RESUME_DELAY = 2000;
  * geklonte Slides), das bei jeder Interaktion nur kurz pausiert und danach
  * von selbst weiterläuft.
  */
-function Frame({ item, priority }: { item: StripItem; priority?: boolean }) {
+function Frame({ item, priority, locale = "de" }: { item: StripItem; priority?: boolean; locale?: Locale }) {
   return (
     <Link
-      href={`/portfolio/${item.slug}`}
+      href={withLocale(`/portfolio/${item.slug}`, locale)}
       draggable={false}
       className="group relative block h-[220px] shrink-0 snap-start overflow-hidden rounded-2xl bg-paper-2 sm:h-[280px] lg:h-[340px]"
       style={{ aspectRatio: ratioValue(item.ratio), WebkitUserDrag: "none" } as React.CSSProperties}
@@ -70,7 +71,7 @@ function Frame({ item, priority }: { item: StripItem; priority?: boolean }) {
   );
 }
 
-export function FilmStrip({ items }: { items: StripItem[] }) {
+export function FilmStrip({ items, locale = "de" }: { items: StripItem[]; locale?: Locale }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const drag = useRef({ active: false, pointerId: -1, startX: 0, startScrollLeft: 0, moved: 0 });
   const [dragging, setDragging] = useState(false);
@@ -219,7 +220,7 @@ export function FilmStrip({ items }: { items: StripItem[] }) {
       >
         <div className="flex w-max gap-3 pr-3 sm:gap-4 sm:pr-4">
           {items.map((it, i) => (
-            <Frame key={it.slug} item={it} priority={i < 3} />
+            <Frame key={it.slug} item={it} priority={i < 3} locale={locale} />
           ))}
         </div>
       </div>
