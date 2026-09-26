@@ -46,11 +46,11 @@ const TOPICS_DE: Topic[] = [
 
 const TOPICS_AR: Topic[] = [
   { id: "content-studio", label: "المحتوى والاستوديو", hint: "محتوى منتظم من استوديو برلين", accent: "pink" },
-  { id: "foto-video", label: "تصوير وفيديو", hint: "إنتاج للمنتج أو الفريق أو الصورة العامة", accent: "pink" },
-  { id: "social-media", label: "سوشيال ميديا", hint: "بناء القنوات وإدارتها وتنميتها", accent: "sky" },
-  { id: "ads", label: "إعلانات", hint: "Meta وGoogle وTikTok مع مسؤولية الميزانية", accent: "sky" },
+  { id: "foto-video", label: "تصوير وفيديو", hint: "إنتاج للمنتجات، والفرق، وصورة العلامة التجارية.", accent: "pink" },
+  { id: "social-media", label: "وسائل التواصل الاجتماعي", hint: "بناء القنوات وإدارتها وتنميتها", accent: "sky" },
+  { id: "ads", label: "إعلانات", hint: "إعلانات Meta وGoogle وTikTok مع إدارة مسؤولة للميزانية.", accent: "sky" },
   { id: "website", label: "موقع إلكتروني", hint: "موقع جديد أو إعادة تصميم أو متجر إلكتروني", accent: "mint" },
-  { id: "seo", label: "تحسين محركات البحث", hint: "الظهور عندما يبحث عنك أحد", accent: "mint" },
+  { id: "seo", label: "تحسين محركات البحث", hint: "الظهور عندما يبحث العملاء عن خدماتك.", accent: "mint" },
   { id: "branding", label: "الهوية البصرية", hint: "شعار، نظام تصميم، مطبوعات", accent: "violet" },
   { id: "software", label: "برمجيات", hint: "أدوات مخصصة، بوابات، أتمتة", accent: "violet" },
   { id: "anderes", label: "شيء آخر", hint: "أخبرنا به بكلماتك الخاصة", accent: "sun" },
@@ -107,7 +107,7 @@ const inputCls =
   "w-full rounded border border-ink/15 bg-white px-4 py-3 text-base text-ink placeholder:text-ink-3 transition-colors hover:border-ink/20 focus:border-mint focus:outline-none";
 
 const STEP_LABELS_DE = ["Thema", "Vorhaben", "Kontakt"];
-const STEP_LABELS_AR = ["الموضوع", "التفاصيل", "التواصل"];
+const STEP_LABELS_AR = ["مجال المشروع", "التفاصيل", "التواصل"];
 
 type Fields = {
   message: string;
@@ -472,7 +472,7 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                 <p className="mt-6 text-xs leading-relaxed text-ink-3">
                   {isAr ? (
                     <>
-                      بالإرسال، فإنك توافق على معالجة بياناتك لغرض معالجة طلبك. التفاصيل في{" "}
+                      بالإرسال، فإنك توافق على معالجة بياناتك من أجل تنفيذ طلبك. التفاصيل في{" "}
                       <Link href={withLocale("/datenschutz", locale)} className="underline underline-offset-2 hover:text-ink">
                         سياسة الخصوصية
                       </Link>
