@@ -369,7 +369,7 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                   <button
                     type="button"
                     onClick={nextFromDetails}
-                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-ink px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-[#1B103F] px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(27,16,63,0.18)] transition-colors hover:bg-[#2A1760]"
                   >
                     {isAr ? "التالي" : "Weiter"}
                     <Arrow
@@ -493,7 +493,7 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                 <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                   <button
                     type="submit"
-                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-ink px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-ink transition-colors hover:bg-paper-2"
+                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-[#1B103F] px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(27,16,63,0.18)] transition-colors hover:bg-[#2A1760]"
                   >
                     {isAr ? "إرسال الطلب" : "Anfrage senden"}
                     <Arrow
