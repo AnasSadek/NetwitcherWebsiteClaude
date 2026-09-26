@@ -19,9 +19,9 @@ export const metadata: Metadata = {
 const studioAngebote = [
   { title: "تصوير المنتجات", text: "صور مقصوصة للتجارة الإلكترونية، مشاهد نمط حياة ولقطات تفصيلية بتصميم ديكور احترافي — صور تُبرر سعر منتجك.", color: "sun" },
   { title: "تصوير الطعام والمشروبات", text: "أطباق ومشروبات ومكونات بإضاءة وملمس مدروسين — محتوى يفتح الشهية ويجلب الحجوزات.", color: "pink" },
-  { title: "محتوى التجميل ومستحضرات العناية", text: "ملمس ولون وتطبيق: محتوى تجميل بمستوى العلامات الكبرى، منتج للفيد والمتجر والإعلانات.", color: "violet" },
+  { title: "محتوى التجميل ومستحضرات العناية", text: "ملمس ولون وتطبيق: محتوى تجميل بمستوى العلامات الكبرى، مُنتَج لوسائل التواصل الاجتماعي والمتجر والإعلانات.", color: "violet" },
   { title: "صور منتجات للتجارة الإلكترونية", text: "سلاسل صور موحدة لكامل مجموعتك — متناسقة وقابلة للتوسع ومحسّنة لمتجرك.", color: "mint" },
-  { title: "ريلز لإنستغرام وتيك توك", text: "مصمَّمة عمودياً، مخطط لها بجملة افتتاحية قوية، ومونتاج أصلي — ريلز تحقق انتشاراً عضوياً بدل شرائه.", color: "sky" },
+  { title: "ريلز لإنستغرام وتيك توك", text: "مصمَّمة عمودياً، مخطط لها بخطاف قوي، ومونتاج أصلي — ريلز تحقق انتشاراً عضوياً بدل شرائه.", color: "sky" },
   { title: "فيديوهات إعلانية", text: "فيديوهات أداء قصيرة برسالة واضحة ودعوة لاتخاذ إجراء — بالضبط ما تحتاجه حملات Meta وTikTok.", color: "violet" },
   { title: "محتوى من خلف الكواليس", text: "لمحات حقيقية عن فريقك وإنتاجك — محتوى يبني الثقة ويجعل علامتك أقرب لجمهورها.", color: "pink" },
   { title: "محتوى للمواقع وصفحات الهبوط", text: "صور رئيسية وصور فريق وعناصر بصرية للمنتج تحوّل موقعك من قالب جاهز إلى هوية علامة حقيقية.", color: "mint" },
@@ -86,10 +86,10 @@ export default function StudioPageAr() {
             eyebrowColor="text-pink"
             title={
               <>
-                مكان واحد. <span className="text-sun">كل الصيغ.</span>
+                كل ما تحتاجه من المحتوى، <span className="text-sun">في مكان واحد.</span>
               </>
             }
-            intro="من صورة المنتج حتى فيديو الحملة: ننتج في مكان تتوفر فيه الإضاءة والتقنية والفريق مسبقاً. هذا ما يجعلنا سريعين والجودة ثابتة."
+            intro="من صورة المنتج حتى فيديو الحملة: ننتج في مكان تتوفر فيه الإضاءة والتقنية والفريق مسبقاً. هذا ما يجعلنا سريعين، والجودة ثابتة."
           />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {studioAngebote.map((item, i) => (
@@ -131,7 +131,7 @@ export default function StudioPageAr() {
               <Reveal delay={0.2}>
                 <div className="flex flex-1 flex-col justify-center rounded border border-line bg-white p-8 backdrop-blur">
                   <h2 className="font-heading text-xl font-bold text-ink">
-                    أرسل منتجك، واستلم المحتوى
+                    أرسل منتجك، واستلم محتوى جاهزًا للنشر
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-ink-2">
                     لا داعي للحضور إلى برلين لجلسة التصوير: أرسل لنا منتجك، ونتولى نحن
@@ -170,7 +170,7 @@ export default function StudioPageAr() {
       {/* FAQ */}
       <section className="bg-paper-2 py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <SectionHeading title="جدير بالمعرفة" />
+          <SectionHeading title="أسئلة شائعة" />
           <div className="mt-10 space-y-4">
             {studio.faq.map((f) => (
               <Reveal key={f.q}>
@@ -189,7 +189,7 @@ export default function StudioPageAr() {
 
       <FinalCTA
         title="منتجك يستحق صوراً أفضل."
-        text="أخبرنا بما تبيعه، وسنُريك كيف يبدو في الإضاءة الصحيحة. المكالمة الأولى وفكرة المفهوم مجانيتان."
+        text="أخبرنا عن منتجك وما تريد تحقيقه، وسنقترح الطريقة الأنسب لإظهاره بصريًا وإنتاج محتوى يخدم أهدافك."
         locale="ar"
       />
     </>
