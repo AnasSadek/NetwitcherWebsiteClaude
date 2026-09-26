@@ -10,7 +10,7 @@ import type { AccentColor } from "@/lib/services";
 export const metadata: Metadata = {
   title: "من نحن. الفريق وراء نتويتشر",
   description:
-    "نتويتشر استوديو برليني للمحتوى والتصميم والتقنية والتسويق. تعرف على الفريق الذي يرى المحتوى كأداة بيع، لا كديكور.",
+    "نتويتشر استوديو برليني للمحتوى والتصميم والتقنية والتسويق. تعرف على الفريق الذي يرى المحتوى كأداة للنمو والمبيعات، لا مجرد ديكور.",
   alternates: { canonical: "/ar/ueber-uns" },
 };
 
@@ -19,7 +19,7 @@ const arrowTargetsAr: { color: AccentColor; label: string }[] = [
   { color: "violet", label: "استراتيجية وتسويق رقمي" },
   { color: "pink", label: "إنشاء المحتوى" },
   { color: "sun", label: "الاستوديو والتصوير" },
-  { color: "sky", label: "سوشيال ميديا وإعلانات" },
+  { color: "sky", label: "وسائل التواصل والإعلانات" },
 ];
 
 const werte = [
@@ -28,11 +28,11 @@ const werte = [
     text: "إذا كانت خدمة ما لن تفيدك، نخبرك بذلك، حتى لو كانت ضمن عروضنا. علاقات العمل طويلة الأمد أهم لنا من الصفقات السريعة.",
   },
   {
-    title: "النتائج قبل الجماليات",
+    title: "النتائج قبل الاستعراض",
     text: "الجمال واجب، والفعالية هي الهدف. نقيس عملنا بالطلبات والمبيعات والظهور، لا بجوائز التصميم.",
   },
   {
-    title: "سرعة بمضمون",
+    title: "سرعة دون التنازل عن الجودة",
     text: "استوديو خاص، مسارات قصيرة، فريق متناغم: ننجز بسرعة دون أن تتراجع الاستراتيجية أو الجودة.",
   },
   {
@@ -52,8 +52,8 @@ export default function UeberUnsPageAr() {
                 من نحن
               </p>
               <h1 className="text-3xl font-extrabold leading-tight tracking-tight md:text-5xl">
-                نحن الاستوديو الذي يرى{" "}
-                <span className="text-mint">المحتوى كأداة مبيعات</span>.
+                نحن استوديو يرى{" "}
+                <span className="text-mint">المحتوى كأداة للنمو والمبيعات</span>.
               </h1>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-3 md:text-lg">
                 نتويتشر وكالة رقمية واستوديو محتوى من برلين. أسسنا نتويتشر لأننا رأينا
@@ -81,10 +81,10 @@ export default function UeberUnsPageAr() {
           <SectionHeading
             title={
               <>
-                لماذا شعارنا <span className="text-mint">نجمة من أسهم</span>
+                لماذا يتكوّن شعارنا من <span className="text-mint">خمسة أسهم</span>؟
               </>
             }
-            intro="كل سهم يمثل تخصصاً: تصميم مواقع، استراتيجية، محتوى، تصوير، سوشيال ميديا. منفردة هي أدوات. ومجتمعة تشكّل النجمة: تسويق يعمل كمنظومة واحدة. وهكذا نعمل بالضبط."
+            intro="كل سهم يمثل تخصصاً: تصميم مواقع، استراتيجية، محتوى، تصوير، وسائل التواصل الاجتماعي. منفردة هي أدوات. ومجتمعة تشكّل النجمة: تسويق يعمل كمنظومة واحدة. وهكذا نعمل بالضبط."
           />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {arrowTargetsAr.map((t, i) => (
@@ -105,7 +105,7 @@ export default function UeberUnsPageAr() {
       <section className="bg-paper-2 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
-            title="أربعة مبادئ يمكنك أن تُقيّمنا بها"
+            title="أربعة مبادئ نحاسب أنفسنا عليها"
           />
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {werte.map((wert, i) => (
@@ -131,13 +131,13 @@ export default function UeberUnsPageAr() {
               صُنع في برلين
             </p>
             <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
-              برلين هي وطننا وميزتنا التنافسية
+              برلين موطننا... وميزة تنافسية حقيقية.
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ink-3">
               من استوديو المحتوى الخاص بنا في برلين، ننتج حيث يعيش جمهورك: بسرعة
-              ومرونة وقرب من الاتجاهات التي تصل إلى أماكن أخرى بعد أشهر. من هنا
-              نخدم شركات في جميع أنحاء ألمانيا، من المطعم المحلي حتى علامة
-              التجارة الإلكترونية.
+              ومرونة، وبقرب من الاتجاهات التي تحتاج أشهرًا لتصل إلى أماكن أخرى.
+              ومن هنا، نخدم شركات في جميع أنحاء ألمانيا، من المطعم المحلي إلى
+              علامة التجارة الإلكترونية.
             </p>
             <div className="mt-9">
               <ButtonLink href="/ar/studio" variant="studio">اكتشف الاستوديو</ButtonLink>
@@ -147,8 +147,8 @@ export default function UeberUnsPageAr() {
       </section>
 
       <FinalCTA
-        title="يبدو أنه الفريق المناسب؟"
-        text="إذن لنتحدث. في مكالمة التعارف ستتعرف علينا، وسنتعرف على عملك، وستحصل على تقييم صادق لما يناسبك فعلاً."
+        title="هل يبدو أننا الفريق المناسب لك؟"
+        text="إذن لنتحدث. في مكالمة التعارف، ستتعرف علينا وسنتعرف على عملك، وستحصل على تقييم صادق لما يناسبك فعلاً."
         locale="ar"
       />
     </>
