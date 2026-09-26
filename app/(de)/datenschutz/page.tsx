@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Datenschutzerklärung",
-  description: "Datenschutzerklärung der Netwitcher Digital Agency, Berlin.",
+  description: `Datenschutzerklärung der ${site.legalName}, Berlin.`,
   robots: { index: false },
 };
 

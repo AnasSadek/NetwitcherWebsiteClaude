@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "AGB, Allgemeine Geschäftsbedingungen",
-  description: "Allgemeine Geschäftsbedingungen der Netwitcher Digital Agency, Berlin.",
+  description: `Allgemeine Geschäftsbedingungen der ${site.legalName}, Berlin.`,
   robots: { index: false },
 };
 

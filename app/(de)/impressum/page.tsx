@@ -4,11 +4,10 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Impressum",
-  description: "Impressum der Netwitcher Digital Agency, Berlin.",
+  description: `Impressum der ${site.legalName}, Berlin.`,
   robots: { index: false },
 };
 
-// TODO: Platzhalter in eckigen Klammern mit echten Unternehmensdaten ersetzen.
 export default function ImpressumPage() {
   return (
     <LegalPage title="Impressum">
@@ -16,14 +15,27 @@ export default function ImpressumPage() {
       <p>
         {site.legalName}
         <br />
-        [Vor- und Nachname der Inhaberin / des Inhabers bzw. Rechtsform]
-        <br />
         {site.street}
         <br />
         {site.zip} {site.city}
         <br />
         Deutschland
       </p>
+
+      <h2>Handelsregister</h2>
+      <p>
+        Handelsregisternummer:
+        <br />
+        {site.hrb}
+        <br />
+        <br />
+        Registergericht:
+        <br />
+        {site.registerCourt}
+      </p>
+
+      <h2>Vertretungsberechtigt</h2>
+      <p>{site.representative}</p>
 
       <h2>Kontakt</h2>
       <p>
@@ -36,14 +48,18 @@ export default function ImpressumPage() {
       <p>
         Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG:
         <br />
-        [USt-IdNr. eintragen oder Absatz entfernen]
+        {site.vatId}
       </p>
 
-      <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+      <h2>Verantwortlich für den Inhalt gemäß § 18 Abs. 2 MStV</h2>
       <p>
-        [Vor- und Nachname]
+        {site.representative}
         <br />
-        {site.street}, {site.zip} {site.city}
+        {site.street}
+        <br />
+        {site.zip} {site.city}
+        <br />
+        Deutschland
       </p>
 
       <h2>EU-Streitschlichtung</h2>

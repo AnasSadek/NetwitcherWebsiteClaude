@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "الشروط والأحكام العامة (AGB)",
-  description: "الشروط والأحكام العامة الخاصة بوكالة نتويتشر الرقمية، برلين.",
+  description: `الشروط والأحكام العامة الخاصة بشركة ${site.legalName}، برلين.`,
   robots: { index: false },
 };
 

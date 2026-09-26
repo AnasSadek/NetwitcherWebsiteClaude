@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "سياسة الخصوصية",
-  description: "سياسة الخصوصية الخاصة بوكالة نتويتشر الرقمية، برلين.",
+  description: `سياسة الخصوصية الخاصة بشركة ${site.legalName}، برلين.`,
   robots: { index: false },
 };
 

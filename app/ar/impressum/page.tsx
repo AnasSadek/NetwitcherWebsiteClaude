@@ -5,16 +5,10 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "البيانات القانونية",
-  description: "البيانات القانونية الخاصة بوكالة نتويتشر الرقمية، برلين.",
+  description: `البيانات القانونية الخاصة بشركة ${site.legalName}، برلين.`,
   robots: { index: false },
 };
 
-// TODO: Platzhalter in eckigen Klammern mit echten Unternehmensdaten ersetzen
-// (identischer Platzhalter-Status wie in der deutschen Version, siehe
-// app/(de)/impressum/page.tsx — hier wurden bewusst keine Daten erfunden):
-// 1) Vor- und Nachname der Inhaberin/des Inhabers bzw. Rechtsform (erster Absatz)
-// 2) USt-IdNr. gemäß § 27a UStG, oder Absatz "الرقم الضريبي" entfernen
-// 3) Vor- und Nachname der/des Verantwortlichen nach § 18 Abs. 2 MStV
 export default function ImpressumPageAr() {
   return (
     <LegalPage title="البيانات القانونية">
@@ -24,8 +18,6 @@ export default function ImpressumPageAr() {
       <p>
         <Ltr>{site.legalName}</Ltr>
         <br />
-        [الاسم الأول واسم العائلة لمالك/مالكة المنشأة، أو الشكل القانوني للشركة]
-        <br />
         <Ltr>{site.street}</Ltr>
         <br />
         <Ltr>
@@ -33,6 +25,23 @@ export default function ImpressumPageAr() {
         </Ltr>
         <br />
         ألمانيا
+      </p>
+
+      <h2>السجل التجاري</h2>
+      <p>
+        رقم السجل التجاري:
+        <br />
+        <Ltr>{site.hrb}</Ltr>
+        <br />
+        <br />
+        المحكمة المختصة بالسجل:
+        <br />
+        <Ltr>{site.registerCourt}</Ltr>
+      </p>
+
+      <h2>الممثل المخوّل</h2>
+      <p>
+        <Ltr>{site.representative}</Ltr>
       </p>
 
       <h2>التواصل</h2>
@@ -45,12 +54,12 @@ export default function ImpressumPageAr() {
         </a>
       </p>
 
-      <h2>الرقم الضريبي</h2>
+      <h2>رقم ضريبة القيمة المضافة</h2>
       <p>
-        رقم التعريف الضريبي لضريبة القيمة المضافة وفقًا للمادة{" "}
+        رقم التعريف بضريبة القيمة المضافة وفقًا للمادة{" "}
         <Ltr>§ 27a</Ltr> من <Ltr>UStG</Ltr>:
         <br />
-        [أدخل رقم التعريف الضريبي، أو احذف هذه الفقرة]
+        <Ltr>{site.vatId}</Ltr>
       </p>
 
       <h2>
@@ -58,9 +67,15 @@ export default function ImpressumPageAr() {
         <Ltr>MStV</Ltr>
       </h2>
       <p>
-        [الاسم الأول واسم العائلة]
+        <Ltr>{site.representative}</Ltr>
         <br />
-        <Ltr>{site.street}</Ltr>، <Ltr>{site.zip} {site.city}</Ltr>
+        <Ltr>{site.street}</Ltr>
+        <br />
+        <Ltr>
+          {site.zip} {site.city}
+        </Ltr>
+        <br />
+        ألمانيا
       </p>
 
       <h2>تسوية المنازعات الأوروبية عبر الإنترنت</h2>
