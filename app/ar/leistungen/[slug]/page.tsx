@@ -51,6 +51,12 @@ const pageCopyOverrides: Partial<
     ctaText:
       "أخبرنا عن علامتك وطموحاتك، وسنساعدك على بناء هوية بصرية متماسكة تعبّر عنك بوضوح وتترك انطباعًا يدوم.",
   },
+  softwareentwicklung: {
+    faqHeading: "أسئلة شائعة",
+    ctaTitle: "جاهز لبناء الأداة التي يحتاجها عملك؟",
+    ctaText:
+      "أخبرنا عن العملية التي تريد تبسيطها أو المشكلة التي تريد حلها، وسنقترح عليك الحل البرمجي الأنسب لعملك.",
+  },
 };
 
 export function generateStaticParams() {
