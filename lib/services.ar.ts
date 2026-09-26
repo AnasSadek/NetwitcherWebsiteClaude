@@ -4,7 +4,7 @@ export const servicesAr: Service[] = [
   {
     slug: "studio",
     href: "/studio",
-    title: "إنتاج المحتوى واستوديو برلين",
+    title: "إنتاج المحتوى والتصوير في استوديو برلين",
     navTitle: "إنتاج المحتوى والاستوديو",
     color: "pink",
     icon: "camera",
@@ -72,8 +72,8 @@ export const servicesAr: Service[] = [
   {
     slug: "foto-videoproduktion",
     href: "/leistungen/foto-videoproduktion",
-    title: "إنتاج الصور والفيديو",
-    navTitle: "إنتاج الصور والفيديو",
+    title: "تصوير وإنتاج الفيديو",
+    navTitle: "تصوير وإنتاج الفيديو",
     color: "sun",
     icon: "play",
     teaser:
@@ -154,7 +154,7 @@ export const servicesAr: Service[] = [
       "تقارير شهرية",
       "محتوى من استوديونا الخاص",
     ],
-    cta: "أدر حساباتي على السوشيال ميديا",
+    cta: "أدر حساباتي على وسائل التواصل الاجتماعي",
     hero: {
       eyebrow: "وكالة سوشيال ميديا في برلين",
       headline: "قنواتك. مهمتنا. حضور واضح كل شهر.",
@@ -208,7 +208,7 @@ export const servicesAr: Service[] = [
   {
     slug: "performance-marketing",
     href: "/leistungen/performance-marketing",
-    title: "التسويق بالأداء والإعلانات",
+    title: "التسويق بالأداء والإعلانات المدفوعة",
     navTitle: "التسويق بالأداء / الإعلانات",
     color: "violet",
     icon: "target",
@@ -412,8 +412,8 @@ export const servicesAr: Service[] = [
   {
     slug: "branding-design",
     href: "/leistungen/branding-design",
-    title: "الهوية التجارية والتصميم",
-    navTitle: "الهوية التجارية والتصميم",
+    title: "الهوية البصرية والتصميم",
+    navTitle: "الهوية البصرية والتصميم",
     color: "violet",
     icon: "sparkles",
     teaser:
@@ -421,7 +421,7 @@ export const servicesAr: Service[] = [
     bullets: [
       "تصميم الشعار",
       "هوية بصرية متكاملة",
-      "قوالب سوشيال ميديا",
+      "قوالب لوسائل التواصل الاجتماعي",
       "دليل الهوية التجارية",
       "أصول تصميم للطباعة والرقمي",
       "تطوير الاسم والشعار الترويجي",
@@ -553,7 +553,7 @@ export const servicesAr: Service[] = [
     color: "sun",
     icon: "wrench",
     teaser:
-      "صيانة، تحديثات، تحليلات أداء ومساعدة سريعة لموقعك ومتجرك، ليبقى الجانب التقني بعيدًا أبدًا عن كونه سبب فقدانك للعملاء.",
+      "صيانة، تحديثات، تحليلات أداء ومساعدة سريعة لموقعك ومتجرك، حتى لا تكون التقنية يومًا سبب خسارتك لعملائك.",
     bullets: [
       "دعم للموقع والمتجر",
       "صيانة تقنية وتحديثات",

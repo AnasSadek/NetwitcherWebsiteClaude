@@ -22,7 +22,7 @@ export default function LeistungenPageAr() {
             eyebrow="خدماتنا"
             title={
               <span className="text-4xl md:text-5xl">
-                كل ما يجعل علامتك <span className="text-mint">تنمو</span>
+                كل ما تحتاجه علامتك <span className="text-mint">للنمو</span>
               </span>
             }
             intro="عشرة مجالات، فريق واحد: نجمع بين إنتاج المحتوى والحملات والتقنية بحيث يخدم كل عنصر نفس الهدف — ظهور أكبر، ثقة أعلى، طلبات أكثر. اختر المجال الذي يدفع عملك للأمام الآن."
