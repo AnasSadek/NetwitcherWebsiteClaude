@@ -113,7 +113,7 @@ export default function StudioPage() {
             <Reveal>
               <figure className="relative h-full overflow-hidden rounded border border-line">
                 <Media asset={media.product} className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
-                <figcaption className="absolute bottom-4 left-4 rounded border border-line bg-white/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-mint backdrop-blur">
+                <figcaption className="absolute bottom-4 left-4 rounded border border-line bg-white/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-ink backdrop-blur">
                   Produktfotografie
                 </figcaption>
               </figure>
@@ -122,7 +122,7 @@ export default function StudioPage() {
               <Reveal delay={0.1}>
                 <figure className="relative overflow-hidden rounded border border-line">
                   <Media asset={media.reels} className="w-full object-cover transition-transform duration-700 hover:scale-105" />
-                  <figcaption className="absolute bottom-4 left-4 rounded border border-line bg-white/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-sky backdrop-blur">
+                  <figcaption className="absolute bottom-4 left-4 rounded border border-line bg-white/80 px-4 py-2 font-heading text-[11px] font-bold uppercase tracking-widest text-ink backdrop-blur">
                     Reels & Video-Produktion
                   </figcaption>
                 </figure>
