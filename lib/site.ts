@@ -17,7 +17,7 @@ export const site = {
   registerCourt: "Amtsgericht Charlottenburg",
   representative: "Mhd Anas Sadek",
   vatId: "DE364219286",
-  calendlyUrl: "https://calendly.com/netwitcher/erstgespraech",
+  calendlyUrl: "https://calendar.app.google/wuaBBFtxvHvxJSga6",
   instagram: "https://www.instagram.com/netwitcher",
   linkedin: "https://www.linkedin.com/company/netwitcher",
   tiktok: "https://www.tiktok.com/@netwitcher",
