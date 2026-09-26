@@ -253,7 +253,7 @@ export const ar: Dictionary = {
     about: "من نحن",
     blog: "المدونة",
     contactCta: "ابدأ مشروعك",
-    studioDropdownLabel: "إنتاج المحتوى واستوديو برلين",
+    studioDropdownLabel: "إنتاج المحتوى والتصوير في استوديو برلين",
     homeAriaLabel: "نتويتشر، الصفحة الرئيسية",
     mainNavAriaLabel: "التنقل الرئيسي",
     mobileNavAriaLabel: "قائمة التنقل للجوال",

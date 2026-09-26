@@ -18,7 +18,8 @@ export function Header({ locale = "de" }: { locale?: Locale }) {
   const pathname = usePathname();
   const reduce = useReducedMotion();
   const t = getDict(locale);
-  const navServices = locale === "ar" ? navServicesAr : navServicesDe;
+  const isAr = locale === "ar";
+  const navServices = isAr ? navServicesAr : navServicesDe;
   const L = (href: string) => withLocale(href, locale);
 
   const navItems = [
@@ -99,7 +100,9 @@ export function Header({ locale = "de" }: { locale?: Locale }) {
                       <div className="rounded-card border border-line bg-white p-2 shadow-lift">
                         <Link
                           href={L("/studio")}
-                          className="block rounded-xl px-4 py-2.5 text-sm font-bold text-pink transition-colors hover:bg-paper-2"
+                          className={`block rounded-xl px-4 text-sm font-bold transition-colors hover:bg-paper-2 ${
+                            isAr ? "py-2 text-pink/85" : "py-2.5 text-pink"
+                          }`}
                         >
                           {t.nav.studioDropdownLabel}
                         </Link>
@@ -107,7 +110,9 @@ export function Header({ locale = "de" }: { locale?: Locale }) {
                           <Link
                             key={s.slug}
                             href={L(s.href)}
-                            className="block rounded-xl px-4 py-2.5 text-sm font-medium text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink"
+                            className={`block rounded-xl px-4 text-sm font-medium text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink ${
+                              isAr ? "py-2" : "py-2.5"
+                            }`}
                           >
                             {s.navTitle}
                           </Link>

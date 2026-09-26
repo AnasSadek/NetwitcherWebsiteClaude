@@ -19,12 +19,12 @@ export const navServicesDe: NavService[] = [
 
 export const navServicesAr: NavService[] = [
   { slug: "foto-videoproduktion", href: "/leistungen/foto-videoproduktion", navTitle: "التصوير وإنتاج الفيديو" },
-  { slug: "social-media-management", href: "/leistungen/social-media-management", navTitle: "إدارة السوشيال ميديا" },
-  { slug: "performance-marketing", href: "/leistungen/performance-marketing", navTitle: "التسويق الرقمي والإعلانات" },
+  { slug: "social-media-management", href: "/leistungen/social-media-management", navTitle: "إدارة وسائل التواصل الاجتماعي" },
+  { slug: "performance-marketing", href: "/leistungen/performance-marketing", navTitle: "التسويق بالأداء والإعلانات المدفوعة" },
   { slug: "webdesign-ecommerce", href: "/leistungen/webdesign-ecommerce", navTitle: "تصميم المواقع والمتاجر الإلكترونية" },
-  { slug: "seo", href: "/leistungen/seo", navTitle: "تحسين محركات البحث SEO" },
+  { slug: "seo", href: "/leistungen/seo", navTitle: "تحسين محركات البحث (SEO)" },
   { slug: "branding-design", href: "/leistungen/branding-design", navTitle: "الهوية البصرية والتصميم" },
   { slug: "softwareentwicklung", href: "/leistungen/softwareentwicklung", navTitle: "تطوير البرمجيات" },
-  { slug: "technischer-support", href: "/leistungen/technischer-support", navTitle: "الدعم الفني" },
+  { slug: "technischer-support", href: "/leistungen/technischer-support", navTitle: "الدعم التقني" },
   { slug: "druck-printdesign", href: "/leistungen/druck-printdesign", navTitle: "الطباعة وتصميم المطبوعات" },
 ];
