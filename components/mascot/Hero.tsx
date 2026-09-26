@@ -58,7 +58,7 @@ export function Hero({ locale = "de" }: { locale?: Locale }) {
               </h1>
               <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-ink-2 sm:text-lg lg:mx-0 lg:mt-5 lg:max-w-sm lg:text-white/75">
                 {locale === "ar"
-                  ? "محتوى وحملات ومواقع وبرمجيات من فريق واحد. سحرٌ في كل نقرة."
+                  ? "محتوى، وحملات، ومواقع، وبرمجيات من فريق واحد. سحرٌ في كل نقرة."
                   : "Content, Kampagnen, Websites und Software aus einem Team. Magic in Every Click."}
               </p>
               <div className="pointer-events-auto mt-6 flex flex-wrap items-center justify-center gap-3 lg:mt-8 lg:justify-start">

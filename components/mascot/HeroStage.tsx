@@ -590,7 +590,7 @@ export function HeroStage({ locale = "de" }: { locale?: Locale } = {}) {
         <MagneticCard
           href={withLocale("/leistungen/performance-marketing", locale)}
           color={ARROW_COLORS.sky}
-          title={locale === "ar" ? "سوشيال ميديا وإعلانات" : "Social & Ads"}
+          title={locale === "ar" ? "وسائل التواصل الاجتماعي والإعلانات" : "Social & Ads"}
           text={locale === "ar" ? "Meta وTikTok وGoogle، عضوي ومدفوع" : "Meta, TikTok und Google, organisch und bezahlt"}
           goLabel={locale === "ar" ? "عرض" : "Go"}
           parallax={card2}

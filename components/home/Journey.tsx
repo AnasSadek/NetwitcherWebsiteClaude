@@ -39,12 +39,12 @@ const STEPS_AR: { color: keyof typeof ARROW_COLORS; title: string; copy: string 
   {
     color: "pink",
     title: "الإبهار",
-    copy: "فكرة وإنتاج: صور وريلز وفيديوهات توقف المتابع أثناء التصفح.",
+    copy: "فكرة وإنتاج بصري يجذبان الانتباه أثناء التصفح.",
   },
   {
     color: "sky",
     title: "الانتشار",
-    copy: "السوشيال ميديا والإعلانات توصل المحتوى إلى الأشخاص المناسبين.",
+    copy: "وسائل التواصل الاجتماعي والإعلانات توصل المحتوى إلى الجمهور المناسب.",
   },
   {
     color: "mint",
@@ -54,7 +54,7 @@ const STEPS_AR: { color: keyof typeof ARROW_COLORS; title: string; copy: string 
   {
     color: "violet",
     title: "التأثير",
-    copy: "طلبات ومواعيد ومبيعات. نتائج تُقاس، لا تُشعر فقط.",
+    copy: "طلبات، ومواعيد، ومبيعات. نتائج قابلة للقياس، لا مجرد انطباعات.",
   },
 ];
 

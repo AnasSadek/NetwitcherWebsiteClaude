@@ -22,7 +22,7 @@ const LABELS_AR = {
   reels: "إنتاج الريلز",
   studio: "الإضاءة والتجهيز، استوديو برلين",
   product: "تصوير المنتجات",
-  studioClose: "الكاميرا على طاولة التصوير",
+  studioClose: "من كواليس التصوير",
 };
 
 export function Showcase({ locale = "de" }: { locale?: Locale }) {
@@ -40,7 +40,7 @@ export function Showcase({ locale = "de" }: { locale?: Locale }) {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 id="showcase" className="font-boxi text-3xl leading-[1.1] text-ink md:text-5xl">
-              {locale === "ar" ? "من الاستوديو." : "AUS DEM STUDIO."}
+              {locale === "ar" ? "من داخل الاستوديو." : "AUS DEM STUDIO."}
             </h2>
             <ButtonLink href={withLocale("/portfolio", locale)} variant="ghost">
               {locale === "ar" ? "عرض الأعمال" : "Portfolio ansehen"}

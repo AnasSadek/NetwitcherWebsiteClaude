@@ -78,9 +78,9 @@ const FIELDS_AR: Field[] = [
   {
     color: "sky",
     bg: "#e9f7fd",
-    title: "سوشيال ميديا وإعلانات",
+    title: "وسائل التواصل الاجتماعي والإعلانات",
     copy: "نوصل المحتوى إلى الأشخاص المناسبين: بشكل عضوي ومدفوع.",
-    items: ["إدارة السوشيال ميديا", "إعلانات Meta", "إعلانات TikTok", "إعلانات Google"],
+    items: ["إدارة وسائل التواصل الاجتماعي", "إعلانات Meta", "إعلانات TikTok", "إعلانات Google"],
     href: "/leistungen/performance-marketing",
     big: true,
   },
