@@ -95,19 +95,23 @@ export default async function BlogPostPageAr({
           <Reveal>
             <div className="mt-14 rounded border border-line bg-white p-8 text-center backdrop-blur">
               <h2 className="font-heading text-lg font-bold">
-                تريد تطبيق هذه المواضيع على شركتك؟
+                هل تريد تطبيق هذه الأفكار على علامتك؟
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-ink-3">
-                في مكالمة التعارف المجانية ننقل ذلك إلى علامتك التجارية: بشكل ملموس ودون أي التزام.
+                لنحوّل هذه الأفكار إلى خطوات عملية تناسب علامتك وأهدافك.
               </p>
               <div className="mt-6">
-                <ButtonLink href="/ar/kontakt#termin">حجز مكالمة تعارف مجانية</ButtonLink>
+                <ButtonLink href="/ar/kontakt#termin">احجز مكالمة تعارف مجانية</ButtonLink>
               </div>
             </div>
           </Reveal>
         </div>
       </article>
-      <FinalCTA locale="ar" />
+      <FinalCTA
+        locale="ar"
+        title="هل تريد تحويل الأفكار إلى نتائج؟"
+        text="أخبرنا بما تعمل عليه، وسنساعدك على تحديد الخطوة التالية التي تستحق وقتك وميزانيتك."
+      />
     </>
   );
 }
