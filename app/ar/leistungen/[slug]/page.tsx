@@ -43,6 +43,7 @@ export default async function ServicePageAr({
   const related = leistungenServicesAr
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
+  const isFotoVideo = service.slug === "foto-videoproduktion";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -138,7 +139,11 @@ export default async function ServicePageAr({
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             title="هذا ما تحصل عليه"
-            intro="لا وعود غامضة. هذا هو النطاق الذي نعمل به. وفي العرض، يُصمَّم كل بند خصيصاً لمشروعك."
+            intro={
+              isFotoVideo
+                ? "من البداية تعرف بالضبط ما الذي ستحصل عليه. نحدد نطاق العمل بوضوح، ثم نخصص كل بند بما يناسب مشروعك وأهدافك."
+                : "لا وعود غامضة. هذا هو النطاق الذي نعمل به. وفي العرض، يُصمَّم كل بند خصيصاً لمشروعك."
+            }
           />
           <ul className="mx-auto mt-12 grid max-w-4xl gap-3 sm:grid-cols-2">
             {service.deliverables.map((d, i) => (
@@ -158,7 +163,7 @@ export default async function ServicePageAr({
       {/* FAQ */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <SectionHeading title="جدير بالمعرفة" />
+          <SectionHeading title={isFotoVideo ? "أسئلة شائعة" : "جدير بالمعرفة"} />
           <div className="mt-10 space-y-4">
             {service.faq.map((f) => (
               <Reveal key={f.q}>
@@ -187,7 +192,15 @@ export default async function ServicePageAr({
         </div>
       </section>
 
-      <FinalCTA locale="ar" />
+      <FinalCTA
+        locale="ar"
+        title={isFotoVideo ? "ما الذي ترغب في إنتاجه بعد ذلك؟" : undefined}
+        text={
+          isFotoVideo
+            ? "أخبرنا بإيجاز عما تحتاجه، وسنخبرك بصراحة بما يستحق التنفيذ وما يناسب أهدافك وميزانيتك."
+            : undefined
+        }
+      />
     </>
   );
 }
