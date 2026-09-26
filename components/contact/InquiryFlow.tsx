@@ -267,15 +267,15 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                 </p>
                 <ul className="mt-7 grid gap-2 sm:grid-cols-2">
                   {TOPICS.map((t) => (
-                    <li key={t.id}>
+                    <li key={t.id} className="h-full">
                       <button
                         type="button"
                         onClick={() => choose(t)}
-                        className="group flex w-full items-start gap-3 rounded border border-ink/10 bg-white px-4 py-4 text-left rtl:text-right transition-colors hover:border-ink/35 hover:bg-ink/5"
+                        className="group flex h-full min-h-28 w-full items-center gap-3 rounded border border-ink/10 bg-white px-4 py-4 text-left rtl:text-right transition-colors hover:border-ink/35 hover:bg-ink/5"
                       >
                         <Arrow
                           color={ARROW_COLORS[t.accent]}
-                          className={`mt-1.5 shrink-0 transition-transform duration-200 ${arrowMirror} group-hover:translate-x-1`}
+                          className={`shrink-0 transition-transform duration-200 ${arrowMirror} group-hover:translate-x-1`}
                         />
                         <span>
                           <span className="block font-heading text-base font-bold tracking-tight">
