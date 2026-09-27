@@ -8,6 +8,7 @@ import { ProjectBrandStatement } from "@/components/portfolio/ProjectBrandStatem
 import { ProjectClients } from "@/components/portfolio/ProjectClients";
 import { ProjectFeatures } from "@/components/portfolio/ProjectFeatures";
 import { ProjectReels } from "@/components/portfolio/ProjectReels";
+import { ProjectAmazon } from "@/components/portfolio/ProjectAmazon";
 import { ProjectKaufland } from "@/components/portfolio/ProjectKaufland";
 import { ProjectServices } from "@/components/portfolio/ProjectServices";
 import { ProjectTikTokShop } from "@/components/portfolio/ProjectTikTokShop";
@@ -109,6 +110,7 @@ export default async function ProjectPageAr({ params }: { params: Promise<{ slug
           <ProjectLinks project={project} locale="ar" />
           {project.tiktokShopSection ? <ProjectTikTokShop project={project} /> : null}
           {project.kauflandSection ? <ProjectKaufland project={project} /> : null}
+          {project.amazonSection ? <ProjectAmazon project={project} /> : null}
           {project.servicesSection ? <ProjectServices project={project} /> : null}
           {project.reelsSection ? <ProjectReels project={project} locale="ar" /> : null}
           {project.clientsSection ? <ProjectClients project={project} locale="ar" /> : null}

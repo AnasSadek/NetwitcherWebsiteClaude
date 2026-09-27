@@ -207,6 +207,30 @@ export type PortfolioProject = {
     secondaryText: string;
     summary: { label: string; body: string };
   };
+  /** Amazon-Marktplatz-Performance-Abschnitt — zeigt bewusst NUR prozentuale
+   *  Effizienzkennzahlen (ACoS, Gebühren, Fulfilment, Retouren), niemals
+   *  €-Beträge, Umsatz, Bestellzahlen oder Profitabilität. Rendert direkt
+   *  nach `kauflandSection` und vor `servicesSection`. */
+  amazonSection?: {
+    eyebrow: string;
+    heading: string;
+    intro: string;
+    /** `value` ist bereits lokal formatiert (Dezimaltrennzeichen/Leerzeichen
+     *  vor "%" je Sprache), damit hier keine Formatierungslogik nötig ist. */
+    kpis: {
+      icon: "trending-up" | "percent" | "package" | "shield-check";
+      value: string;
+      label: string;
+      supporting?: string;
+    }[];
+    /** 4 unabhängige Radial-Indikatoren (jeweils eigene 0–100-Skala) —
+     *  bewusst NICHT als Teile eines gemeinsamen Ganzen/Kreisdiagramms
+     *  dargestellt, da die Kennzahlen inhaltlich nicht zusammengehören. */
+    visual: { pct: number; display: string; label: string }[];
+    secondaryHeading: string;
+    secondaryText: string;
+    summary: { label: string; body: string };
+  };
   /** Eigener Leistungen-Abschnitt (Eyebrow, Überschrift, Intro-Absätze,
    *  Karten mit Icon/Titel/Beschreibung, optionale Abschluss-Aussage) —
    *  unabhängig von `features`: rendert am Seitenende, nach dem übrigen
@@ -515,6 +539,51 @@ export const portfolioProjects: PortfolioProject[] = [
       summary: {
         label: "Das Ergebnis",
         body: "100 % BuyBox-Anteil, eine durchschnittliche Suchposition von 33,1 und eine Retourenquote von nur 0,6 % – starke Signale für eine stabile und professionell betreute Präsenz von FridaEU auf Kaufland.",
+      },
+    },
+    amazonSection: {
+      eyebrow: "AMAZON · MARKETPLACE PERFORMANCE",
+      heading: "Effizientere Performance auf Amazon",
+      intro:
+        "Für FridaEU steuern wir die Amazon-Präsenz datenbasiert – mit Fokus auf Werbeeffizienz, operative Kosten und eine stabile Produktperformance. So lassen sich Entscheidungen gezielter treffen und die Effizienz des Accounts laufend optimieren.",
+      kpis: [
+        {
+          icon: "trending-up",
+          value: "9,72 %",
+          label: "Advertising Cost of Sales (ACoS)",
+          supporting: "Kennzahl zur Bewertung der Werbeeffizienz auf Amazon.",
+        },
+        {
+          icon: "percent",
+          value: "15,65 %",
+          label: "Verkaufsgebühren",
+          supporting: "Anteil der Amazon-Verkaufsgebühren innerhalb des ausgewerteten Zeitraums.",
+        },
+        {
+          icon: "package",
+          value: "0,03 %",
+          label: "Fulfilment-Kosten",
+          supporting: "Niedriger Kostenanteil für die Auftragsabwicklung.",
+        },
+        {
+          icon: "shield-check",
+          value: "0,07 %",
+          label: "Retouren & Recovery",
+          supporting: "Niedriger Anteil von Rückgabe- und Recovery-Prozessen.",
+        },
+      ],
+      visual: [
+        { pct: 9.72, display: "9,72 %", label: "Advertising Cost of Sales (ACoS)" },
+        { pct: 15.65, display: "15,65 %", label: "Verkaufsgebühren" },
+        { pct: 0.03, display: "0,03 %", label: "Fulfilment-Kosten" },
+        { pct: 0.07, display: "0,07 %", label: "Retouren & Recovery" },
+      ],
+      secondaryHeading: "Effizienz kontinuierlich im Blick",
+      secondaryText:
+        "Wir verbinden Werbeperformance, operative Kosten und Produktdaten, um die Amazon-Präsenz laufend zu optimieren und Entscheidungen auf einer belastbaren Datengrundlage zu treffen.",
+      summary: {
+        label: "Das Ergebnis",
+        body: "Ein ACoS von 9,72 % bei gleichzeitig niedrigen Fulfilment- und Retourenquoten – starke Effizienzsignale für die betreute Amazon-Präsenz von FridaEU.",
       },
     },
     servicesSection: {
