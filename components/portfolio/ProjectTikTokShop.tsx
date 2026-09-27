@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/Reveal";
 import { ARROW_COLORS } from "@/components/arrows";
@@ -29,6 +30,32 @@ export function ProjectTikTokShop({ project }: { project: PortfolioProject }) {
   const { eyebrow, heading, period, intro, kpis, traffic, summary } = section;
   const reduce = useReducedMotion();
   const maxImpressions = Math.max(...traffic.sources.map((s) => s.impressions));
+
+  // Eigener IntersectionObserver statt framer-motions whileInView: whileInView
+  // kann das Antriggern verpassen, wenn das Element beim Mounten bereits (z. B.
+  // durch schnelles Scrollen/einen Anker) im Viewport liegt. Gleiches Muster
+  // wie Reveal.tsx, inkl. Sofort-Check für bereits sichtbare Elemente.
+  const barsRef = useRef<HTMLDivElement>(null);
+  const [barsShown, setBarsShown] = useState(false);
+  useEffect(() => {
+    const el = barsRef.current;
+    if (!el) return;
+    if (el.getBoundingClientRect().top < window.innerHeight - 60) {
+      setBarsShown(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setBarsShown(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "100000px 0px -60px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section aria-labelledby="tiktok-shop" className="py-14 md:py-20">
@@ -87,7 +114,10 @@ export function ProjectTikTokShop({ project }: { project: PortfolioProject }) {
           </div>
         </Reveal>
 
-        <div className="mt-8 space-y-5 rounded-[26px] border border-line bg-white p-6 shadow-soft md:mt-10 md:p-8">
+        <div
+          ref={barsRef}
+          className="mt-8 space-y-5 rounded-[26px] border border-line bg-white p-6 shadow-soft md:mt-10 md:p-8"
+        >
           {traffic.sources.map((source, i) => {
             const hex = ARROW_COLORS[ACCENT_CYCLE[i % ACCENT_CYCLE.length]];
             const pct = Math.max(4, (source.impressions / maxImpressions) * 100);
@@ -105,8 +135,7 @@ export function ProjectTikTokShop({ project }: { project: PortfolioProject }) {
                     className="h-full origin-left rounded-full rtl:origin-right"
                     style={{ width: `${pct}%`, backgroundColor: hex }}
                     initial={reduce ? false : { scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true, margin: "-40px" }}
+                    animate={{ scaleX: reduce || barsShown ? 1 : 0 }}
                     transition={{ duration: 0.9, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
                   />
                 </div>
