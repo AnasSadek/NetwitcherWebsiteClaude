@@ -39,11 +39,7 @@ export function Hero({ locale = "de" }: { locale?: Locale }) {
               <p className="font-heading text-[11px] font-bold uppercase tracking-[0.3em] text-ink-3 lg:text-white/70">
                 {locale === "ar" ? "وكالة رقمية · برلين" : "Digital Agency · Berlin"}
               </p>
-              <h1
-                className={`mt-4 font-boxi leading-[1.05] text-ink sm:text-5xl lg:mt-5 lg:text-[3.1rem] lg:text-white xl:text-[3.7rem] ${
-                  locale === "ar" ? "text-[4.75vw]" : "text-[9.5vw]"
-                }`}
-              >
+              <h1 className="mt-4 font-boxi text-[9.5vw] leading-[1.05] text-ink sm:text-5xl lg:mt-5 lg:text-[3.1rem] lg:text-white xl:text-[3.7rem]">
                 {locale === "ar" ? (
                   <>
                     نصنع <span className="bg-clip-text text-transparent brand-sweep">السحر</span>
