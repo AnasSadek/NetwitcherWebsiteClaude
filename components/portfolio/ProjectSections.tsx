@@ -100,7 +100,15 @@ export function ProjectHeader({ project, locale = "de" }: { project: PortfolioPr
                 <span className="text-ink-3">{project.year}</span>
               </p>
               <div className="mt-5">
-                <BoxiTitle as="h1" lines={[project.title]} max="5.5rem" min="1.375rem" className="text-ink" locale={locale} />
+                <BoxiTitle
+                  as="h1"
+                  lines={[project.title]}
+                  max="5.5rem"
+                  min="1.375rem"
+                  mobileMax={locale === "ar" ? "2.75rem" : undefined}
+                  className="text-ink"
+                  locale={locale}
+                />
               </div>
             </div>
             <div className="lg:col-span-4 lg:pb-2">

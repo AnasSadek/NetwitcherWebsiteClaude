@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useId, type CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/locale";
 
 /**
@@ -22,6 +22,7 @@ export function BoxiTitle({
   lines,
   max = "6rem",
   min = "1.75rem",
+  mobileMax,
   id,
   className = "",
   style,
@@ -34,6 +35,11 @@ export function BoxiTitle({
   max?: string;
   /** Untergrenze: darunter darf hyphens/overflow-wrap eingreifen */
   min?: string;
+  /** Optionale, kleinere Obergrenze nur unterhalb des sm-Breakpoints (640px).
+   *  Rein additiv: ohne diesen Wert verhält sich die Komponente exakt wie
+   *  zuvor. Für sehr breite Schriften (z. B. arabische Projekttitel), deren
+   *  längstes Wort auf schmalen Screens sonst unnötig gross/hoch wirkt. */
+  mobileMax?: string;
   id?: string;
   className?: string;
   style?: CSSProperties;
@@ -49,13 +55,18 @@ export function BoxiTitle({
   );
   const charWidth = isAr ? CHAR_WIDTH_AR : CHAR_WIDTH_DE;
   const fit = (100 / (longest * charWidth)).toFixed(2);
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
+  const mobileClass = mobileMax ? `boxi-${uid}` : undefined;
   return (
     <div className="@container w-full">
+      {mobileClass && (
+        <style>{`@media (max-width: 639px) { .${mobileClass} { font-size: clamp(${min}, ${fit}cqw, ${mobileMax}) !important; } }`}</style>
+      )}
       <Tag
         id={id}
         lang={locale}
         dir={isAr ? "rtl" : "ltr"}
-        className={`font-boxi ${isAr ? "leading-[1.25]" : "leading-[0.94] hyphens-auto"} [overflow-wrap:anywhere] ${className}`}
+        className={`font-boxi ${isAr ? "leading-[1.25]" : "leading-[0.94] hyphens-auto"} [overflow-wrap:anywhere] ${mobileClass ?? ""} ${className}`}
         style={{ fontSize: `clamp(${min}, ${fit}cqw, ${max})`, ...style }}
       >
         {lines.map((l, i) => {
