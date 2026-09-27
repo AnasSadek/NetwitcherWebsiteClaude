@@ -172,6 +172,41 @@ export type PortfolioProject = {
     };
     summary: { label: string; body: string };
   };
+  /** Kaufland-Marktplatz-Performance-Abschnitt — zeigt bewusst NUR
+   *  Sichtbarkeits-/Qualitäts-/Positionierungskennzahlen, niemals Umsatz-,
+   *  Bestell- oder Conversion-Daten. Rendert direkt nach `tiktokShopSection`
+   *  und vor `servicesSection`. */
+  kauflandSection?: {
+    eyebrow: string;
+    heading: string;
+    /** Zeitraum, z. B. "Letzte 12 Monate". */
+    period: string;
+    intro: string;
+    /** `value` ist bereits lokal formatiert (Dezimaltrennzeichen/Leerzeichen
+     *  vor "%" je Sprache), damit hier keine Formatierungslogik nötig ist. */
+    kpis: {
+      icon: "target" | "search" | "percent" | "package";
+      value: string;
+      label: string;
+      supporting?: string;
+    }[];
+    /** Kompakte 3-Indikatoren-Visualisierung unterhalb der KPI-Karten.
+     *  `buyBoxPct` ist die einzige echte, numerisch nutzbare Prozentzahl
+     *  (Ring-Füllung) — Suchposition/Retourenquote werden bewusst NICHT
+     *  als proportionale Balken dargestellt (irreführend bzw. verzerrend). */
+    visual: {
+      buyBoxPct: number;
+      buyBoxDisplay: string;
+      buyBoxLabel: string;
+      searchPositionDisplay: string;
+      searchPositionLabel: string;
+      returnRateDisplay: string;
+      returnRateLabel: string;
+    };
+    secondaryHeading: string;
+    secondaryText: string;
+    summary: { label: string; body: string };
+  };
   /** Eigener Leistungen-Abschnitt (Eyebrow, Überschrift, Intro-Absätze,
    *  Karten mit Icon/Titel/Beschreibung, optionale Abschluss-Aussage) —
    *  unabhängig von `features`: rendert am Seitenende, nach dem übrigen
@@ -431,6 +466,55 @@ export const portfolioProjects: PortfolioProject[] = [
       summary: {
         label: "Das Ergebnis",
         body: "Mehr als 15,7 Millionen Produkt-Impressionen und 435.000 Klicks in weniger als sechs Monaten – mit Reichweite über mehrere TikTok-Shop-Touchpoints hinweg.",
+      },
+    },
+    kauflandSection: {
+      eyebrow: "KAUFLAND · MARKETPLACE PERFORMANCE",
+      heading: "Starke Präsenz und stabile Performance auf Kaufland",
+      period: "Letzte 12 Monate",
+      intro:
+        "Unsere Arbeit für FridaEU endet nicht beim Shop und Content. Auch auf Kaufland optimieren wir die Sichtbarkeit und Qualität der Produktpräsenz – von strukturierten Listings über die Auffindbarkeit in der Suche bis zur stabilen BuyBox-Performance.",
+      kpis: [
+        {
+          icon: "target",
+          value: "100 %",
+          label: "BuyBox-Anteil",
+          supporting: "Volle BuyBox-Präsenz innerhalb der verfügbaren Daten.",
+        },
+        {
+          icon: "search",
+          value: "33,1",
+          label: "Ø Suchposition",
+          supporting: "Durchschnittliche Position der Produkte in der Kaufland-Suche.",
+        },
+        {
+          icon: "percent",
+          value: "0,6 %",
+          label: "Retourenquote",
+          supporting: "Niedrige Retourenquote als Qualitätsindikator.",
+        },
+        {
+          icon: "package",
+          value: "52",
+          label: "Produkte in der Analyse",
+          supporting: "Breites FridaEU-Sortiment innerhalb der ausgewerteten Daten.",
+        },
+      ],
+      visual: {
+        buyBoxPct: 100,
+        buyBoxDisplay: "100 %",
+        buyBoxLabel: "BuyBox-Anteil",
+        searchPositionDisplay: "33,1",
+        searchPositionLabel: "Ø Suchposition",
+        returnRateDisplay: "0,6 %",
+        returnRateLabel: "Retourenquote",
+      },
+      secondaryHeading: "Mehr als Produkte nur einzustellen",
+      secondaryText:
+        "Wir optimieren die Marketplace-Präsenz laufend – von strukturierten Produktdaten und Sichtbarkeit bis zur BuyBox-Positionierung und Qualitätskontrolle.",
+      summary: {
+        label: "Das Ergebnis",
+        body: "100 % BuyBox-Anteil, eine durchschnittliche Suchposition von 33,1 und eine Retourenquote von nur 0,6 % – starke Signale für eine stabile und professionell betreute Präsenz von FridaEU auf Kaufland.",
       },
     },
     servicesSection: {

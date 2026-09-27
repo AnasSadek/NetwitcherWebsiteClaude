@@ -211,6 +211,55 @@ export const portfolioProjectsAr: PortfolioProject[] = [
         body: "أكثر من 15.7 مليون ظهور للمنتجات و435 ألف نقرة خلال أقل من ستة أشهر – حضور قوي على TikTok Shop دون الاعتماد على قناة وصول واحدة.",
       },
     },
+    kauflandSection: {
+      eyebrow: "KAUFLAND · أداء السوق",
+      heading: "حضور قوي وأداء مستقر على Kaufland",
+      period: "آخر 12 شهرًا",
+      intro:
+        "لم يقتصر عملنا مع FridaEU على بناء المتجر وإدارة المحتوى، بل شمل أيضًا تحسين حضور المنتجات داخل Kaufland. ركزنا على جودة القوائم، وتوفر المنتجات، والظهور في البحث، والحفاظ على أداء قوي داخل السوق.",
+      kpis: [
+        {
+          icon: "target",
+          value: "100%",
+          label: "حصة BuyBox",
+          supporting: "حضور كامل في BuyBox ضمن البيانات المتاحة.",
+        },
+        {
+          icon: "search",
+          value: "33.1",
+          label: "متوسط موضع البحث",
+          supporting: "متوسط ظهور المنتجات في نتائج بحث Kaufland.",
+        },
+        {
+          icon: "percent",
+          value: "0.6%",
+          label: "معدل الإرجاع",
+          supporting: "معدل إرجاع منخفض يعكس استقرار تجربة المنتج.",
+        },
+        {
+          icon: "package",
+          value: "52",
+          label: "منتجات ضمن التحليل",
+          supporting: "مجموعة واسعة من منتجات FridaEU ضمن بيانات الأداء.",
+        },
+      ],
+      visual: {
+        buyBoxPct: 100,
+        buyBoxDisplay: "100%",
+        buyBoxLabel: "حصة BuyBox",
+        searchPositionDisplay: "33.1",
+        searchPositionLabel: "متوسط موضع البحث",
+        returnRateDisplay: "0.6%",
+        returnRateLabel: "معدل الإرجاع",
+      },
+      secondaryHeading: "أكثر من مجرد إدراج المنتجات",
+      secondaryText:
+        "نعمل على تحسين ظهور المنتجات واستقرارها داخل السوق من خلال تنظيم القوائم، ومراقبة BuyBox، وتحسين قابلية الاكتشاف، ومتابعة مؤشرات الجودة بشكل مستمر.",
+      summary: {
+        label: "النتيجة",
+        body: "حصة BuyBox بنسبة 100%، ومتوسط موضع بحث 33.1، ومعدل إرجاع لا يتجاوز 0.6% – مؤشرات تعكس حضورًا مستقرًا ومدروسًا لمنتجات FridaEU على Kaufland.",
+      },
+    },
     servicesSection: {
       eyebrow: "خدماتنا",
       heading: "من التجارة الإلكترونية إلى التسويق بالأداء",

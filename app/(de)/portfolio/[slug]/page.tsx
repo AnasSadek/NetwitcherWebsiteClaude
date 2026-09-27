@@ -8,6 +8,7 @@ import { ProjectBrandStatement } from "@/components/portfolio/ProjectBrandStatem
 import { ProjectClients } from "@/components/portfolio/ProjectClients";
 import { ProjectFeatures } from "@/components/portfolio/ProjectFeatures";
 import { ProjectReels } from "@/components/portfolio/ProjectReels";
+import { ProjectKaufland } from "@/components/portfolio/ProjectKaufland";
 import { ProjectServices } from "@/components/portfolio/ProjectServices";
 import { ProjectTikTokShop } from "@/components/portfolio/ProjectTikTokShop";
 import { ProjectVisual } from "@/components/portfolio/ProjectVisual";
@@ -106,6 +107,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.testimonial ? <ProjectTestimonial project={project} /> : null}
           <ProjectLinks project={project} locale="de" />
           {project.tiktokShopSection ? <ProjectTikTokShop project={project} /> : null}
+          {project.kauflandSection ? <ProjectKaufland project={project} /> : null}
           {project.servicesSection ? <ProjectServices project={project} /> : null}
           {project.reelsSection ? <ProjectReels project={project} locale="de" /> : null}
           {project.clientsSection ? <ProjectClients project={project} locale="de" /> : null}
