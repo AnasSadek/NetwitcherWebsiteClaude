@@ -147,6 +147,31 @@ export type PortfolioProject = {
       description: string;
     }[];
   };
+  /** TikTok-Shop-Reichweite/Traffic-Abschnitt — zeigt bewusst NUR
+   *  Impressionen/Klicks/CTR und Traffic-Quellen, niemals Umsatz-,
+   *  Bestell- oder Kundenzahlen. Rendert direkt vor `servicesSection`. */
+  tiktokShopSection?: {
+    eyebrow: string;
+    heading: string;
+    /** Zeitraum, z. B. "01. April 2026 – 27. September 2026". */
+    period: string;
+    intro: string;
+    kpis: {
+      icon: "eye" | "cursor-click" | "percent";
+      value: number;
+      /** "percent": value wird direkt mit "%" angezeigt (kein M/K-Kompaktformat). */
+      unit?: "percent";
+      label: string;
+    }[];
+    traffic: {
+      heading: string;
+      intro: string;
+      impressionsUnit: string;
+      clicksUnit: string;
+      sources: { label: string; impressions: number; clicks: number }[];
+    };
+    summary: { label: string; body: string };
+  };
   /** Eigener Leistungen-Abschnitt (Eyebrow, Überschrift, Intro-Absätze,
    *  Karten mit Icon/Titel/Beschreibung, optionale Abschluss-Aussage) —
    *  unabhängig von `features`: rendert am Seitenende, nach dem übrigen
@@ -376,6 +401,38 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     hideNextProject: true,
     links: [{ label: "Website besuchen", href: "https://fridaeu.com" }],
+    tiktokShopSection: {
+      eyebrow: "TIKTOK SHOP · PERFORMANCE",
+      heading: "Reichweite, die messbares Interesse schafft",
+      period: "01. April 2026 – 27. September 2026",
+      intro:
+        "Durch die Betreuung des TikTok Shops, gezielten Content und die intelligente Verknüpfung verschiedener Traffic-Quellen haben wir die Sichtbarkeit der FridaEU-Produkte deutlich ausgebaut. Von April bis September 2026 erzielten die Produkte Millionen von Impressionen und Hunderttausende Klicks innerhalb des TikTok Shops.",
+      kpis: [
+        { icon: "eye", value: 15767048, label: "Produkt-Impressionen" },
+        { icon: "eye", value: 9555097, label: "Einzigartige Produkt-Impressionen" },
+        { icon: "cursor-click", value: 435826, label: "Produktklicks" },
+        { icon: "cursor-click", value: 293119, label: "Einzigartige Klicks" },
+        { icon: "percent", value: 2.76, unit: "percent", label: "Klickrate" },
+        { icon: "percent", value: 3.07, unit: "percent", label: "Einzigartige Klickrate" },
+      ],
+      traffic: {
+        heading: "Woher kam die Aufmerksamkeit?",
+        intro:
+          "Die Produktreichweite verteilte sich auf mehrere Touchpoints innerhalb des TikTok-Shop-Ökosystems – von Affiliate-Traffic über Produktkarten und Videos bis hin zu LIVE.",
+        impressionsUnit: "Impressionen",
+        clicksUnit: "Klicks",
+        sources: [
+          { label: "Affiliate", impressions: 7944781, clicks: 288421 },
+          { label: "Produktkarten", impressions: 7229969, clicks: 132292 },
+          { label: "Seller Videos", impressions: 565967, clicks: 14911 },
+          { label: "Seller LIVE", impressions: 26331, clicks: 202 },
+        ],
+      },
+      summary: {
+        label: "Das Ergebnis",
+        body: "Mehr als 15,7 Millionen Produkt-Impressionen und 435.000 Klicks in weniger als sechs Monaten – mit Reichweite über mehrere TikTok-Shop-Touchpoints hinweg.",
+      },
+    },
     servicesSection: {
       eyebrow: "UNSERE LEISTUNGEN",
       heading: "VON E-COMMERCE BIS PERFORMANCE MARKETING",

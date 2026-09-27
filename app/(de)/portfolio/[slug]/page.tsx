@@ -9,6 +9,7 @@ import { ProjectClients } from "@/components/portfolio/ProjectClients";
 import { ProjectFeatures } from "@/components/portfolio/ProjectFeatures";
 import { ProjectReels } from "@/components/portfolio/ProjectReels";
 import { ProjectServices } from "@/components/portfolio/ProjectServices";
+import { ProjectTikTokShop } from "@/components/portfolio/ProjectTikTokShop";
 import { ProjectVisual } from "@/components/portfolio/ProjectVisual";
 import {
   ImageGallery,
@@ -104,6 +105,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.results?.length ? <ProjectResults project={project} locale="de" /> : null}
           {project.testimonial ? <ProjectTestimonial project={project} /> : null}
           <ProjectLinks project={project} locale="de" />
+          {project.tiktokShopSection ? <ProjectTikTokShop project={project} /> : null}
           {project.servicesSection ? <ProjectServices project={project} /> : null}
           {project.reelsSection ? <ProjectReels project={project} locale="de" /> : null}
           {project.clientsSection ? <ProjectClients project={project} locale="de" /> : null}

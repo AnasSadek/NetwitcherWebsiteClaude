@@ -31,7 +31,10 @@ export type FeatureIconName =
   | "monitor"
   | "app-window"
   | "search"
-  | "palette";
+  | "palette"
+  | "eye"
+  | "cursor-click"
+  | "percent";
 
 /** Zweites, kleines Icon-Set im selben Strich-Stil wie {@link ServiceIcon},
  *  für Feature-Karten ausserhalb der Leistungen-Seite. */
@@ -193,6 +196,24 @@ export function FeatureIcon({
         <circle cx="8" cy="9.3" r="1" fill="currentColor" stroke="none" />
         <circle cx="11.7" cy="6.9" r="1" fill="currentColor" stroke="none" />
         <circle cx="15.2" cy="9" r="1" fill="currentColor" stroke="none" />
+      </>
+    ),
+    eye: (
+      <>
+        <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+        <circle cx="12" cy="12" r="3" />
+      </>
+    ),
+    "cursor-click": (
+      <>
+        <path d="M5 3.5 18.5 10l-5.8 1.7L11 17.5 5 3.5Z" />
+      </>
+    ),
+    percent: (
+      <>
+        <circle cx="7.5" cy="7.5" r="2.3" />
+        <circle cx="16.5" cy="16.5" r="2.3" />
+        <path d="M17.5 6.5 6.5 17.5" />
       </>
     ),
   };

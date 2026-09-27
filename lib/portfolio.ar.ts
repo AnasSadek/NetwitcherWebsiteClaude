@@ -179,6 +179,38 @@ export const portfolioProjectsAr: PortfolioProject[] = [
     ],
     hideNextProject: true,
     links: [{ label: "زيارة الموقع", href: "https://fridaeu.com" }],
+    tiktokShopSection: {
+      eyebrow: "TIKTOK SHOP · الأداء الرقمي",
+      heading: "وصول واسع وتفاعل قابل للقياس على TikTok Shop",
+      period: "01 أبريل 2026 – 27 سبتمبر 2026",
+      intro:
+        "من خلال إدارة TikTok Shop وصناعة المحتوى وربط المنتجات بمصادر الزيارات المختلفة، بنينا حضورًا رقميًا قويًا لمنتجات FridaEU. وخلال الفترة من أبريل إلى سبتمبر 2026، حققت المنتجات ملايين مرات الظهور ومئات الآلاف من النقرات على TikTok Shop.",
+      kpis: [
+        { icon: "eye", value: 15767048, label: "مرات ظهور المنتجات" },
+        { icon: "eye", value: 9555097, label: "مرات الظهور الفريدة" },
+        { icon: "cursor-click", value: 435826, label: "نقرات المنتجات" },
+        { icon: "cursor-click", value: 293119, label: "النقرات الفريدة" },
+        { icon: "percent", value: 2.76, unit: "percent", label: "معدل النقر" },
+        { icon: "percent", value: 3.07, unit: "percent", label: "معدل النقر الفريد" },
+      ],
+      traffic: {
+        heading: "من أين جاء التفاعل؟",
+        intro:
+          "توزع الوصول إلى المنتجات عبر عدة نقاط اتصال داخل منظومة TikTok Shop، من التسويق بالعمولة إلى بطاقات المنتجات والفيديوهات والبث المباشر.",
+        impressionsUnit: "ظهور",
+        clicksUnit: "نقرة",
+        sources: [
+          { label: "التسويق بالعمولة", impressions: 7944781, clicks: 288421 },
+          { label: "بطاقات المنتجات", impressions: 7229969, clicks: 132292 },
+          { label: "فيديوهات البائع", impressions: 565967, clicks: 14911 },
+          { label: "البث المباشر", impressions: 26331, clicks: 202 },
+        ],
+      },
+      summary: {
+        label: "النتيجة",
+        body: "أكثر من 15.7 مليون ظهور للمنتجات و435 ألف نقرة خلال أقل من ستة أشهر – حضور قوي على TikTok Shop دون الاعتماد على قناة وصول واحدة.",
+      },
+    },
     servicesSection: {
       eyebrow: "خدماتنا",
       heading: "من التجارة الإلكترونية إلى التسويق بالأداء",
