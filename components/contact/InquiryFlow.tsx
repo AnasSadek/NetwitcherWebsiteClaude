@@ -6,7 +6,7 @@ import { Suspense, useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ARROW_COLORS, ARROW_PATH } from "@/components/arrows";
 import { withLocale, type Locale } from "@/lib/i18n/locale";
-import { whatsappHref } from "@/lib/site";
+import { site, whatsappHref } from "@/lib/site";
 
 /**
  * Kurzer Anfrage-Dialog statt großem Standardformular.
@@ -20,10 +20,9 @@ import { whatsappHref } from "@/lib/site";
  * <fieldset>/<legend>, native Validierung, sichtbarer Fokus. Die einzige
  * Bewegung ist ein kurzer Schritt-Übergang, der bei "reduce motion" entfällt.
  *
- * Versand: die Anfrage wird per POST an /api/contact geschickt (Resend
- * verschickt die E-Mail serverseitig, kein mailto:, kein Verlassen der
- * Seite) — alternativ öffnet "Lieber per WhatsApp schicken" die fertige
- * Nachricht direkt in WhatsApp (unverändert clientseitig, wie zuvor).
+ * Versand ohne Backend: die Angaben werden zu einer fertigen Nachricht
+ * zusammengesetzt und wahlweise per E-Mail oder WhatsApp geöffnet.
+ * Für ein späteres Backend genügt es, buildMessage() an eine API-Route zu POSTen.
  */
 
 type Topic = {
@@ -68,9 +67,6 @@ const TIMINGS_AR = [
   { id: "wochen", label: "خلال الأسابيع القادمة" },
   { id: "planung", label: "لا يزال قيد التخطيط" },
 ];
-
-const CONTACT_METHODS_DE = ["E-Mail", "Telefon", "WhatsApp"];
-const CONTACT_METHODS_AR = ["البريد الإلكتروني", "الهاتف", "واتساب"];
 
 /**
  * Übernimmt ?service=… aus Links wie /kontakt?service=Fotoshooting. Die
@@ -119,9 +115,9 @@ type Fields = {
   email: string;
   company: string;
   phone: string;
-  budget: string;
-  contactMethod: string;
 };
+
+const EMPTY: Fields = { message: "", name: "", email: "", company: "", phone: "" };
 
 function Flow({ locale = "de" }: { locale?: Locale }) {
   const params = useSearchParams();
@@ -131,7 +127,6 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
   const TOPICS = isAr ? TOPICS_AR : TOPICS_DE;
   const TIMINGS = isAr ? TIMINGS_AR : TIMINGS_DE;
   const STEP_LABELS = isAr ? STEP_LABELS_AR : STEP_LABELS_DE;
-  const CONTACT_METHODS = isAr ? CONTACT_METHODS_AR : CONTACT_METHODS_DE;
   const arrowMirror = "rtl:-scale-x-100 rtl:group-hover:-translate-x-1";
 
   const preselected = topicFromParam(params.get("service"), TOPICS);
@@ -139,17 +134,8 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
   const [topic, setTopic] = useState<Topic | null>(preselected);
   const [timing, setTiming] = useState("");
   // Gesteuerte Felder: ein Schritt zurück darf Getipptes nie verwerfen.
-  const [fields, setFields] = useState<Fields>({
-    message: "",
-    name: "",
-    email: "",
-    company: "",
-    phone: "",
-    budget: "",
-    contactMethod: CONTACT_METHODS[0],
-  });
-  const [mailStatus, setMailStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [whatsappSent, setWhatsappSent] = useState(false);
+  const [fields, setFields] = useState<Fields>(EMPTY);
+  const [sent, setSent] = useState<null | "mail" | "whatsapp">(null);
   // Der Fokus wandert auf die Überschrift des neuen Schritts, sobald diese
   // wirklich im DOM steht. Callback-Ref statt Effect, weil AnimatePresence
   // (mode="wait") erst nach der Exit-Animation montiert. Beim ersten Rendern
@@ -161,7 +147,7 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
     node.focus();
   }, []);
 
-  const set = (key: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+  const set = (key: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setFields((f) => ({ ...f, [key]: e.target.value }));
 
   const go = (next: number) => {
@@ -201,40 +187,16 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
         ];
     if (fields.company) lines.push(`${isAr ? "الشركة" : "Unternehmen"}: ${fields.company}`);
     if (fields.phone) lines.push(`${isAr ? "الهاتف" : "Telefon"}: ${fields.phone}`);
-    if (fields.budget) lines.push(`${isAr ? "الميزانية" : "Budget"}: ${fields.budget}`);
-    lines.push(`${isAr ? "طريقة التواصل المفضلة" : "Bevorzugter Kontaktweg"}: ${fields.contactMethod}`);
     return lines.join("\n");
   };
 
-  // Versand läuft serverseitig über /api/contact (Resend) — kein mailto:,
-  // kein Verlassen der Seite. Bei Erfolg/Fehler zeigt mailStatus die passende
-  // Meldung inline (siehe Banner am Seitenende).
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submitMail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formRef.current?.reportValidity()) return;
-    setMailStatus("sending");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          service: topic?.label ?? "",
-          message: fields.message,
-          timeline: TIMINGS.find((t) => t.id === timing)?.label ?? "",
-          name: fields.name,
-          email: fields.email,
-          company: fields.company,
-          phone: fields.phone,
-          budget: fields.budget,
-          contactMethod: fields.contactMethod,
-        }),
-      });
-      const data = await res.json().catch(() => null);
-      if (!res.ok || !data?.ok) throw new Error(data?.error || "request failed");
-      setMailStatus("success");
-    } catch {
-      setMailStatus("error");
-    }
+    const subject = isAr ? `طلب: ${topic?.label ?? "عام"}` : `Anfrage: ${topic?.label ?? "Allgemein"}`;
+    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(buildMessage())}`;
+    setSent("mail");
   };
 
   const submitWhatsapp = () => {
@@ -244,7 +206,7 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
       "_blank",
       "noopener,noreferrer"
     );
-    setWhatsappSent(true);
+    setSent("whatsapp");
   };
 
   const transition = reduce
@@ -278,7 +240,7 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
         ))}
       </div>
 
-      <form ref={formRef} onSubmit={handleSubmit} className="mt-8">
+      <form ref={formRef} onSubmit={submitMail} className="mt-8">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={step}
@@ -505,37 +467,6 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                       placeholder="+49 …"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="budget" className="mb-2 block text-sm font-medium">
-                      {isAr ? "الميزانية" : "Budget"} <span className="text-ink-3">{isAr ? "(اختياري)" : "(optional)"}</span>
-                    </label>
-                    <input
-                      id="budget"
-                      name="budget"
-                      value={fields.budget}
-                      onChange={set("budget")}
-                      className={inputCls}
-                      placeholder={isAr ? "مثلاً 2000–5000 يورو" : "z. B. 2.000–5.000 €"}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="contactMethod" className="mb-2 block text-sm font-medium">
-                      {isAr ? "طريقة التواصل المفضلة" : "Bevorzugter Kontaktweg"}
-                    </label>
-                    <select
-                      id="contactMethod"
-                      name="contactMethod"
-                      value={fields.contactMethod}
-                      onChange={set("contactMethod")}
-                      className={inputCls}
-                    >
-                      {CONTACT_METHODS.map((m) => (
-                        <option key={m} value={m}>
-                          {m}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
                 </div>
 
                 <p className="mt-6 text-xs leading-relaxed text-ink-3">
@@ -562,10 +493,9 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                 <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                   <button
                     type="submit"
-                    disabled={mailStatus === "sending"}
-                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-[#1B103F] px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(27,16,63,0.18)] transition-colors hover:bg-[#2A1760] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-[#1B103F] px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(27,16,63,0.18)] transition-colors hover:bg-[#2A1760]"
                   >
-                    {mailStatus === "sending" ? (isAr ? "جارٍ الإرسال…" : "Wird gesendet…") : isAr ? "إرسال الطلب" : "Anfrage senden"}
+                    {isAr ? "إرسال الطلب" : "Anfrage senden"}
                     <Arrow
                       color="currentColor"
                       className={`transition-transform duration-200 ${arrowMirror} group-hover:translate-x-1`}
@@ -587,25 +517,20 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                   </button>
                 </div>
 
-                {mailStatus === "success" && (
+                {sent && (
                   <p role="status" className="mt-6 border-l-2 rtl:border-l-0 rtl:border-r-2 pl-4 rtl:pl-0 rtl:pr-4 border-mint text-sm leading-relaxed text-ink-3">
                     {isAr
-                      ? "تم إرسال طلبك بنجاح. سنعاود التواصل معك خلال يوم عمل واحد."
-                      : "Deine Anfrage wurde erfolgreich gesendet. Wir melden uns innerhalb eines Werktags."}
-                  </p>
-                )}
-                {mailStatus === "error" && (
-                  <p role="alert" className="mt-6 border-l-2 rtl:border-l-0 rtl:border-r-2 pl-4 rtl:pl-0 rtl:pr-4 border-red-400 text-sm leading-relaxed text-ink-3">
-                    {isAr
-                      ? "تعذّر إرسال طلبك. يرجى المحاولة مرة أخرى، أو التواصل معنا مباشرة عبر واتساب."
-                      : "Deine Anfrage konnte nicht gesendet werden. Bitte versuche es erneut oder schreib uns direkt über WhatsApp."}
-                  </p>
-                )}
-                {whatsappSent && (
-                  <p role="status" className="mt-6 border-l-2 rtl:border-l-0 rtl:border-r-2 pl-4 rtl:pl-0 rtl:pr-4 border-mint text-sm leading-relaxed text-ink-3">
-                    {isAr
-                      ? "سيفتح واتساب برسالتك جاهزة، أرسلها وستصل إلينا."
-                      : "WhatsApp öffnet sich mit der fertigen Nachricht, einmal absenden, dann ist sie bei uns."}
+                      ? sent === "mail"
+                        ? "سيفتح برنامج البريد الإلكتروني برسالتك جاهزة، أرسلها وستصل إلينا."
+                        : "سيفتح واتساب برسالتك جاهزة، أرسلها وستصل إلينا."
+                      : sent === "mail"
+                        ? "Dein E-Mail-Programm öffnet sich mit der fertigen Anfrage, einmal absenden, dann ist sie bei uns."
+                        : "WhatsApp öffnet sich mit der fertigen Nachricht, einmal absenden, dann ist sie bei uns."}{" "}
+                    {isAr ? "إذا لم يعمل ذلك، يمكنك التواصل معنا مباشرة عبر " : "Klappt das nicht, erreichst du uns direkt unter "}
+                    <a href={`mailto:${site.email}`} className="text-ink underline underline-offset-2" dir="ltr">
+                      {site.email}
+                    </a>
+                    .
                   </p>
                 )}
               </div>
