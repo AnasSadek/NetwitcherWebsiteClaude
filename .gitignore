@@ -19,8 +19,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# env
-.env*.local
+# env — never commit real secrets (Azure/Graph credentials etc.), only
+# .env.example (tracked) documents the required variable names.
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
 
 # typescript
 *.tsbuildinfo

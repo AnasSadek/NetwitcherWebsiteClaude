@@ -20,9 +20,10 @@ import { site, whatsappHref } from "@/lib/site";
  * <fieldset>/<legend>, native Validierung, sichtbarer Fokus. Die einzige
  * Bewegung ist ein kurzer Schritt-Übergang, der bei "reduce motion" entfällt.
  *
- * Versand ohne Backend: die Angaben werden zu einer fertigen Nachricht
- * zusammengesetzt und wahlweise per E-Mail oder WhatsApp geöffnet.
- * Für ein späteres Backend genügt es, buildMessage() an eine API-Route zu POSTen.
+ * Versand: der "Anfrage senden"-Pfad POSTet serverseitig an /api/contact
+ * (Microsoft Graph, siehe dort) — kein mailto/E-Mail-Client. Der WhatsApp-
+ * Pfad bleibt unverändert ein direkter wa.me-Link mit vorausgefüllter
+ * Nachricht, das ist bewusst so gewollt (eigene, separate Kontaktoption).
  */
 
 type Topic = {
@@ -115,9 +116,11 @@ type Fields = {
   email: string;
   company: string;
   phone: string;
+  /** Honeypot: für Menschen unsichtbares Feld, muss leer bleiben. */
+  hp: string;
 };
 
-const EMPTY: Fields = { message: "", name: "", email: "", company: "", phone: "" };
+const EMPTY: Fields = { message: "", name: "", email: "", company: "", phone: "", hp: "" };
 
 function Flow({ locale = "de" }: { locale?: Locale }) {
   const params = useSearchParams();
@@ -135,7 +138,8 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
   const [timing, setTiming] = useState("");
   // Gesteuerte Felder: ein Schritt zurück darf Getipptes nie verwerfen.
   const [fields, setFields] = useState<Fields>(EMPTY);
-  const [sent, setSent] = useState<null | "mail" | "whatsapp">(null);
+  const [sent, setSent] = useState<null | "whatsapp" | "success" | "error">(null);
+  const [submitting, setSubmitting] = useState(false);
   // Der Fokus wandert auf die Überschrift des neuen Schritts, sobald diese
   // wirklich im DOM steht. Callback-Ref statt Effect, weil AnimatePresence
   // (mode="wait") erst nach der Exit-Animation montiert. Beim ersten Rendern
@@ -190,13 +194,33 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
     return lines.join("\n");
   };
 
-  const submitMail = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const subject = isAr ? `طلب: ${topic?.label ?? "عام"}` : `Anfrage: ${topic?.label ?? "Allgemein"}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(buildMessage())}`;
-    setSent("mail");
+    if (submitting || sent === "success") return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          locale,
+          topicId: topic?.id ?? "",
+          timingId: timing,
+          message: fields.message,
+          name: fields.name,
+          email: fields.email,
+          company: fields.company,
+          phone: fields.phone,
+          hp: fields.hp,
+        }),
+      });
+      const data = (await res.json().catch(() => null)) as { ok?: boolean } | null;
+      setSent(res.ok && data?.ok ? "success" : "error");
+    } catch {
+      setSent("error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const submitWhatsapp = () => {
@@ -240,7 +264,24 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
         ))}
       </div>
 
-      <form ref={formRef} onSubmit={submitMail} className="mt-8">
+      <form ref={formRef} onSubmit={submitForm} className="mt-8">
+        {/* Honeypot: per clip (nicht display:none) unsichtbar, damit auch
+            Bots, die Sichtbarkeit prüfen, nicht drauf reinfallen — bewusst
+            NICHT per -left-[9999px] o. Ä. positioniert, das bläht sonst die
+            Dokumentbreite auf und erzeugt einen horizontalen Scrollbalken.
+            Ausgefüllt -> serverseitig als Spam behandelt, siehe /api/contact. */}
+        <div className="sr-only">
+          <label htmlFor="hp">{isAr ? "اترك هذا الحقل فارغًا" : "Dieses Feld bitte leer lassen"}</label>
+          <input
+            id="hp"
+            name="hp"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={fields.hp}
+            onChange={set("hp")}
+          />
+        </div>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={step}
@@ -493,9 +534,16 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                 <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                   <button
                     type="submit"
-                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-[#1B103F] px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(27,16,63,0.18)] transition-colors hover:bg-[#2A1760]"
+                    disabled={submitting || sent === "success"}
+                    className="group inline-flex items-center justify-center gap-2.5 rounded bg-[#1B103F] px-7 py-3.5 font-heading text-sm font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(27,16,63,0.18)] transition-colors hover:bg-[#2A1760] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-[#1B103F]"
                   >
-                    {isAr ? "إرسال الطلب" : "Anfrage senden"}
+                    {submitting
+                      ? isAr
+                        ? "جارٍ الإرسال..."
+                        : "Wird gesendet..."
+                      : isAr
+                        ? "إرسال الطلب"
+                        : "Anfrage senden"}
                     <Arrow
                       color="currentColor"
                       className={`transition-transform duration-200 ${arrowMirror} group-hover:translate-x-1`}
@@ -517,16 +565,38 @@ function Flow({ locale = "de" }: { locale?: Locale }) {
                   </button>
                 </div>
 
-                {sent && (
+                {sent === "whatsapp" && (
                   <p role="status" className="mt-6 border-l-2 rtl:border-l-0 rtl:border-r-2 pl-4 rtl:pl-0 rtl:pr-4 border-mint text-sm leading-relaxed text-ink-3">
                     {isAr
-                      ? sent === "mail"
-                        ? "سيفتح برنامج البريد الإلكتروني برسالتك جاهزة، أرسلها وستصل إلينا."
-                        : "سيفتح واتساب برسالتك جاهزة، أرسلها وستصل إلينا."
-                      : sent === "mail"
-                        ? "Dein E-Mail-Programm öffnet sich mit der fertigen Anfrage, einmal absenden, dann ist sie bei uns."
-                        : "WhatsApp öffnet sich mit der fertigen Nachricht, einmal absenden, dann ist sie bei uns."}{" "}
+                      ? "سيفتح واتساب برسالتك جاهزة، أرسلها وستصل إلينا."
+                      : "WhatsApp öffnet sich mit der fertigen Nachricht, einmal absenden, dann ist sie bei uns."}{" "}
                     {isAr ? "إذا لم يعمل ذلك، يمكنك التواصل معنا مباشرة عبر " : "Klappt das nicht, erreichst du uns direkt unter "}
+                    <a href={`mailto:${site.email}`} className="text-ink underline underline-offset-2" dir="ltr">
+                      {site.email}
+                    </a>
+                    .
+                  </p>
+                )}
+
+                {sent === "success" && (
+                  <p role="status" className="mt-6 border-l-2 rtl:border-l-0 rtl:border-r-2 pl-4 rtl:pl-0 rtl:pr-4 border-mint text-sm leading-relaxed">
+                    <span className="block font-heading font-bold text-ink">
+                      {isAr ? "تم إرسال طلبك بنجاح." : "Deine Anfrage wurde erfolgreich gesendet."}
+                    </span>
+                    <span className="mt-1 block text-ink-3">
+                      {isAr
+                        ? "شكرًا لتواصلك معنا. استلمنا طلبك وسنعود إليك في أقرب وقت ممكن."
+                        : "Vielen Dank für deine Anfrage. Wir haben deine Nachricht erhalten und melden uns so schnell wie möglich."}
+                    </span>
+                  </p>
+                )}
+
+                {sent === "error" && (
+                  <p role="status" className="mt-6 border-l-2 rtl:border-l-0 rtl:border-r-2 pl-4 rtl:pl-0 rtl:pr-4 border-red-400 text-sm leading-relaxed text-ink-3">
+                    {isAr
+                      ? "تعذر إرسال الطلب. يرجى المحاولة مرة أخرى."
+                      : "Die Anfrage konnte nicht gesendet werden. Bitte versuche es erneut."}{" "}
+                    {isAr ? "أو تواصل معنا مباشرة عبر " : "Oder erreichst du uns direkt unter "}
                     <a href={`mailto:${site.email}`} className="text-ink underline underline-offset-2" dir="ltr">
                       {site.email}
                     </a>
