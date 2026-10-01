@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { INQUIRY_TOPICS, INQUIRY_TIMINGS } from "@/lib/inquiry-options";
-import { sendGraphMail } from "@/lib/graph-mailer";
+import { sendGraphMail, getGraphToken, verifyMailboxExists } from "@/lib/graph-mailer";
 import { internalInquiryEmailHtml, customerConfirmationEmailHtml } from "@/lib/inquiry-email";
 
 /**
@@ -103,6 +103,14 @@ function validate(body: ContactBody, locale: Locale): boolean {
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
+  console.log("[contact] request received");
+  console.log("[contact] env check:", {
+    AZURE_TENANT_ID: Boolean(process.env.AZURE_TENANT_ID),
+    AZURE_CLIENT_ID: Boolean(process.env.AZURE_CLIENT_ID),
+    AZURE_CLIENT_SECRET: Boolean(process.env.AZURE_CLIENT_SECRET),
+    MAIL_FROM: Boolean(process.env.MAIL_FROM),
+    CONTACT_RECIPIENT_EMAIL: Boolean(process.env.CONTACT_RECIPIENT_EMAIL),
+  });
 
   try {
     if (isRateLimited(ip)) {
@@ -154,6 +162,21 @@ export async function POST(request: NextRequest) {
         ? "البريد الإلكتروني"
         : "E-Mail";
 
+    const mailFrom = process.env.MAIL_FROM;
+    if (mailFrom) {
+      // Diagnostisch, nie blockierend: holt das Token einmal explizit (damit
+      // Token-Stufe und Postfach-Check sauber vor dem eigentlichen Versand
+      // im Log auftauchen) und loggt, ob MAIL_FROM als Graph-Nutzer auflösbar
+      // ist. sendGraphMail() nutzt danach denselben gecachten Token.
+      try {
+        const token = await getGraphToken();
+        await verifyMailboxExists(token, mailFrom);
+      } catch {
+        // Fehler ist bereits in getGraphToken() geloggt; der eigentliche
+        // Sendeversuch unten holt das Token erneut und wirft/loggt dann.
+      }
+    }
+
     const subject = locale === "ar" ? `طلب جديد: ${topic.label}` : `Neue Anfrage: ${topic.label}`;
     const html = internalInquiryEmailHtml({
       locale,
@@ -172,6 +195,7 @@ export async function POST(request: NextRequest) {
       html,
       to: [{ address: recipient }],
       replyTo: [{ address: email, name }],
+      logLabel: "internal",
     });
 
     // Nur bei Erfolg der internen Mail markieren -> ein fehlgeschlagener
@@ -184,7 +208,12 @@ export async function POST(request: NextRequest) {
       const confirmSubject =
         locale === "ar" ? "استلمنا طلبك – Netwitcher" : "Wir haben deine Anfrage erhalten – Netwitcher";
       const confirmHtml = customerConfirmationEmailHtml({ locale, name });
-      await sendGraphMail({ subject: confirmSubject, html: confirmHtml, to: [{ address: email, name }] });
+      await sendGraphMail({
+        subject: confirmSubject,
+        html: confirmHtml,
+        to: [{ address: email, name }],
+        logLabel: "confirmation",
+      });
     } catch (confirmError) {
       console.error("[contact] confirmation email failed", {
         timestamp: new Date().toISOString(),

@@ -5,15 +5,36 @@
  * importiert werden — sie liest AZURE_TENANT_ID/AZURE_CLIENT_ID/
  * AZURE_CLIENT_SECRET aus process.env und würde sonst ins Browser-Bundle
  * gelangen. Verwendung ausschließlich aus app/api/contact/route.ts (Node-
- * Runtime). Es werden nie Token, Authorization-Header oder Secrets geloggt —
- * Fehler geben höchstens HTTP-Status und Graph-Fehlercode weiter.
+ * Runtime).
+ *
+ * Diagnose-Logging: jede Stufe (Token, Postfach-Check, Graph-Versand) loggt
+ * ihr Ergebnis mit dem Präfix "[contact]", damit sich ein Produktionsfehler
+ * ohne Rätselraten einer Stufe zuordnen lässt. Es werden NIE Token,
+ * Authorization-Header, Secrets oder vollständige Fehler-Payloads geloggt —
+ * nur HTTP-Status und die von Azure/Graph gelieferten Fehlercode/-Nachricht-
+ * Felder (auf eine sichere Länge gekappt).
  */
 
+const MAX_LOG_MESSAGE_LENGTH = 300;
+
+/** Kappt eine Azure/Graph-Fehlermeldung auf eine sichere Länge fürs Log. */
+function safeMessage(value: unknown): string | undefined {
+  if (typeof value !== "string" || !value) return undefined;
+  return value.length > MAX_LOG_MESSAGE_LENGTH ? `${value.slice(0, MAX_LOG_MESSAGE_LENGTH)}…` : value;
+}
+
 type GraphTokenResponse = { access_token: string; expires_in: number };
+type AzureTokenError = { error?: string; error_description?: string };
+type GraphApiError = { error?: { code?: string; message?: string } };
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
-async function getGraphToken(): Promise<string> {
+/**
+ * Holt (oder cacht) das Client-Credentials-Access-Token. Exportiert, damit
+ * app/api/contact/route.ts den Postfach-Check (verifyMailboxExists) mit
+ * demselben Token ausführen kann, ohne ein zweites Mal anzufragen.
+ */
+export async function getGraphToken(): Promise<string> {
   const now = Date.now();
   if (cachedToken && cachedToken.expiresAt - 60_000 > now) {
     return cachedToken.token;
@@ -33,6 +54,8 @@ async function getGraphToken(): Promise<string> {
     grant_type: "client_credentials",
   });
 
+  console.log("[contact] requesting Microsoft access token");
+
   const res = await fetch(`https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -40,13 +63,58 @@ async function getGraphToken(): Promise<string> {
     cache: "no-store",
   });
 
+  console.log("[contact] token status:", res.status);
+
   if (!res.ok) {
+    let parsed: AzureTokenError | undefined;
+    try {
+      parsed = (await res.json()) as AzureTokenError;
+    } catch {
+      // Body wasn't JSON — status code alone still gets logged above.
+    }
+    const code = safeMessage(parsed?.error) ?? "unknown";
+    const message = safeMessage(parsed?.error_description) ?? "no error description returned";
+    console.error("[contact] token error code:", code);
+    console.error("[contact] token error message:", message);
     throw new Error(`Graph token request failed with status ${res.status}`);
   }
+
+  console.log("[contact] token acquired successfully");
 
   const data = (await res.json()) as GraphTokenResponse;
   cachedToken = { token: data.access_token, expiresAt: now + data.expires_in * 1000 };
   return data.access_token;
+}
+
+/**
+ * Rein diagnostisch: prüft per GET /users/{mailbox}, ob MAIL_FROM als
+ * Microsoft-Graph-Benutzer auflösbar ist. Wirft NIE — ein Fehler hier
+ * (z. B. fehlende User.Read-Berechtigung) darf den eigentlichen Mailversand
+ * nicht verhindern, er wird nur geloggt. Fragt bewusst nur `id` ab, um keine
+ * unnötigen Nutzerdaten zu übertragen/loggen.
+ */
+export async function verifyMailboxExists(token: string, mailbox: string): Promise<void> {
+  try {
+    const res = await fetch(
+      `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(mailbox)}?$select=id`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      }
+    );
+    if (res.status === 200) {
+      console.log(`[contact] mailbox check: ${mailbox} exists: true`);
+    } else if (res.status === 404) {
+      console.log(`[contact] mailbox check: ${mailbox} exists: false`);
+    } else {
+      console.log(`[contact] mailbox check: could not verify ${mailbox} (status ${res.status})`);
+    }
+  } catch (err) {
+    console.log(
+      `[contact] mailbox check: request failed for ${mailbox}`,
+      err instanceof Error ? safeMessage(err.message) : "unknown error"
+    );
+  }
 }
 
 export type GraphRecipient = { address: string; name?: string };
@@ -56,6 +124,8 @@ export async function sendGraphMail(params: {
   html: string;
   to: GraphRecipient[];
   replyTo?: GraphRecipient[];
+  /** Nur fürs Log — unterscheidet interne Benachrichtigung von Kundenbestätigung. */
+  logLabel?: string;
 }): Promise<void> {
   const mailFrom = process.env.MAIL_FROM;
   if (!mailFrom) {
@@ -76,6 +146,8 @@ export async function sendGraphMail(params: {
     saveToSentItems: false,
   };
 
+  console.log(`[contact] sending ${params.logLabel ?? "internal"} email through Microsoft Graph`);
+
   const res = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(mailFrom)}/sendMail`, {
     method: "POST",
     headers: {
@@ -86,14 +158,19 @@ export async function sendGraphMail(params: {
     cache: "no-store",
   });
 
+  console.log("[contact] graph status:", res.status);
+
   if (!res.ok) {
-    let code: string | undefined;
+    let parsed: GraphApiError | undefined;
     try {
-      const errBody = (await res.json()) as { error?: { code?: string } };
-      code = errBody?.error?.code;
+      parsed = (await res.json()) as GraphApiError;
     } catch {
-      // Response body wasn't JSON — ignore, status alone is enough context.
+      // Body wasn't JSON — status code alone still gets logged above.
     }
-    throw new Error(`Graph sendMail failed with status ${res.status}${code ? ` (${code})` : ""}`);
+    const code = safeMessage(parsed?.error?.code) ?? "unknown";
+    const message = safeMessage(parsed?.error?.message) ?? "no error message returned";
+    console.error("[contact] graph error code:", code);
+    console.error("[contact] graph error message:", message);
+    throw new Error(`Graph sendMail failed with status ${res.status}${code !== "unknown" ? ` (${code})` : ""}`);
   }
 }
