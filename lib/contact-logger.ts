@@ -4,7 +4,18 @@
  * Phusion Passenger stdout/stderr von Node-Apps nicht zuverlässig im Log
  * Browser anzeigt. Eine Zeile, zwei Ziele, ein Zeitstempel.
  *
+ * Standardpfad liegt bewusst im Arbeitsverzeichnis der App
+ * (process.cwd()) statt unter /tmp: Passenger sandboxt /tmp oft pro App in
+ * einem eigenen Mount-Namespace, der im Plesk File Manager (der nur den
+ * tatsächlichen vHost-Ordnerbaum zeigt) gar nicht sichtbar ist. cwd() ist
+ * exakt der App-Root, den Plesk für die Node-App konfiguriert hat — also
+ * derselbe Ordner, den der File Manager für die Domain anzeigt.
+ *
  * WICHTIG:
+ * - Nur ein TEMPORÄRES Diagnose-Hilfsmittel. Sobald der Graph-Versand wieder
+ *   funktioniert, diese Datei auf dem Server löschen (sie liegt im App-Root,
+ *   ggf. auch über die Domain erreichbar, falls der Webserver .log-Dateien
+ *   nicht blockt — enthält aber nie Secrets/PII, siehe unten).
  * - Datei-Schreibzugriff ist immer in try/catch gekapselt — ein
  *   Dateisystemfehler (z. B. kein Schreibrecht) darf die Contact-API
  *   niemals zum Absturz bringen, siehe writeToFile().
@@ -17,10 +28,12 @@
  */
 
 import { appendFileSync } from "node:fs";
+import { join } from "node:path";
 
-/** Überschreibbar per Env, falls /tmp in der jeweiligen Plesk-Umgebung
- *  nicht nutzbar sein sollte. Standard: /tmp/netwitcher-contact.log. */
-const LOG_FILE = process.env.CONTACT_LOG_FILE?.trim() || "/tmp/netwitcher-contact.log";
+/** Überschreibbar per Env (absoluter oder relativer Pfad). Standard: eine
+ *  Datei direkt im App-Arbeitsverzeichnis, das Plesk File Manager für die
+ *  Domain anzeigt — siehe Begründung oben. */
+const LOG_FILE = process.env.CONTACT_LOG_FILE?.trim() || join(process.cwd(), "contact-debug.log");
 
 function writeToFile(line: string): void {
   try {
