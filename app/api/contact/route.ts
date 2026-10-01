@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { INQUIRY_TOPICS, INQUIRY_TIMINGS } from "@/lib/inquiry-options";
 import { sendGraphMail, getGraphToken, verifyMailboxExists } from "@/lib/graph-mailer";
 import { internalInquiryEmailHtml, customerConfirmationEmailHtml } from "@/lib/inquiry-email";
+import { logContact, logContactError } from "@/lib/contact-logger";
 
 /**
  * Kontaktformular-Endpunkt: nimmt die Angaben des 3-Schritte-Formulars
@@ -103,14 +104,14 @@ function validate(body: ContactBody, locale: Locale): boolean {
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
-  console.log("[contact] request received");
-  console.log("[contact] env check:", {
-    AZURE_TENANT_ID: Boolean(process.env.AZURE_TENANT_ID),
-    AZURE_CLIENT_ID: Boolean(process.env.AZURE_CLIENT_ID),
-    AZURE_CLIENT_SECRET: Boolean(process.env.AZURE_CLIENT_SECRET),
-    MAIL_FROM: Boolean(process.env.MAIL_FROM),
-    CONTACT_RECIPIENT_EMAIL: Boolean(process.env.CONTACT_RECIPIENT_EMAIL),
-  });
+  logContact("[contact] request received");
+  logContact(
+    `[contact] env check: AZURE_TENANT_ID=${Boolean(process.env.AZURE_TENANT_ID)} ` +
+      `AZURE_CLIENT_ID=${Boolean(process.env.AZURE_CLIENT_ID)} ` +
+      `AZURE_CLIENT_SECRET=${Boolean(process.env.AZURE_CLIENT_SECRET)} ` +
+      `MAIL_FROM=${Boolean(process.env.MAIL_FROM)} ` +
+      `CONTACT_RECIPIENT_EMAIL=${Boolean(process.env.CONTACT_RECIPIENT_EMAIL)}`
+  );
 
   try {
     if (isRateLimited(ip)) {
@@ -215,18 +216,14 @@ export async function POST(request: NextRequest) {
         logLabel: "confirmation",
       });
     } catch (confirmError) {
-      console.error("[contact] confirmation email failed", {
-        timestamp: new Date().toISOString(),
-        message: confirmError instanceof Error ? confirmError.message : "unknown error",
-      });
+      logContactError(
+        `[contact] confirmation email failed: ${confirmError instanceof Error ? confirmError.message : "unknown error"}`
+      );
     }
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("[contact] submission failed", {
-      timestamp: new Date().toISOString(),
-      message: error instanceof Error ? error.message : "unknown error",
-    });
+    logContactError(`[contact] submission failed: ${error instanceof Error ? error.message : "unknown error"}`);
     return NextResponse.json({ ok: false, error: "send_failed" }, { status: 502 });
   }
 }

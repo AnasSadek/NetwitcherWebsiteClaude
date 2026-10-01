@@ -8,12 +8,15 @@
  * Runtime).
  *
  * Diagnose-Logging: jede Stufe (Token, Postfach-Check, Graph-Versand) loggt
- * ihr Ergebnis mit dem Präfix "[contact]", damit sich ein Produktionsfehler
- * ohne Rätselraten einer Stufe zuordnen lässt. Es werden NIE Token,
- * Authorization-Header, Secrets oder vollständige Fehler-Payloads geloggt —
- * nur HTTP-Status und die von Azure/Graph gelieferten Fehlercode/-Nachricht-
- * Felder (auf eine sichere Länge gekappt).
+ * ihr Ergebnis über lib/contact-logger.ts — console UND Log-Datei (Plesk/
+ * Phusion Passenger zeigt stdout eines Node-Prozesses nicht zuverlässig im
+ * Log Browser an). Es werden NIE Token, Authorization-Header, Secrets oder
+ * vollständige Fehler-Payloads geloggt — nur HTTP-Status und die von Azure/
+ * Graph gelieferten Fehlercode/-Nachricht-Felder (auf eine sichere Länge
+ * gekappt).
  */
+
+import { logContact, logContactError } from "./contact-logger";
 
 const MAX_LOG_MESSAGE_LENGTH = 300;
 
@@ -54,7 +57,7 @@ export async function getGraphToken(): Promise<string> {
     grant_type: "client_credentials",
   });
 
-  console.log("[contact] requesting Microsoft access token");
+  logContact("[contact] requesting Microsoft access token");
 
   const res = await fetch(`https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`, {
     method: "POST",
@@ -63,7 +66,7 @@ export async function getGraphToken(): Promise<string> {
     cache: "no-store",
   });
 
-  console.log("[contact] token status:", res.status);
+  logContact(`[contact] token status: ${res.status}`);
 
   if (!res.ok) {
     let parsed: AzureTokenError | undefined;
@@ -74,12 +77,12 @@ export async function getGraphToken(): Promise<string> {
     }
     const code = safeMessage(parsed?.error) ?? "unknown";
     const message = safeMessage(parsed?.error_description) ?? "no error description returned";
-    console.error("[contact] token error code:", code);
-    console.error("[contact] token error message:", message);
+    logContactError(`[contact] token error code: ${code}`);
+    logContactError(`[contact] token error message: ${message}`);
     throw new Error(`Graph token request failed with status ${res.status}`);
   }
 
-  console.log("[contact] token acquired successfully");
+  logContact("[contact] token acquired successfully");
 
   const data = (await res.json()) as GraphTokenResponse;
   cachedToken = { token: data.access_token, expiresAt: now + data.expires_in * 1000 };
@@ -103,16 +106,17 @@ export async function verifyMailboxExists(token: string, mailbox: string): Promi
       }
     );
     if (res.status === 200) {
-      console.log(`[contact] mailbox check: ${mailbox} exists: true`);
+      logContact(`[contact] mailbox check: ${mailbox} exists: true`);
     } else if (res.status === 404) {
-      console.log(`[contact] mailbox check: ${mailbox} exists: false`);
+      logContact(`[contact] mailbox check: ${mailbox} exists: false`);
     } else {
-      console.log(`[contact] mailbox check: could not verify ${mailbox} (status ${res.status})`);
+      logContact(`[contact] mailbox check: could not verify ${mailbox} (status ${res.status})`);
     }
   } catch (err) {
-    console.log(
-      `[contact] mailbox check: request failed for ${mailbox}`,
-      err instanceof Error ? safeMessage(err.message) : "unknown error"
+    logContact(
+      `[contact] mailbox check: request failed for ${mailbox}: ${
+        err instanceof Error ? (safeMessage(err.message) ?? "unknown error") : "unknown error"
+      }`
     );
   }
 }
@@ -146,7 +150,7 @@ export async function sendGraphMail(params: {
     saveToSentItems: false,
   };
 
-  console.log(`[contact] sending ${params.logLabel ?? "internal"} email through Microsoft Graph`);
+  logContact(`[contact] sending ${params.logLabel ?? "internal"} email through Microsoft Graph`);
 
   const res = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(mailFrom)}/sendMail`, {
     method: "POST",
@@ -158,7 +162,7 @@ export async function sendGraphMail(params: {
     cache: "no-store",
   });
 
-  console.log("[contact] graph status:", res.status);
+  logContact(`[contact] graph status: ${res.status}`);
 
   if (!res.ok) {
     let parsed: GraphApiError | undefined;
@@ -169,8 +173,8 @@ export async function sendGraphMail(params: {
     }
     const code = safeMessage(parsed?.error?.code) ?? "unknown";
     const message = safeMessage(parsed?.error?.message) ?? "no error message returned";
-    console.error("[contact] graph error code:", code);
-    console.error("[contact] graph error message:", message);
+    logContactError(`[contact] graph error code: ${code}`);
+    logContactError(`[contact] graph error message: ${message}`);
     throw new Error(`Graph sendMail failed with status ${res.status}${code !== "unknown" ? ` (${code})` : ""}`);
   }
 }
